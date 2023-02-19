@@ -6,7 +6,7 @@ import {
 
 import {
   separateAttrsAndEvents
-} from '../../lib/templates/attributesAndEvents.ts';
+} from '../../lib/rendering/attributesAndEvents.ts';
 
 describe('templates, attributes and events', () => {
   it('separateAttrsAndEvents returns separate hashes', () => {

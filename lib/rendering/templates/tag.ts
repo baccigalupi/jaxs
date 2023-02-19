@@ -4,15 +4,15 @@ import {
   TemplateEventListeners,
   DomCollection,
   RenderKit
-} from '../types.ts';
+} from '../../types.ts';
 
 import {
   createDecoratedNode,
-} from './dom.js';
+} from '../dom.js';
 
 import {
   separateAttrsAndEvents,
-} from './attributesAndEvents.ts';
+} from '../attributesAndEvents.ts';
 
 export class Tag {
   type: string;
