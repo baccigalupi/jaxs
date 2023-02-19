@@ -1,7 +1,9 @@
 // Rendering & Dom ------
+export type DomEventPublisher = (eventName: string, domEvent: Event) => void;
+
 export type RenderKit = {
   document: Document;
-  // publish: BusPublisher;
+  publish: DomEventPublisher;
   // state: State;
 };
 
