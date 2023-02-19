@@ -1,5 +1,4 @@
 import { describe, expect, it } from '../../devDeps.ts';
-
 import { createTestDom, domToString } from '../support/testDom.js';
 
 import jsx from '../../lib/jsx.js';
@@ -30,5 +29,17 @@ describe('Rendering static jsx', () => {
     const [node] = template.render({ document });
 
     expect(domToString(node)).toEqual('<h1>Hello</h1>');
+  });
+
+  it('can render a tag with more complex children', () => {
+    const greeting = "kind"
+    const template = <h1>Hello <span class="bold">{ greeting }</span> world</h1>;
+    const document = createTestDom();
+
+    const [node] = template.render({ document });
+
+    expect(domToString(node)).toEqual(
+      '<h1>Hello <span class="bold">kind</span> world</h1>'
+    );
   });
 });
