@@ -3,7 +3,8 @@ import {
   EventAttributes,
   TemplateEventListeners,
   DomCollection,
-  RenderKit
+  RenderKit,
+  Template
 } from '../../types.ts';
 
 import {
@@ -14,18 +15,20 @@ import {
   separateAttrsAndEvents,
 } from '../attributesAndEvents.ts';
 
-export class Tag {
+import { Children } from './children.ts';
+
+export class Tag implements Template {
   type: string;
   events: EventAttributes;
   listeners: TemplateEventListeners;
   attributes: Attributes;
-  // children: Children;
+  children: Children;
   dom: DomCollection;
 
   constructor(
     tagType: string,
     combinedAttributes: Attributes,
-    // children: Array<Template>,
+    children: Template[],
   ) {
     this.type = tagType;
 
@@ -34,7 +37,7 @@ export class Tag {
     this.attributes = attributes;
     this.listeners = {};
 
-    // this.children = new Children(children);
+    this.children = new Children(children);
     this.dom = [];
   }
 
@@ -42,7 +45,7 @@ export class Tag {
     const { dom, listeners } = this.generateDom(renderKit);
     if (!dom) return this.dom;
 
-    // this.children.render(renderKit, dom);
+    this.children.render(renderKit, dom);
     this.dom = [dom];
     this.listeners = listeners as TemplateEventListeners;
     return this.dom;

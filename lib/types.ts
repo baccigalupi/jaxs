@@ -1,4 +1,4 @@
-// Templates ------
+// Rendering & Dom ------
 export type RenderKit = {
   document: Document;
   // publish: BusPublisher;
@@ -7,6 +7,7 @@ export type RenderKit = {
 
 export type Dom = Text | Element;
 export type DomCollection = Dom[];
+export type TextValue = string | number;
 
 // deno-lint-ignore no-explicit-any
 export type Attributes = Record<string, any>;
@@ -17,3 +18,11 @@ export type AttributesAndEvents = {
 };
 
 export type TemplateEventListeners = Record<string, EventListener>;
+
+export interface Template {
+  dom: DomCollection;
+  render: (
+    renderKit: RenderKit,
+    parentElement?: Element,
+  ) => DomCollection;
+}

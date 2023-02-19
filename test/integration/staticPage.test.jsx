@@ -29,4 +29,13 @@ describe("Rendering static jsx", () => {
 
     expect(domToString(node)).toEqual('<img src="/foo.jpg">');
   });
+
+  it('can render a tag with a single child text element', () => {
+    const template = <h1>Hello</h1>;
+    const document = createTestDom();
+
+    const [node] = template.render({ document });
+
+    expect(domToString(node)).toEqual('<h1>Hello</h1>');
+  });
 });
