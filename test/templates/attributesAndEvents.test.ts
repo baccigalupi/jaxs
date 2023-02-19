@@ -1,11 +1,7 @@
-import {
-  describe,
-  it,
-  expect,
-} from '../../devDeps.ts';
+import { describe, expect, it } from '../../devDeps.ts';
 
 import {
-  separateAttrsAndEvents
+  separateAttrsAndEvents,
 } from '../../lib/rendering/attributesAndEvents.ts';
 
 describe('templates, attributes and events', () => {

@@ -1,20 +1,14 @@
 import {
   Attributes,
-  EventAttributes,
-  TemplateEventListeners,
   DomCollection,
+  EventAttributes,
   RenderKit,
-  Template
+  Template,
+  TemplateEventListeners,
 } from '../../types.ts';
 
-import {
-  createDecoratedNode,
-} from '../dom.js';
-
-import {
-  separateAttrsAndEvents,
-} from '../attributesAndEvents.ts';
-
+import { createDecoratedNode } from '../dom.js';
+import { separateAttrsAndEvents } from '../attributesAndEvents.ts';
 import { Children } from './children.ts';
 
 export class Tag implements Template {

@@ -1,4 +1,4 @@
-import { DOMParser } from "../../devDeps.ts";
+import { DOMParser } from '../../devDeps.ts';
 
 const defaultContent = '<div id=\'app\'></div>';
 

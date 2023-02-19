@@ -1,4 +1,4 @@
-import { RenderKit, Template, DomCollection, TextValue } from '../../types.ts';
+import { DomCollection, RenderKit, Template, TextValue } from '../../types.ts';
 import { TextTemplate } from './text.ts';
 
 export const ensureArray = (children: Template | Template[]): Template[] => {
@@ -11,7 +11,7 @@ export const ensureArray = (children: Template | Template[]): Template[] => {
   }
 
   return [children];
-}; 
+};
 
 /* three options for children
   1. there is no view
@@ -24,17 +24,19 @@ const recursiveRender = (
   rendered = [] as DomCollection[],
 ): DomCollection => children.reduce(renderReducer(renderKit), rendered).flat();
 
-const renderReducer = (renderKit: RenderKit) => (aggregate: DomCollection[], view: Template): DomCollection[] => {
-  if (!view) return aggregate;
+const renderReducer =
+  (renderKit: RenderKit) =>
+  (aggregate: DomCollection[], view: Template): DomCollection[] => {
+    if (!view) return aggregate;
 
-  if (Array.isArray(view)) {
-    const dom = recursiveRender(view, renderKit, aggregate);
-    return [dom];
-  }
+    if (Array.isArray(view)) {
+      const dom = recursiveRender(view, renderKit, aggregate);
+      return [dom];
+    }
 
-  aggregate.push(view.render(renderKit));
-  return aggregate;
-}
+    aggregate.push(view.render(renderKit));
+    return aggregate;
+  };
 
 const replaceTextNodes = (child: TextValue | Template) => {
   if (isTextNode(child)) {
