@@ -80,4 +80,40 @@ describe('Rendering static jsx', () => {
 
     expect(publish.calls[0].args).toEqual(['navigate', clickEvent]);
   });
+
+  it('renders deeply nested stuff', () => {
+    const Link = (props) => {
+      const { children, ...rest } = props;
+      return <a {...rest} onClick='navigate'>{children}</a>;
+    };
+
+    const Page = ({ buttonText, children }) => {
+      console.log('in the page')
+      return (
+        <>
+          <Link href='/save-the-world'>
+            <button>{buttonText}</button> Click here!
+          </Link>
+          <Link href='/home'>
+            Home <img src='/my-image.jpg' />
+          </Link>
+          { children }
+        </>
+      )
+    };
+
+    const template = (
+      <Page buttonText="Save!">
+        <p>Here is some stuff</p>
+      </Page>
+    );
+
+    const document = createTestDom();
+    const publish = spy();
+    const nodes = template.render({ document, publish });
+
+    expect(domToString(nodes)).toEqual(
+      '<div><a href="/save-the-world"><button>Save!</button> Click here!</a><a href="/home">Home <img src="/my-image.jpg"></a><p>Here is some stuff</p></div>',
+    );
+  });
 });
