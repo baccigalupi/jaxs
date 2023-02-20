@@ -2,7 +2,7 @@ import { describe, expect, it, spy, xit } from '../../devDeps.ts';
 import { createTestDom, domToString } from '../support/testDom.js';
 
 import jsx from '../../lib/jsx.js';
-import { bind } from '../../lib/rendering/templates/bound.js';
+import { bind } from '../../lib/rendering/templates/bound.ts';
 
 describe('bound template', () => {
   it('renders with state and attributes', () => {

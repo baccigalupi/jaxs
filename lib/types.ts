@@ -28,6 +28,7 @@ export interface Template {
     parentElement?: Element,
   ) => DomCollection;
 }
+export type TemplateClass = (attributes: Attributes) => Template;
 
 // deno-lint-ignore no-explicit-any
 export type State = Record<string, any>;
