@@ -3,7 +3,7 @@ import { TextTemplate } from './text.ts';
 
 export const ensureArray = (children: Template | Template[]): Template[] => {
   if (Array.isArray(children)) {
-    return children;
+    return children.flat();
   }
 
   if (!children) {
@@ -21,20 +21,21 @@ export const ensureArray = (children: Template | Template[]): Template[] => {
 const recursiveRender = (
   children: Template[],
   renderKit: RenderKit,
-  rendered = [] as DomCollection[],
+  rendered = [] as DomCollection,
 ): DomCollection => children.reduce(renderReducer(renderKit), rendered).flat();
 
 const renderReducer =
   (renderKit: RenderKit) =>
-  (aggregate: DomCollection[], view: Template): DomCollection[] => {
+  (aggregate: DomCollection, view: Template): DomCollection => {
     if (!view) return aggregate;
 
     if (Array.isArray(view)) {
-      const dom = recursiveRender(view, renderKit, aggregate);
-      return [dom];
+      const dom = recursiveRender(view, renderKit, aggregate) as DomCollection;
+      return dom;
     }
 
-    aggregate.push(view.render(renderKit));
+    view.render(renderKit).forEach((template) => aggregate.push(template));
+
     return aggregate;
   };
 
@@ -60,9 +61,9 @@ export class Children implements Template {
   parentElement: Element | undefined;
 
   constructor(jsxChildren: Template[]) {
-    this.collection = ensureArray(jsxChildren)
-      .map(replaceTextNodes)
-      .flat() as Template[];
+    this.collection = ensureArray(jsxChildren);
+    this.collection = this.collection.map(replaceTextNodes) as Template[];
+    this.collection = this.collection.flat() as Template[];
 
     this.dom = [];
   }

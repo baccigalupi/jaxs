@@ -1,4 +1,4 @@
-import { describe, expect, it, spy } from '../../devDeps.ts';
+import { describe, expect, it, spy, xit } from '../../devDeps.ts';
 import { createTestDom, domToString } from '../support/testDom.js';
 
 import jsx from '../../lib/jsx.js';
@@ -58,5 +58,26 @@ describe('Rendering static jsx', () => {
     node.dispatchEvent(clickEvent);
 
     expect(publish.calls[0].args).toEqual(['saveSomething', clickEvent]);
+  });
+
+  it('renders custom types', () => {
+    const Link = (props) => {
+      const { children, ...rest } = props;
+      return <a {...rest} onClick='navigate'>{children}</a>;
+    };
+    const template = <Link href='/foo/bar'>Go get your foo!</Link>;
+
+    const document = createTestDom();
+    const publish = spy();
+    const [node] = template.render({ document, publish });
+
+    expect(domToString(node)).toEqual(
+      '<a href="/foo/bar">Go get your foo!</a>',
+    );
+
+    const clickEvent = new Event('click');
+    node.dispatchEvent(clickEvent);
+
+    expect(publish.calls[0].args).toEqual(['navigate', clickEvent]);
   });
 });
