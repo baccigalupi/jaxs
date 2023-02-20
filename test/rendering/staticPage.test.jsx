@@ -88,7 +88,6 @@ describe('Rendering static jsx', () => {
     };
 
     const Page = ({ buttonText, children }) => {
-      console.log('in the page')
       return (
         <>
           <Link href='/save-the-world'>
@@ -97,13 +96,13 @@ describe('Rendering static jsx', () => {
           <Link href='/home'>
             Home <img src='/my-image.jpg' />
           </Link>
-          { children }
+          {children}
         </>
-      )
+      );
     };
 
     const template = (
-      <Page buttonText="Save!">
+      <Page buttonText='Save!'>
         <p>Here is some stuff</p>
       </Page>
     );

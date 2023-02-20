@@ -4,7 +4,7 @@ export type DomEventPublisher = (eventName: string, domEvent: Event) => void;
 export type RenderKit = {
   document: Document;
   publish: DomEventPublisher;
-  // state: State;
+  state: State;
 };
 
 export type Dom = Text | Element;
@@ -28,3 +28,7 @@ export interface Template {
     parentElement?: Element,
   ) => DomCollection;
 }
+
+// deno-lint-ignore no-explicit-any
+export type State = Record<string, any>;
+export type ViewModel = (state: State) => State;
