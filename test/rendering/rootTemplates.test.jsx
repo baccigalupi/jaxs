@@ -7,9 +7,8 @@ import { render } from '../../lib/rendering/templates/root.js';
 
 describe('root templates', () => {
   it('renders a bound template into the document, in the right place', () => {
-    const Template = ({ greeting, userName }) => (
-      <h1>{greeting} {userName}!</h1>
-    );
+    const Template = ({ greeting, userName }) => <h1>{greeting} {userName}!
+    </h1>;
     const viewModel = (state) => ({ userName: state.currentUser.name });
     const BoundTemplate = bind(Template, viewModel);
 
@@ -19,9 +18,11 @@ describe('root templates', () => {
     const subscribe = spy();
     const renderKit = { document, state, publish, subscribe };
 
-    render(<BoundTemplate greeting="Hello" />, '#app', renderKit);
+    render(<BoundTemplate greeting='Hello' />, '#app', renderKit);
 
-    expect(document.getElementById('app').innerHTML).toEqual('<h1>Hello Fred!</h1>');
+    expect(document.getElementById('app').innerHTML).toEqual(
+      '<h1>Hello Fred!</h1>',
+    );
   });
 
   xit('re-renders a bound template', () => {
@@ -37,11 +38,13 @@ describe('root templates', () => {
     const subscribe = spy();
     const renderKit = { document, state, publish, subscribe };
 
-    render(<BoundTemplate greeting="Hello" />, '#app', renderKit);
+    render(<BoundTemplate greeting='Hello' />, '#app', renderKit);
 
     const newState = { currentUser: { name: 'Janet', age: 83 } };
-    publish("new-state", newState);
+    publish('new-state', newState);
 
-    expect(document.getElementById('app').innerHTML).toEqual('<h1>Hello Janet!</h1>');
+    expect(document.getElementById('app').innerHTML).toEqual(
+      '<h1>Hello Janet!</h1>',
+    );
   });
 });

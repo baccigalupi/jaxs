@@ -1,8 +1,8 @@
 import {
   BusEventName,
-  BusPayload,
   BusListener,
-  BusListenersMap
+  BusListenersMap,
+  BusPayload,
 } from './types.ts';
 
 export class MessageBus {
@@ -18,20 +18,24 @@ export class MessageBus {
     this.listeners[eventName].push(listener);
   }
 
-  ensureListenerCollection(eventName: BusEventName) {
-    if (this.listeners[eventName]) return;
-
-    this.listeners[eventName] = [];
-  }
-
   publish(eventName: BusEventName, payload: BusPayload) {
     if (!this.listeners[eventName]) return false;
 
     this.listeners[eventName].forEach((listener: BusListener) => {
-      listener(payload, eventName, (eventName, payload) => this.publish(eventName, payload));
+      listener(
+        payload,
+        (eventName, payload) => this.publish(eventName, payload),
+        eventName,
+      );
     });
 
     return true;
+  }
+
+  ensureListenerCollection(eventName: BusEventName) {
+    if (this.listeners[eventName]) return;
+
+    this.listeners[eventName] = [];
   }
 }
 
@@ -41,12 +45,12 @@ export const createBus = () => {
   const publish = (eventName: BusEventName, payload: BusPayload) =>
     bus.publish(eventName, payload);
 
-  const subscribe = (eventName: BusEventName, listener: BusListener) => 
+  const subscribe = (eventName: BusEventName, listener: BusListener) =>
     bus.subscribe(eventName, listener);
 
   return {
     bus,
     publish,
-    subscribe
-  }
+    subscribe,
+  };
 };
