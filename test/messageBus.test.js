@@ -1,5 +1,5 @@
 import { describe, it, expect, } from '../devDeps.ts';
-import { createBus } from '../lib/messageBus.js';
+import { createBus } from '../lib/messageBus.ts';
 
 describe('MessageBus', () => {
   it('adds a listener and calls it when event is triggered', () => {

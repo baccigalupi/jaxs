@@ -33,3 +33,11 @@ export type TemplateClass = (attributes: Attributes) => Template;
 // deno-lint-ignore no-explicit-any
 export type State = Record<string, any>;
 export type ViewModel = (state: State) => State;
+
+// Message Bus ----
+export type BusEventName = string;
+// deno-lint-ignore no-explicit-any
+export type BusPayload = any;
+export type BusPublish = (eventName: BusEventName, payload: BusPayload) => void;
+export type BusListener = (eventName: BusEventName, payload: BusPayload, publish: BusPublish) => void;
+export type BusListenersMap = Record<BusEventName, BusPayload>;
