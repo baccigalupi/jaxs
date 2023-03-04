@@ -12,7 +12,7 @@ export class MessageBus {
     this.listeners = {};
   }
 
-  subscribe(eventName: string, listener: BusListener) {
+  subscribe(eventName: BusEventName, listener: BusListener) {
     this.ensureListenerCollection(eventName);
 
     this.listeners[eventName].push(listener);
@@ -36,5 +36,17 @@ export class MessageBus {
 }
 
 export const createBus = () => {
-  return new MessageBus();
+  const bus = new MessageBus();
+
+  const publish = (eventName: BusEventName, payload: BusPayload) =>
+    bus.publish(eventName, payload);
+
+  const subscribe = (eventName: BusEventName, listener: BusListener) => 
+    bus.subscribe(eventName, listener);
+
+  return {
+    bus,
+    publish,
+    subscribe
+  }
 };
