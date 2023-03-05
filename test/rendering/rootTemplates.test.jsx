@@ -3,7 +3,7 @@ import { createTestDom } from '../support/testDom.js';
 
 import jsx from '../../lib/jsx.js';
 import { bind } from '../../lib/rendering/templates/bound.ts';
-import { render } from '../../lib/rendering/templates/root.js';
+import { render } from '../../lib/rendering/templates/root.ts';
 
 describe('root templates', () => {
   it('renders a bound template into the document, in the right place', () => {
