@@ -1,4 +1,6 @@
-import { Dom, DomCollection, RenderKit, Template } from '../../types.ts';
+import { Dom, DomCollection, RenderKit, State, Template } from '../../types.ts';
+
+export const stateChangeEvent = 'stateChange';
 
 class Root {
   template: Template;
@@ -15,20 +17,35 @@ class Root {
     this.parentElement = null;
   }
 
-  renderAndAttach() {
+  renderAndAttach(renderKit: RenderKit) {
     this.parentElement = this.getParentElement();
     if (this.parentElement) {
-      this.dom = this.render();
-      this.dom.forEach((element: Dom) => {
-        this.parentElement && this.parentElement.appendChild(element);
-      });
-      // subscribe to rerender
+      this.dom = this.render(renderKit);
+      this.attach();
+      this.subscribeForRerender(renderKit);
     }
     return this.parentElement;
   }
 
-  render() {
-    return this.template.render(this.renderKit);
+  render(renderKit: RenderKit) {
+    return this.template.render(renderKit);
+  }
+
+  attach() {
+    this.dom.forEach((element: Dom) => {
+      this.parentElement && this.parentElement.appendChild(element);
+    });
+  }
+
+  subscribeForRerender({ subscribe }: RenderKit) {
+    subscribe(stateChangeEvent, (state) => this.rerender(state));
+  }
+
+  rerender(state: State) {
+    const renderKit = { ...this.renderKit, state: state };
+    const newDom = this.render(renderKit);
+    // do something to update the dom tree here, this lib doesn't work!
+    // morphdom(this.dom, newDom);
   }
 
   getParentElement() {
@@ -42,6 +59,6 @@ export const render = (
   renderKit: RenderKit,
 ) => {
   const root = new Root(template, selector, renderKit);
-  root.renderAndAttach();
+  root.renderAndAttach(renderKit);
   return root;
 };
