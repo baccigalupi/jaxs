@@ -4,6 +4,7 @@ export type DomEventPublisher = (eventName: string, domEvent: Event) => void;
 export type RenderKit = {
   document: Document;
   publish: DomEventPublisher;
+  subscribe: BusSubscribe;
   state: State;
 };
 
@@ -39,6 +40,7 @@ export type BusEventName = string;
 // deno-lint-ignore no-explicit-any
 export type BusPayload = any;
 export type BusPublish = (eventName: BusEventName, payload: BusPayload) => void;
+export type BusSubscribe = (eventName: BusEventName, listener: BusListener) => void;
 export type BusListener = (
   payload: BusPayload,
   publish: BusPublish,
