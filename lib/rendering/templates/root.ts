@@ -1,4 +1,4 @@
-import { Dom, DomCollection, RenderKit, State, Template } from '../../types.ts';
+import { DomCollection, RenderKit, State, Template } from '../../types.ts';
 
 export const stateChangeEvent = 'stateChange';
 
@@ -32,7 +32,7 @@ class Root {
   }
 
   attach() {
-    this.dom.forEach((element: Dom) => {
+    this.dom.forEach((element) => {
       this.parentElement && this.parentElement.appendChild(element);
     });
   }
@@ -44,8 +44,8 @@ class Root {
   rerender(state: State) {
     const renderKit = { ...this.renderKit, state: state };
     const newDom = this.render(renderKit);
-    // do something to update the dom tree here, this lib doesn't work!
-    // morphdom(this.dom, newDom);
+    // update the old dom with the new dom
+    // update(this.dom, newDom);
   }
 
   getParentElement() {
