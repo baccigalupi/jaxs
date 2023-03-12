@@ -50,3 +50,50 @@ export type BusListener = (
   eventName: BusEventName,
 ) => void;
 export type BusListenersMap = Record<BusEventName, BusPayload>;
+
+// Change instructions
+export type RemoveInstructionData = {
+  name: string;
+};
+
+export type AddUpdateAttributeInstruction = {
+  name: string;
+  value: string;
+};
+
+export type AddUpdateEventInstruction = {
+  name: string;
+  value: EventListener;
+};
+
+export type InstructionData =
+  | RemoveInstructionData
+  | AddUpdateAttributeInstruction
+  | AddUpdateEventInstruction;
+
+export type BasicInstruction = {
+  source: Dom;
+  target: Dom;
+  type: ChangeInstructions;
+};
+
+export type DetailedInstruction = {
+  source: Dom;
+  target: Dom;
+  type: ChangeInstructions;
+  data: InstructionData;
+};
+
+export type Instruction = BasicInstruction | DetailedInstruction;
+export type Instructions = Instruction[];
+
+export enum ChangeInstructions {
+  changeText,
+  replaceNode,
+  removeAttribute,
+  addAttribute,
+  updateAttribute,
+  removeEvent,
+  addEvent,
+  updateEvent,
+}

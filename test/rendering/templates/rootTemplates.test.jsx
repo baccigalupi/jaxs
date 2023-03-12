@@ -26,24 +26,28 @@ describe('root templates', () => {
     );
   });
 
-  xit('calls rerender on the root when a state change event is published', () => {
-    const Template = ({ greeting, userName }) => <h1>{greeting} {userName}!
-    </h1>;
-    const viewModel = (state) => ({ userName: state.currentUser.name });
-    const BoundTemplate = bind(Template, viewModel);
+  xit(
+    'calls rerender on the root when a state change event is published',
+    () => {
+      const Template = ({ greeting, userName }) => (
+        <h1>{greeting} {userName}!</h1>
+      );
+      const viewModel = (state) => ({ userName: state.currentUser.name });
+      const BoundTemplate = bind(Template, viewModel);
 
-    const document = createTestDom();
-    const state = { currentUser: { name: 'Fred', age: 83 } };
-    const { publish, subscribe } = createBus();
-    const renderKit = { document, state, publish, subscribe };
+      const document = createTestDom();
+      const state = { currentUser: { name: 'Fred', age: 83 } };
+      const { publish, subscribe } = createBus();
+      const renderKit = { document, state, publish, subscribe };
 
-    render(<BoundTemplate greeting='Hello' />, '#app', renderKit);
+      render(<BoundTemplate greeting='Hello' />, '#app', renderKit);
 
-    const newState = { currentUser: { name: 'Janet', age: 83 } };
-    publish('stateChange', newState);
+      const newState = { currentUser: { name: 'Janet', age: 83 } };
+      publish('stateChange', newState);
 
-    expect(document.getElementById('app').innerHTML).toEqual(
-      '<h1>Hello Janet!</h1>',
-    );
-  });
+      expect(document.getElementById('app').innerHTML).toEqual(
+        '<h1>Hello Janet!</h1>',
+      );
+    },
+  );
 });
