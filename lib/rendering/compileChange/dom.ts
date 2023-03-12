@@ -1,5 +1,6 @@
 import { Dom, Instructions } from '../../types.ts';
 import { replaceNode } from '../changeInstructions.ts';
+import { compileForElement } from './element.ts';
 
 enum NodeTypes {
   ElementNode = 1,
@@ -7,19 +8,20 @@ enum NodeTypes {
 }
 
 export const compileForDom = (source: Dom, target: Dom) => {
-  const instructions: Instructions = [];
+  let instructions: Instructions = [];
 
   if (source.nodeType !== target.nodeType) {
     instructions.push(
       replaceNode(source, target),
     );
   } else if (source.nodeType === NodeTypes.ElementNode) {
-    instructions.concat(
-      // compileForElement(source, target)
-      [],
+    const elementInstructions = compileForElement(
+      source as Element,
+      target as Element,
     );
+    instructions = instructions.concat(elementInstructions);
   } else if (source.nodeType === NodeTypes.TextNode) {
-    instructions.concat(
+    instructions = instructions.concat(
       // compileForText(source, target);
       [],
     );
