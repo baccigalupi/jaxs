@@ -1,4 +1,4 @@
-import { DOMParser } from '../../devDeps.ts';
+import { DOMParser, JSDOM } from '../../devDeps.ts';
 
 const defaultContent = '<div id=\'app\'></div>';
 
@@ -26,3 +26,11 @@ const wrapElements = (elements) => {
 };
 
 export const stripWhiteSpace = (string) => string.replace(/\s{2,}/g, '').trim();
+
+export const createAltTestDom = (content = defaultContent) => {
+  const dom = new JSDOM(
+    `<!DOCTYPE html><body>${content}<body>`,
+    { url: 'http://localhost/' },
+  );
+  return dom.window.document;
+};

@@ -12,5 +12,6 @@ export const xit = (name: string, fn: () => void) => {
 export { expect } from 'https://deno.land/x/expect/mod.ts';
 
 export { DOMParser } from 'https://deno.land/x/deno_dom/deno-dom-wasm.ts';
+export { JSDOM } from 'https://jspm.dev/npm:jsdom-deno@19.0.2';
 
 export { spy } from 'https://deno.land/x/mock@v0.10.0/spy.ts';
