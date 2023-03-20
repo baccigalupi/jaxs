@@ -4,17 +4,15 @@ import {
   EventAttributes,
   RenderKit,
   Template,
-  TemplateEventListeners,
 } from '../../types.ts';
 
-import { createDecoratedNode } from '../dom.js';
+import { createDecoratedNode } from '../createDom.ts';
 import { separateAttrsAndEvents } from '../attributesAndEvents.ts';
 import { Children } from './children.ts';
 
 export class Tag implements Template {
   type: string;
   events: EventAttributes;
-  listeners: TemplateEventListeners;
   attributes: Attributes;
   children: Children;
   dom: DomCollection;
@@ -29,19 +27,17 @@ export class Tag implements Template {
     const { events, attributes } = separateAttrsAndEvents(combinedAttributes);
     this.events = events;
     this.attributes = attributes;
-    this.listeners = {};
 
     this.children = new Children(children);
     this.dom = [];
   }
 
   render(renderKit: RenderKit): DomCollection {
-    const { dom, listeners } = this.generateDom(renderKit);
+    const dom = this.generateDom(renderKit);
     if (!dom) return this.dom;
 
     this.children.render(renderKit, dom);
     this.dom = [dom];
-    this.listeners = listeners as TemplateEventListeners;
     return this.dom;
   }
 

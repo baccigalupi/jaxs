@@ -1,5 +1,5 @@
-import { Dom, Instructions } from '../../types.ts';
-import { replaceNode } from '../changeInstructions.ts';
+import { Dom, ExpandedElement, Instructions } from '../../../types.ts';
+import { replaceNode } from './generate.ts';
 import { compileForElement } from './element.ts';
 import { compileForText } from './text.ts';
 
@@ -13,8 +13,8 @@ export const compileForDom = (source: Dom, target: Dom) => {
     return [replaceNode(source, target)];
   } else if (source.nodeType === NodeTypes.ElementNode) {
     return compileForElement(
-      source as Element,
-      target as Element,
+      source as ExpandedElement,
+      target as ExpandedElement,
     );
   } else if (source.nodeType === NodeTypes.TextNode) {
     return compileForText(

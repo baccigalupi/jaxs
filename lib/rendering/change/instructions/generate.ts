@@ -5,8 +5,9 @@ import {
   ChangeInstructions,
   DetailedInstruction,
   Dom,
+  ExpandedElement,
   RemoveInstructionData,
-} from '../types.ts';
+} from '../../../types.ts';
 
 export const changeText = (source: Text, target: Text): BasicInstruction => ({
   source,
@@ -21,8 +22,8 @@ export const replaceNode = (source: Dom, target: Dom): BasicInstruction => ({
 });
 
 export const removeAttribute = (
-  source: Element,
-  target: Element,
+  source: ExpandedElement,
+  target: ExpandedElement,
   data: RemoveInstructionData,
 ): DetailedInstruction => ({
   source,
@@ -32,8 +33,8 @@ export const removeAttribute = (
 });
 
 export const addAttribute = (
-  source: Element,
-  target: Element,
+  source: ExpandedElement,
+  target: ExpandedElement,
   data: AddUpdateAttributeInstruction,
 ): DetailedInstruction => ({
   source,
@@ -43,8 +44,8 @@ export const addAttribute = (
 });
 
 export const updateAttribute = (
-  source: Element,
-  target: Element,
+  source: ExpandedElement,
+  target: ExpandedElement,
   data: AddUpdateAttributeInstruction,
 ): DetailedInstruction => ({
   source,
@@ -54,8 +55,8 @@ export const updateAttribute = (
 });
 
 export const removeEvent = (
-  source: Element,
-  target: Element,
+  source: ExpandedElement,
+  target: ExpandedElement,
   data: RemoveInstructionData,
 ): DetailedInstruction => ({
   source,
@@ -65,8 +66,8 @@ export const removeEvent = (
 });
 
 export const addEvent = (
-  source: Element,
-  target: Element,
+  source: ExpandedElement,
+  target: ExpandedElement,
   data: AddUpdateEventInstruction,
 ): DetailedInstruction => ({
   source,
@@ -76,8 +77,8 @@ export const addEvent = (
 });
 
 export const updateEvent = (
-  source: Element,
-  target: Element,
+  source: ExpandedElement,
+  target: ExpandedElement,
   data: AddUpdateEventInstruction,
 ): DetailedInstruction => ({
   source,

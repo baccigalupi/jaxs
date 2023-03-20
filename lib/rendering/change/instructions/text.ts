@@ -1,5 +1,5 @@
-import { Instructions } from '../../types.ts';
-import { changeText } from '../changeInstructions.ts';
+import { Instructions } from '../../../types.ts';
+import { changeText } from './generate.ts';
 
 export const compileForText = (source: Text, target: Text) => {
   if (source.textContent !== target.textContent) {

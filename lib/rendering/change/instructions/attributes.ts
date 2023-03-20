@@ -1,11 +1,11 @@
-import {
-  addAttribute,
-  removeAttribute,
-  updateAttribute,
-} from '../changeInstructions.ts';
+import { ExpandedElement, Instructions } from '../../../types.ts';
+import { addAttribute, removeAttribute, updateAttribute } from './generate.ts';
 
-export const compileForAttributes = (source, target) => {
-  const instructions = [];
+export const compileForAttributes = (
+  source: ExpandedElement,
+  target: ExpandedElement,
+) => {
+  const instructions = [] as Instructions;
   const sourceAttributes = source.attributes;
   const sourceLength = sourceAttributes.length;
   const targetAttributes = target.attributes;

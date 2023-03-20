@@ -1,5 +1,5 @@
 import { DomCollection, RenderKit, Template, TextValue } from '../../types.ts';
-import { createTextNode } from '../dom.js';
+import { createTextNode } from '../createDom.ts';
 
 export class TextTemplate implements Template {
   dom: DomCollection;

@@ -8,9 +8,18 @@ export type RenderKit = {
   state: State;
 };
 
-export type Dom = Text | Element;
+export interface ExpandedElement extends Element {
+  eventMaps: EventMaps;
+}
+export type Dom = Text | ExpandedElement;
 export type DomCollection = Dom[];
 export type TextValue = string | number;
+export type EventMap = {
+  domEvent: string;
+  busEvent: string;
+  listener: EventListener;
+};
+export type EventMaps = Record<string, EventMap>;
 
 // deno-lint-ignore no-explicit-any
 export type Attributes = Record<string, any>;
@@ -85,7 +94,7 @@ export type DetailedInstruction = {
 };
 
 export type Instruction = BasicInstruction | DetailedInstruction;
-export type Instructions = Instruction[];
+export type Instructions = Array<Instruction>;
 
 export enum ChangeInstructions {
   changeText,
