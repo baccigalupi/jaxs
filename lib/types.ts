@@ -81,8 +81,8 @@ export type InstructionData =
   | AddUpdateEventInstruction;
 
 export type BasicInstruction = {
-  source: Dom;
-  target: Dom;
+  source?: Dom;
+  target?: Dom;
   type: ChangeInstructions;
 };
 
@@ -98,6 +98,8 @@ export type Instructions = Array<Instruction>;
 
 export enum ChangeInstructions {
   changeText,
+  removeNode,
+  addNode,
   replaceNode,
   removeAttribute,
   addAttribute,

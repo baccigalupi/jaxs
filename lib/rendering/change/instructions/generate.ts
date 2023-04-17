@@ -86,3 +86,17 @@ export const updateEvent = (
   data,
   type: ChangeInstructions.updateEvent,
 });
+
+export const removeNode = (
+  source: ExpandedElement,
+) => ({
+  source,
+  type: ChangeInstructions.removeNode,
+});
+
+export const addNode = (
+  target: ExpandedElement,
+) => ({
+  target,
+  type: ChangeInstructions.addNode,
+});

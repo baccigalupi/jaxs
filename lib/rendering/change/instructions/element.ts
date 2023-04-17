@@ -1,7 +1,7 @@
+import { ExpandedElement } from '../../../types.ts';
 import { replaceNode } from './generate.ts';
 import { compileForAttributes } from './attributes.ts';
 import { compileForEvents } from './events.ts';
-import { ExpandedElement } from '../../../types.ts';
 
 export const compileForElement = (
   source: ExpandedElement,
@@ -11,12 +11,8 @@ export const compileForElement = (
     return [replaceNode(source, target)];
   } else {
     const attributeInstructions = compileForAttributes(source, target);
-    const eventInstructions = compileForEvents(
-      source,
-      target,
-    );
+    const eventInstructions = compileForEvents(source, target);
 
-    return attributeInstructions
-      .concat(eventInstructions);
+    return attributeInstructions.concat(eventInstructions);
   }
 };

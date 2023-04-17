@@ -1,1 +1,1 @@
-export { compileForDom as compileChange } from './instructions/dom.ts';
+export { compileForCollection as compileChange } from './instructions/dom.ts';
