@@ -1,4 +1,4 @@
-import { Attributes, AttributesAndEvents } from '../types.ts';
+import { Attributes, AttributesAndEvents } from '../../types.ts';
 
 export const separateAttrsAndEvents = (
   combined: Attributes,

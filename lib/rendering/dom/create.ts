@@ -5,7 +5,7 @@ import {
   EventMaps,
   ExpandedElement,
   RenderKit,
-} from '../types.ts';
+} from '../../types.ts';
 
 export const setAttributesOnElement = (
   element: Element,

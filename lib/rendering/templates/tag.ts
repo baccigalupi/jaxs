@@ -6,8 +6,8 @@ import {
   Template,
 } from '../../types.ts';
 
-import { createDecoratedNode } from '../createDom.ts';
-import { separateAttrsAndEvents } from '../attributesAndEvents.ts';
+import { createDecoratedNode } from '../dom/create.ts';
+import { separateAttrsAndEvents } from '../dom/attributesAndEvents.ts';
 import { Children } from './children.ts';
 
 export class Tag implements Template {

@@ -2,7 +2,7 @@ import { describe, expect, it } from '../../devDeps.ts';
 
 import {
   separateAttrsAndEvents,
-} from '../../lib/rendering/attributesAndEvents.ts';
+} from '../../lib/rendering/dom/attributesAndEvents.ts';
 
 describe('templates, attributes and events', () => {
   it('separateAttrsAndEvents returns separate hashes', () => {
