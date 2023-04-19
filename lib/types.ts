@@ -13,6 +13,7 @@ export interface ExpandedElement extends Element {
 }
 export type Dom = Text | ExpandedElement;
 export type DomCollection = Dom[];
+export type HtmlChildren = HTMLCollection | NodeListOf<ChildNode>;
 export type TextValue = string | number;
 export type EventMap = {
   domEvent: string;
@@ -65,35 +66,43 @@ export type RemoveInstructionData = {
   name: string;
 };
 
-export type AddUpdateAttributeInstruction = {
+export type AttributeInstructionData = {
   name: string;
   value: string;
 };
 
-export type AddUpdateEventInstruction = {
+export type EventInstructionData = {
   name: string;
   value: EventListener;
 };
 
-export type InstructionData =
-  | RemoveInstructionData
-  | AddUpdateAttributeInstruction
-  | AddUpdateEventInstruction;
-
-export type BasicInstruction = {
-  source?: Dom;
-  target?: Dom;
-  type: ChangeInstructions;
+export type UpdateEventInstructionData = {
+  name: string;
+  sourceValue: EventListener;
+  targetValue: EventListener;
 };
 
-export type DetailedInstruction = {
+export type AddNodeData = {
+  parent: ExpandedElement;
+};
+
+type NullData = Record<string, never>;
+
+export type InstructionData =
+  | RemoveInstructionData
+  | AttributeInstructionData
+  | EventInstructionData
+  | UpdateEventInstructionData
+  | AddNodeData
+  | NullData;
+
+export type Instruction = {
   source: Dom;
   target: Dom;
   type: ChangeInstructions;
   data: InstructionData;
 };
 
-export type Instruction = BasicInstruction | DetailedInstruction;
 export type Instructions = Array<Instruction>;
 
 export enum ChangeInstructions {
@@ -108,3 +117,5 @@ export enum ChangeInstructions {
   addEvent,
   updateEvent,
 }
+
+export type Updater = (instruction: Instruction) => void;

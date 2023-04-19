@@ -1,31 +1,34 @@
 import {
-  AddUpdateAttributeInstruction,
-  AddUpdateEventInstruction,
-  BasicInstruction,
+  AddNodeData,
+  AttributeInstructionData,
   ChangeInstructions,
-  DetailedInstruction,
   Dom,
+  EventInstructionData,
   ExpandedElement,
+  Instruction,
   RemoveInstructionData,
+  UpdateEventInstructionData,
 } from '../../../types.ts';
 
-export const changeText = (source: Text, target: Text): BasicInstruction => ({
+export const changeText = (source: Text, target: Text): Instruction => ({
   source,
   target,
   type: ChangeInstructions.changeText,
+  data: {},
 });
 
-export const replaceNode = (source: Dom, target: Dom): BasicInstruction => ({
+export const replaceNode = (source: Dom, target: Dom): Instruction => ({
   source,
   target,
   type: ChangeInstructions.replaceNode,
+  data: {},
 });
 
 export const removeAttribute = (
   source: ExpandedElement,
   target: ExpandedElement,
   data: RemoveInstructionData,
-): DetailedInstruction => ({
+): Instruction => ({
   source,
   target,
   data,
@@ -35,8 +38,8 @@ export const removeAttribute = (
 export const addAttribute = (
   source: ExpandedElement,
   target: ExpandedElement,
-  data: AddUpdateAttributeInstruction,
-): DetailedInstruction => ({
+  data: AttributeInstructionData,
+): Instruction => ({
   source,
   target,
   data,
@@ -46,8 +49,8 @@ export const addAttribute = (
 export const updateAttribute = (
   source: ExpandedElement,
   target: ExpandedElement,
-  data: AddUpdateAttributeInstruction,
-): DetailedInstruction => ({
+  data: AttributeInstructionData,
+): Instruction => ({
   source,
   target,
   data,
@@ -57,8 +60,8 @@ export const updateAttribute = (
 export const removeEvent = (
   source: ExpandedElement,
   target: ExpandedElement,
-  data: RemoveInstructionData,
-): DetailedInstruction => ({
+  data: EventInstructionData,
+): Instruction => ({
   source,
   target,
   data,
@@ -68,8 +71,8 @@ export const removeEvent = (
 export const addEvent = (
   source: ExpandedElement,
   target: ExpandedElement,
-  data: AddUpdateEventInstruction,
-): DetailedInstruction => ({
+  data: EventInstructionData,
+): Instruction => ({
   source,
   target,
   data,
@@ -79,8 +82,8 @@ export const addEvent = (
 export const updateEvent = (
   source: ExpandedElement,
   target: ExpandedElement,
-  data: AddUpdateEventInstruction,
-): DetailedInstruction => ({
+  data: UpdateEventInstructionData,
+): Instruction => ({
   source,
   target,
   data,
@@ -91,12 +94,17 @@ export const removeNode = (
   source: ExpandedElement,
 ) => ({
   source,
+  target: source, // for type crap only
   type: ChangeInstructions.removeNode,
+  data: {},
 });
 
 export const addNode = (
   target: ExpandedElement,
+  data: AddNodeData,
 ) => ({
   target,
+  source: target, // for type crap only
   type: ChangeInstructions.addNode,
+  data,
 });

@@ -27,7 +27,7 @@ describe('root templates', () => {
   });
 
   xit(
-    'calls rerender on the root when a state change event is published',
+    'updates the dom for the root when a state change event is published',
     () => {
       const Template = ({ greeting, userName }) => (
         <h1>{greeting} {userName}!</h1>

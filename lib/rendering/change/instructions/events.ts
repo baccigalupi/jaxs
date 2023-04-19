@@ -17,13 +17,17 @@ export const compileForEvents = (
 
     if (!targetEventMap) {
       instructions.push(
-        removeEvent(source, target, { name: sourceEventMap.domEvent }),
+        removeEvent(source, target, {
+          name: sourceEventMap.domEvent,
+          value: sourceEventMap.listener,
+        }),
       );
     } else if (targetEventMap.busEvent !== sourceEventMap.busEvent) {
       instructions.push(
         updateEvent(source, target, {
           name: domEvent,
-          value: targetEventMap.listener,
+          targetValue: targetEventMap.listener,
+          sourceValue: sourceEventMap.listener,
         }),
       );
     } // else events the same

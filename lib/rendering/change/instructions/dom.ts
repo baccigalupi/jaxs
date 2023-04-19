@@ -1,4 +1,9 @@
-import { Dom, ExpandedElement, Instructions } from '../../../types.ts';
+import {
+  Dom,
+  ExpandedElement,
+  HtmlChildren,
+  Instructions,
+} from '../../../types.ts';
 import { addNode, removeNode, replaceNode } from './generate.ts';
 import { compileForElement } from './element.ts';
 import { compileForText } from './text.ts';
@@ -24,6 +29,7 @@ export const compileForDom = (source: Dom, target: Dom) => {
     const childrenInstructions = compileForCollection(
       sourceElement.childNodes,
       targetElement.childNodes,
+      sourceElement,
     );
 
     return baseInstructions.concat(childrenInstructions);
@@ -37,10 +43,10 @@ export const compileForDom = (source: Dom, target: Dom) => {
   return [] as Instructions;
 };
 
-type HtmlChildren = HTMLCollection | NodeListOf<ChildNode>;
 export const compileForCollection = (
   sourceList: HtmlChildren,
   targetList: HtmlChildren,
+  parent: ExpandedElement,
 ) => {
   const largerLength = calculateLargerLength(sourceList, targetList);
   let instructions = [] as Instructions;
@@ -51,7 +57,10 @@ export const compileForCollection = (
     const targetChild = targetList[index] as ExpandedElement;
 
     if (!sourceChild) {
-      instructions.push(addNode(targetChild));
+      instructions.push(addNode(
+        targetChild,
+        { parent },
+      ));
     } else if (!targetChild) {
       instructions.push(removeNode(sourceChild));
     } else {

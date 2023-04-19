@@ -11,8 +11,8 @@ export const compileForElement = (
     return [replaceNode(source, target)];
   } else {
     const attributeInstructions = compileForAttributes(source, target);
-    const eventInstructions = compileForEvents(source, target);
+    const EventInstructionDatas = compileForEvents(source, target);
 
-    return attributeInstructions.concat(eventInstructions);
+    return attributeInstructions.concat(EventInstructionDatas);
   }
 };

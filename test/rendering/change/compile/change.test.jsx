@@ -13,53 +13,64 @@ const addEmptyEventMaps = (element) => {
 describe('compiledChange for a dom tree', () => {
   it('returns a replace node instruction if the top level elements are not both the same node type', () => {
     const document = createTestDom();
+    const parent = document.getElementById('app');
+
     const textNode = document.createTextNode('hello');
     const elementNode = document.createElement('h1', {}, 'hello');
 
-    const instructions = compileChange([textNode], [elementNode]);
+    const instructions = compileChange([textNode], [elementNode], parent);
 
     expect(instructions).toEqual([{
       source: textNode,
       target: elementNode,
       type: ChangeInstructions.replaceNode,
+      data: {},
     }]);
   });
 
   it('returns a replace node instruction if the top level elements are not both elements, but of different tag types', () => {
     const document = createTestDom();
+    const parent = document.getElementById('app');
+
     const source = addEmptyEventMaps(document.createElement('h1'));
     const target = addEmptyEventMaps(document.createElement('div'));
 
-    const instructions = compileChange([source], [target]);
+    const instructions = compileChange([source], [target], parent);
 
     expect(instructions).toEqual([{
       source,
       target,
       type: ChangeInstructions.replaceNode,
+      data: {},
     }]);
   });
 
   it('returns an empty instruction set if elements are both text and have the same value', () => {
     const document = createTestDom();
+    const parent = document.getElementById('app');
+
     const source = addEmptyEventMaps(document.createTextNode('hello'));
     const target = addEmptyEventMaps(document.createTextNode('hello'));
 
-    const instructions = compileChange([source], [target]);
+    const instructions = compileChange([source], [target], parent);
 
     expect(instructions).toEqual([]);
   });
 
   it('return a change text instruction if the elements are both text and have different values', () => {
     const document = createTestDom();
+    const parent = document.getElementById('app');
+
     const source = addEmptyEventMaps(document.createTextNode('hello'));
     const target = addEmptyEventMaps(document.createTextNode('herro?'));
 
-    const instructions = compileChange([source], [target]);
+    const instructions = compileChange([source], [target], parent);
 
     expect(instructions).toEqual([{
       source,
       target,
       type: ChangeInstructions.changeText,
+      data: {},
     }]);
   });
 
@@ -68,6 +79,7 @@ describe('compiledChange for a dom tree', () => {
     () => {
       const document = createAltTestDom(); // have to use for Node.js JSDOM
       // since the deno dom thing is broke around attribute iteration.
+      const parent = document.getElementById('app');
 
       const source = addEmptyEventMaps(document.createElement('div'));
       source.setAttribute('to-be-removed', 'remove-me');
@@ -79,7 +91,7 @@ describe('compiledChange for a dom tree', () => {
       target.setAttribute('to-be-added', 'add-me');
       target.setAttribute('dont-update', 'nope');
 
-      const instructions = compileChange([source], [target]);
+      const instructions = compileChange([source], [target], parent);
 
       const removeInstructions = instructions.filter(
         (instruction) =>
@@ -113,6 +125,8 @@ describe('compiledChange for a dom tree', () => {
     'returns an add event instruction when an event exists only on the target',
     () => {
       const document = createTestDom();
+      const parent = document.getElementById('app');
+
       const publish = () => {};
       const renderKit = { document, publish };
       const sourceTemplate = <a>Go</a>;
@@ -120,7 +134,7 @@ describe('compiledChange for a dom tree', () => {
       const targetTemplate = <a onClick='go-somewhere'>Go</a>;
       const [target] = targetTemplate.render(renderKit);
 
-      const [instruction] = compileChange([source], [target]);
+      const [instruction] = compileChange([source], [target], parent);
       expect(instruction.type).toEqual(ChangeInstructions.addEvent);
       expect(instruction.data).toEqual({
         name: 'click',
@@ -133,6 +147,8 @@ describe('compiledChange for a dom tree', () => {
     'returns an update event instruction when an event value changes',
     () => {
       const document = createTestDom();
+      const parent = document.getElementById('app');
+
       const publish = () => {};
       const renderKit = { document, publish };
       const sourceTemplate = <a onClick='go-somewhere'>Go</a>;
@@ -140,7 +156,7 @@ describe('compiledChange for a dom tree', () => {
       const targetTemplate = <a onClick='go-somewhere-else'>Go</a>;
       const target = targetTemplate.render(renderKit);
 
-      const instructions = compileChange(source, target);
+      const instructions = compileChange(source, target, parent);
 
       expect(instructions.length).toEqual(1);
 
@@ -149,7 +165,8 @@ describe('compiledChange for a dom tree', () => {
       expect(instruction.type).toEqual(ChangeInstructions.updateEvent);
       expect(instruction.data).toEqual({
         name: 'click',
-        value: target[0].eventMaps['click'].listener,
+        targetValue: target[0].eventMaps['click'].listener,
+        sourceValue: source[0].eventMaps['click'].listener,
       });
     },
   );
@@ -158,6 +175,8 @@ describe('compiledChange for a dom tree', () => {
     'returns an remove event instruction when the target doesn\'t have it',
     () => {
       const document = createTestDom();
+      const parent = document.getElementById('app');
+
       const publish = () => {};
       const renderKit = { document, publish };
       const sourceTemplate = <a onClick='go-somewhere'>Go</a>;
@@ -165,16 +184,19 @@ describe('compiledChange for a dom tree', () => {
       const targetTemplate = <a>Go</a>;
       const target = targetTemplate.render(renderKit);
 
-      const [instruction] = compileChange(source, target);
+      const [instruction] = compileChange(source, target, parent);
       expect(instruction.type).toEqual(ChangeInstructions.removeEvent);
       expect(instruction.data).toEqual({
         name: 'click',
+        value: source[0].eventMaps['click'].listener,
       });
     },
   );
 
   it('returns changes instruction for both children and parent', () => {
     const document = createAltTestDom();
+    const parent = document.getElementById('app');
+
     const publish = () => {};
     const renderKit = { document, publish };
 
@@ -184,7 +206,7 @@ describe('compiledChange for a dom tree', () => {
     const targetTemplate = <p class='visible'>I am visible</p>;
     const target = targetTemplate.render(renderKit);
 
-    const instructions = compileChange(source, target);
+    const instructions = compileChange(source, target, parent);
 
     expect(instructions.length).toEqual(2);
     const types = instructions.map((instruction) => instruction.type);
@@ -198,6 +220,8 @@ describe('compiledChange for a dom tree', () => {
     'returns change instructions for deeply nested recursive children!',
     () => {
       const document = createAltTestDom();
+      const parent = document.getElementById('app');
+
       const publish = () => {};
       const renderKit = { document, publish };
 
@@ -221,7 +245,7 @@ describe('compiledChange for a dom tree', () => {
       );
       const target = targetTemplate.render(renderKit);
 
-      const instructions = compileChange(source, target);
+      const instructions = compileChange(source, target, parent);
 
       expect(instructions.length).toEqual(4);
       const types = instructions.map((instruction) => instruction.type);
