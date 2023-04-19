@@ -1,5 +1,9 @@
 import { describe, expect, it, spy, xit } from '../../../devDeps.ts';
-import { createTestDom } from '../../support/testDom.js';
+import {
+  createAltTestDom,
+  createTestDom,
+  domToString,
+} from '../../support/testDom.js';
 
 import jsx from '../../../lib/jsx.js';
 import { bind } from '../../../lib/rendering/templates/bound.ts';
@@ -26,7 +30,7 @@ describe('root templates', () => {
     );
   });
 
-  xit(
+  it(
     'updates the dom for the root when a state change event is published',
     () => {
       const Template = ({ greeting, userName }) => (
@@ -35,7 +39,7 @@ describe('root templates', () => {
       const viewModel = (state) => ({ userName: state.currentUser.name });
       const BoundTemplate = bind(Template, viewModel);
 
-      const document = createTestDom();
+      const document = createAltTestDom();
       const state = { currentUser: { name: 'Fred', age: 83 } };
       const { publish, subscribe } = createBus();
       const renderKit = { document, state, publish, subscribe };

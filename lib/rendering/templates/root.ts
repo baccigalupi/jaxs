@@ -1,4 +1,11 @@
-import { DomCollection, RenderKit, State, Template } from '../../types.ts';
+import {
+  DomCollection,
+  ExpandedElement,
+  RenderKit,
+  State,
+  Template,
+} from '../../types.ts';
+import { change } from '../change.ts';
 
 export const stateChangeEvent = 'stateChange';
 
@@ -19,11 +26,13 @@ class Root {
 
   renderAndAttach(renderKit: RenderKit) {
     this.parentElement = this.getParentElement();
+    this.dom = this.render(renderKit);
+
     if (this.parentElement) {
-      this.dom = this.render(renderKit);
       this.attach();
       this.subscribeForRerender(renderKit);
     }
+
     return this.parentElement;
   }
 
@@ -44,8 +53,7 @@ class Root {
   rerender(state: State) {
     const renderKit = { ...this.renderKit, state: state };
     const newDom = this.render(renderKit);
-    // update the old dom with the new dom
-    // update(this.dom, newDom);
+    change(this.dom, newDom, this.parentElement as ExpandedElement);
   }
 
   getParentElement() {

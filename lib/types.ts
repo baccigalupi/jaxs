@@ -13,7 +13,10 @@ export interface ExpandedElement extends Element {
 }
 export type Dom = Text | ExpandedElement;
 export type DomCollection = Dom[];
-export type HtmlChildren = HTMLCollection | NodeListOf<ChildNode>;
+export type HtmlChildren =
+  | HTMLCollection
+  | NodeListOf<ChildNode>
+  | DomCollection;
 export type TextValue = string | number;
 export type EventMap = {
   domEvent: string;
