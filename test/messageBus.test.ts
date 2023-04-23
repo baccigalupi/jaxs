@@ -4,8 +4,7 @@ import { createBus } from '../lib/messageBus.ts';
 describe('MessageBus', () => {
   it('calls an added listener with the payload', () => {
     const listener = spy();
-    const stateAccessFunction = spy();
-    const { publish, subscribe } = createBus({ getState: stateAccessFunction });
+    const { publish, subscribe } = createBus();
 
     subscribe('click', listener);
     publish('click', 'payload here!');
@@ -14,11 +13,12 @@ describe('MessageBus', () => {
     expect(listener.calls[0].args[0]).toEqual('payload here!');
   });
 
-  it('calls an added listener with a kit of stuff including what is passed in, a publisher and the event name', () => {
+  it('allows adding additional options to the listener kit', () => {
     const listener = spy();
     const stateAccessFunction = spy();
-    const { publish, subscribe } = createBus({ getState: stateAccessFunction });
+    const { publish, subscribe, bus } = createBus();
 
+    bus.addListenerOptions({ getState: stateAccessFunction });
     subscribe('click', listener);
     publish('click', 'payload here!');
 
@@ -36,8 +36,7 @@ describe('MessageBus', () => {
   it('calls an added listener with publisher that correctly publishes back to the bus', () => {
     const clickListener = spy();
     const changeListener = spy();
-    const stateAccessFunction = spy();
-    const { publish, subscribe } = createBus({ getState: stateAccessFunction });
+    const { publish, subscribe } = createBus();
 
     subscribe('click', clickListener);
     subscribe('change', changeListener);
@@ -52,7 +51,7 @@ describe('MessageBus', () => {
     expect(changeListener.calls[0].args[0]).toEqual('change payload');
   });
 
-  it('calls a listener multiple times when new events are triggered', () => {
+  it('calls a listeners multiple times when new events are triggered', () => {
     const listener = spy();
     const { publish, subscribe } = createBus();
 

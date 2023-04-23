@@ -10,8 +10,8 @@ export class MessageBus {
   listeners: BusListenersMap;
   options: BusOptions;
 
-  constructor(options: BusOptions) {
-    this.options = options;
+  constructor() {
+    this.options = {};
     this.listeners = {};
   }
 
@@ -48,10 +48,17 @@ export class MessageBus {
       ...this.options,
     };
   }
+
+  addListenerOptions(options: BusOptions) {
+    this.options = {
+      ...this.options,
+      ...options,
+    };
+  }
 }
 
-export const createBus = (options?: BusOptions | undefined) => {
-  const bus = new MessageBus(options || {});
+export const createBus = () => {
+  const bus = new MessageBus();
   const publish = bus.publish.bind(bus);
   const subscribe = bus.subscribe.bind(bus);
 
