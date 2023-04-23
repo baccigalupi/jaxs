@@ -1,6 +1,9 @@
 {
   "version": "2",
   "remote": {
+    "https://cdn.skypack.dev/-/immer@v10.0.1-AokxMoMtspSxL4l7PlST/dist=es2019,mode=imports/optimized/immer.js": "4f34be1fb1c7b1f25a5885de3b8351095f623b6f65b5f9413c66487018581028",
+    "https://cdn.skypack.dev/-/immer@v10.0.1-AokxMoMtspSxL4l7PlST/dist=es2019,mode=types/dist/immer.d.ts": "159256fd470ed6f2e6182b735e971f196e2c09cdf7377fd27699bc9f608965e2",
+    "https://cdn.skypack.dev/immer@10.0.1?dts": "702306f910123915f6e5aed8c0765357a7820890c6531634ad06da455dbc59dc",
     "https://deno.land/std@0.174.0/_util/asserts.ts": "178dfc49a464aee693a7e285567b3d0b555dc805ff490505a8aae34f9cfb1462",
     "https://deno.land/std@0.174.0/_util/os.ts": "d932f56d41e4f6a6093d56044e29ce637f8dcc43c5a90af43504a889cf1775e3",
     "https://deno.land/std@0.174.0/node/_core.ts": "8667bf9129cdcbaac6f5c14f4def45ca954928baaa697a0ffdb0ee1556d4c644",

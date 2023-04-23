@@ -46,6 +46,7 @@ export type TemplateClass = (attributes: Attributes) => Template;
 
 // deno-lint-ignore no-explicit-any
 export type State = Record<string, any>;
+export type StateSetter = (initialState: State) => void;
 export type ViewModel = (state: State) => State;
 
 // Message Bus ----
