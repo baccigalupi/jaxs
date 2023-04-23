@@ -52,12 +52,8 @@ export class MessageBus {
 
 export const createBus = (options?: BusOptions | undefined) => {
   const bus = new MessageBus(options || {});
-
-  const publish = (eventName: BusEventName, payload: BusPayload) =>
-    bus.publish(eventName, payload);
-
-  const subscribe = (eventName: BusEventName, listener: BusListener) =>
-    bus.subscribe(eventName, listener);
+  const publish = bus.publish.bind(bus);
+  const subscribe = bus.subscribe.bind(bus);
 
   return {
     bus,

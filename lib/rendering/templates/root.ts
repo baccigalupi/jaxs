@@ -6,7 +6,7 @@ import {
   Template,
 } from '../../types.ts';
 import { change } from '../change.ts';
-import { stateChangeEvent } from '../../stateManager.ts';
+import { stateChangeEvent } from '../../store.ts';
 
 class Root {
   template: Template;

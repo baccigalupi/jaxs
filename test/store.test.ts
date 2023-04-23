@@ -1,7 +1,7 @@
 import { describe, expect, it, spy, xit } from '../devDeps.ts';
-import { StateManager } from '../lib/stateManager.ts';
+import { Store } from '../lib/store.ts';
 
-describe('StateManager', () => {
+describe('Store', () => {
   it('starts with the initial state provided', () => {
     const publish = spy();
     const initialState = {
@@ -9,20 +9,20 @@ describe('StateManager', () => {
       name: 'Guest',
     };
 
-    const stateManager = new StateManager({
+    const store = new Store({
       initialState,
       publish,
     });
 
-    expect(stateManager.getState()).toEqual(initialState);
+    expect(store.getState()).toEqual(initialState);
   });
 
   it('sets an empty object as the state without any initial state', () => {
     const publish = spy();
-    const stateManager = new StateManager({
+    const store = new Store({
       publish,
     });
-    expect(stateManager.getState()).toEqual({});
+    expect(store.getState()).toEqual({});
   });
 
   it('sets state in a non-mutating way', () => {
@@ -32,17 +32,17 @@ describe('StateManager', () => {
       name: 'Guest',
     };
 
-    const stateManager = new StateManager({
+    const store = new Store({
       initialState,
       publish,
     });
-    stateManager.setState((state) => {
+    store.setState((state) => {
       state.name = 'Fred';
     });
 
-    expect(stateManager.getState()).not.toEqual(initialState);
-    expect(stateManager.getState()).not.toBe(initialState);
-    expect(stateManager.getState().name).toEqual('Fred');
+    expect(store.getState()).not.toEqual(initialState);
+    expect(store.getState()).not.toBe(initialState);
+    expect(store.getState().name).toEqual('Fred');
   });
 
   it('has exactly the same state object when no change is made by the setter', () => {
@@ -52,16 +52,16 @@ describe('StateManager', () => {
       name: 'Guest',
     };
 
-    const stateManager = new StateManager({
+    const store = new Store({
       initialState,
       publish,
     });
-    stateManager.setState((state) => {
+    store.setState((state) => {
       state.name = 'Guest';
     });
 
-    expect(stateManager.getState()).toBe(initialState);
-    expect(stateManager.getState().name).toEqual('Guest');
+    expect(store.getState()).toBe(initialState);
+    expect(store.getState().name).toEqual('Guest');
   });
 
   it('publishes a state changed event when the state changes', () => {
@@ -71,17 +71,17 @@ describe('StateManager', () => {
       name: 'Guest',
     };
 
-    const stateManager = new StateManager({
+    const store = new Store({
       initialState,
       publish,
     });
-    stateManager.setState((state) => {
+    store.setState((state) => {
       state.name = 'Fred';
     });
 
     expect(publish.calls.length).toEqual(1);
     expect(publish.calls[0].args[0]).toEqual('stateChange');
-    expect(publish.calls[0].args[1]).toEqual(stateManager.getState());
+    expect(publish.calls[0].args[1]).toEqual(store.getState());
   });
 
   it('does not publish a state changed event if the state stays the same', () => {
@@ -91,11 +91,11 @@ describe('StateManager', () => {
       name: 'Guest',
     };
 
-    const stateManager = new StateManager({
+    const store = new Store({
       initialState,
       publish,
     });
-    stateManager.setState((state) => {
+    store.setState((state) => {
       state.name = 'Guest';
     });
 

@@ -1,18 +1,18 @@
 import { ensureImmutable } from '../deps.ts';
 import { BusPublish, State, StateSetter } from './types.ts';
 
-type StateManagerInitialiion = {
+type StoreInitialization = {
   initialState?: State;
   publish: BusPublish;
 };
 
 export const stateChangeEvent = 'stateChange';
 
-export class StateManager {
+export class Store {
   state: State;
   publish: BusPublish;
 
-  constructor({ initialState, publish }: StateManagerInitialiion) {
+  constructor({ initialState, publish }: StoreInitialization) {
     this.state = initialState !== undefined ? initialState : {};
     this.publish = publish;
   }
@@ -29,3 +29,15 @@ export class StateManager {
     }
   }
 }
+
+export const createStore = (storeSetup: StoreInitialization) => {
+  const store = new Store(storeSetup);
+  const getState = store.getState.bind(store);
+  const setState = store.getState.bind(store);
+
+  return {
+    store,
+    getState,
+    setState,
+  };
+};
