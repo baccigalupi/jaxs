@@ -1,11 +1,20 @@
 import { ensureImmutable } from '../deps.ts';
-import { State, StateSetter } from './types.ts';
+import { BusPublish, State, StateSetter } from './types.ts';
+
+type StateManagerInitialiion = {
+  initialState?: State;
+  publish: BusPublish;
+};
+
+export const stateChangeEvent = 'stateChange';
 
 export class StateManager {
   state: State;
+  publish: BusPublish;
 
-  constructor(defaultState?: State | undefined) {
-    this.state = defaultState !== undefined ? defaultState : {};
+  constructor({ initialState, publish }: StateManagerInitialiion) {
+    this.state = initialState !== undefined ? initialState : {};
+    this.publish = publish;
   }
 
   getState() {
@@ -13,6 +22,10 @@ export class StateManager {
   }
 
   setState(setter: StateSetter) {
+    const state = this.state;
     this.state = ensureImmutable(this.state, setter);
+    if (state !== this.state) {
+      this.publish(stateChangeEvent, this.state);
+    }
   }
 }
