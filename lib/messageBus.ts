@@ -2,13 +2,16 @@ import {
   BusEventName,
   BusListener,
   BusListenersMap,
+  BusOptions,
   BusPayload,
 } from './types.ts';
 
 export class MessageBus {
   listeners: BusListenersMap;
+  options: BusOptions;
 
-  constructor() {
+  constructor(options: BusOptions) {
+    this.options = options;
     this.listeners = {};
   }
 
@@ -19,13 +22,13 @@ export class MessageBus {
   }
 
   publish(eventName: BusEventName, payload: BusPayload) {
-    if (!this.listeners[eventName]) return false;
+    const listeners = this.listeners[eventName];
+    if (!listeners) return false;
 
-    this.listeners[eventName].forEach((listener: BusListener) => {
+    listeners.forEach((listener: BusListener) => {
       listener(
         payload,
-        (eventName, payload) => this.publish(eventName, payload),
-        eventName,
+        this.buildListenerKit(eventName),
       );
     });
 
@@ -37,10 +40,18 @@ export class MessageBus {
 
     this.listeners[eventName] = [];
   }
+
+  buildListenerKit(eventName: BusEventName) {
+    return {
+      eventName,
+      publish: this.publish.bind(this),
+      ...this.options,
+    };
+  }
 }
 
-export const createBus = () => {
-  const bus = new MessageBus();
+export const createBus = (options?: BusOptions | undefined) => {
+  const bus = new MessageBus(options || {});
 
   const publish = (eventName: BusEventName, payload: BusPayload) =>
     bus.publish(eventName, payload);

@@ -51,16 +51,23 @@ export type ViewModel = (state: State) => State;
 // Message Bus ----
 export type BusEventName = string;
 // deno-lint-ignore no-explicit-any
+export type BusOptions = Record<string, any>;
+// deno-lint-ignore no-explicit-any
 export type BusPayload = any;
 export type BusPublish = (eventName: BusEventName, payload: BusPayload) => void;
 export type BusSubscribe = (
   eventName: BusEventName,
   listener: BusListener,
 ) => void;
+export interface BusListenerKit {
+  publish: BusPublish;
+  eventName: BusEventName;
+  // deno-lint-ignore no-explicit-any
+  [key: string]: any;
+}
 export type BusListener = (
   payload: BusPayload,
-  publish: BusPublish,
-  eventName: BusEventName,
+  listenerKit: BusListenerKit,
 ) => void;
 export type BusListenersMap = Record<BusEventName, BusPayload>;
 

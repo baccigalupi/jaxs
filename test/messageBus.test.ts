@@ -1,21 +1,58 @@
-import { describe, expect, it, spy } from '../devDeps.ts';
+import { describe, expect, it, spy, xit } from '../devDeps.ts';
 import { createBus } from '../lib/messageBus.ts';
 
 describe('MessageBus', () => {
-  it('calls an added listener with the right arguments in the right order', () => {
+  it('calls an added listener with the payload', () => {
     const listener = spy();
-    const { publish, subscribe } = createBus();
+    const stateAccessFunction = spy();
+    const { publish, subscribe } = createBus({ getState: stateAccessFunction });
 
     subscribe('click', listener);
-
     publish('click', 'payload here!');
 
+    expect(listener.calls.length).toEqual(1);
     expect(listener.calls[0].args[0]).toEqual('payload here!');
-    expect(typeof listener.calls[0].args[1]).toEqual('function');
-    expect(listener.calls[0].args[2]).toEqual('click');
   });
 
-  it('adds a listener and calls it when events are triggered', () => {
+  it('calls an added listener with a kit of stuff including what is passed in, a publisher and the event name', () => {
+    const listener = spy();
+    const stateAccessFunction = spy();
+    const { publish, subscribe } = createBus({ getState: stateAccessFunction });
+
+    subscribe('click', listener);
+    publish('click', 'payload here!');
+
+    const listenerKit = listener.calls[0].args[1];
+    expect(Object.keys(listenerKit).sort()).toEqual([
+      'eventName',
+      'getState',
+      'publish',
+    ]);
+
+    expect(listenerKit.eventName).toEqual('click');
+    expect(listenerKit.getState).toEqual(stateAccessFunction);
+  });
+
+  it('calls an added listener with publisher that correctly publishes back to the bus', () => {
+    const clickListener = spy();
+    const changeListener = spy();
+    const stateAccessFunction = spy();
+    const { publish, subscribe } = createBus({ getState: stateAccessFunction });
+
+    subscribe('click', clickListener);
+    subscribe('change', changeListener);
+    publish('click', 'payload here!');
+
+    expect(changeListener.calls.length).toEqual(0);
+
+    const publish2 = clickListener.calls[0].args[1].publish;
+    publish2('change', 'change payload');
+
+    expect(changeListener.calls.length).toEqual(1);
+    expect(changeListener.calls[0].args[0]).toEqual('change payload');
+  });
+
+  it('calls a listener multiple times when new events are triggered', () => {
     const listener = spy();
     const { publish, subscribe } = createBus();
 
