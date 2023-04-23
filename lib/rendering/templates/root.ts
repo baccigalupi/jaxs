@@ -41,6 +41,7 @@ class Root {
   }
 
   attach() {
+    this.parentElement && (this.parentElement.innerHTML = '');
     this.dom.forEach((element) => {
       this.parentElement && this.parentElement.appendChild(element);
     });
