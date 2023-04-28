@@ -33,7 +33,7 @@ export class Store {
 export const createStore = (storeSetup: StoreInitialization) => {
   const store = new Store(storeSetup);
   const getState = store.getState.bind(store);
-  const setState = store.getState.bind(store);
+  const setState = store.setState.bind(store);
 
   return {
     store,

@@ -11,6 +11,12 @@ export type RenderKit = {
 export interface ExpandedElement extends Element {
   eventMaps: EventMaps;
 }
+export interface InputElement extends ExpandedElement {
+  // deno-lint-ignore no-explicit-any
+  value: any;
+  // deno-lint-ignore no-explicit-any
+  checked: any;
+}
 export type Dom = Text | ExpandedElement;
 export type DomCollection = Dom[];
 export type HtmlChildren =
@@ -127,6 +133,7 @@ export enum ChangeInstructions {
   removeEvent,
   addEvent,
   updateEvent,
+  changeValue,
 }
 
 export type Updater = (instruction: Instruction) => void;

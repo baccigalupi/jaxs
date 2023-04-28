@@ -5,6 +5,7 @@ import {
   EventInstructionData,
   ExpandedElement,
   HtmlChildren,
+  InputElement,
   Instruction,
   RemoveInstructionData,
   UpdateEventInstructionData,
@@ -95,6 +96,15 @@ const updateEvent: Updater = (instruction: Instruction) => {
   source.addEventListener(name, targetValue);
 };
 
+const changeValue: Updater = (instruction: Instruction) => {
+  const data = instruction.data as AttributeInstructionData;
+  const source = instruction.source as InputElement;
+
+  const { value } = data;
+
+  source.value = value;
+};
+
 const performers = {
   [ChangeInstructions.changeText]: changeText,
   [ChangeInstructions.removeNode]: removeNode,
@@ -106,4 +116,5 @@ const performers = {
   [ChangeInstructions.removeEvent]: removeEvent,
   [ChangeInstructions.addEvent]: addEvent,
   [ChangeInstructions.updateEvent]: updateEvent,
+  [ChangeInstructions.changeValue]: changeValue,
 };

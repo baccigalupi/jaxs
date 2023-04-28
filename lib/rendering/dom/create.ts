@@ -4,15 +4,21 @@ import {
   EventAttributes,
   EventMaps,
   ExpandedElement,
+  InputElement,
   RenderKit,
 } from '../../types.ts';
 
+// TODO: address other special attributes, checked and ??
 export const setAttributesOnElement = (
   element: Element,
   attributes: Attributes,
 ) => {
   for (const key in attributes) {
-    element.setAttribute(key, attributes[key]);
+    if (key === 'value') {
+      (element as InputElement).value = attributes[key];
+    } else {
+      element.setAttribute(key, attributes[key]);
+    }
   }
 };
 

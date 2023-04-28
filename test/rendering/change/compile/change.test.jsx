@@ -121,6 +121,23 @@ describe('compiledChange for a dom tree', () => {
     },
   );
 
+  it('identifies value changes in the dom', () => {
+    const document = createTestDom(); // have to use for Node.js JSDOM
+    // since the deno dom thing is broke around attribute iteration.
+    const parent = document.getElementById('app');
+    const source = addEmptyEventMaps(document.createElement('input'));
+    source.value = 'hello';
+    const target = addEmptyEventMaps(document.createElement('input'));
+    target.value = 'hola';
+
+    const instructions = compileChange([source], [target], parent);
+
+    expect(instructions.length).toEqual(1);
+    const [instruction] = instructions;
+    expect(instruction.data.value).toEqual('hola');
+    expect(instruction.type).toEqual(ChangeInstructions.changeValue);
+  });
+
   it(
     'returns an add event instruction when an event exists only on the target',
     () => {

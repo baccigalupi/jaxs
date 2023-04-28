@@ -73,6 +73,5 @@ export const compileForAttributes = (
     }
   }
 
-  // iterate through the target attributes to find additions
   return instructions;
 };

@@ -5,6 +5,7 @@ import {
   Dom,
   EventInstructionData,
   ExpandedElement,
+  InputElement,
   Instruction,
   RemoveInstructionData,
   UpdateEventInstructionData,
@@ -106,5 +107,16 @@ export const addNode = (
   target,
   source: target, // for type crap only
   type: ChangeInstructions.addNode,
+  data,
+});
+
+export const changeValue = (
+  source: InputElement,
+  target: InputElement,
+  data: AttributeInstructionData,
+) => ({
+  source,
+  target,
+  type: ChangeInstructions.changeValue,
   data,
 });

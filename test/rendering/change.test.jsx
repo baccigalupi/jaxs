@@ -73,6 +73,21 @@ describe('compiledChange for a dom tree', () => {
     },
   );
 
+  it('changes the value of an input', () => {
+    const document = createTestDom(); // have to use for Node.js JSDOM
+    // since the deno dom thing is broke around attribute iteration.
+    const parent = document.getElementById('app');
+    const source = addEmptyEventMaps(document.createElement('input'));
+    source.value = 'hello';
+    const target = addEmptyEventMaps(document.createElement('input'));
+    target.value = 'hola';
+    parent.appendChild(source);
+
+    change([source], [target], parent);
+
+    expect(source.value).toEqual('hola');
+  });
+
   it(
     'changes attributes in place when the same tag type',
     () => {
