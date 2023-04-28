@@ -1,6 +1,5 @@
 import {
   Attributes,
-  DomCollection,
   RenderKit,
   TemplateClass,
   ViewModel,
@@ -10,7 +9,6 @@ class Bound {
   TemplateClass: TemplateClass;
   viewModel: ViewModel;
   attributes: Attributes;
-  dom: DomCollection;
 
   constructor(
     TemplateClass: TemplateClass,
@@ -20,7 +18,6 @@ class Bound {
     this.TemplateClass = TemplateClass;
     this.viewModel = viewModel;
     this.attributes = attributes || {};
-    this.dom = [];
   }
 
   render(renderKit: RenderKit) {
@@ -32,12 +29,10 @@ class Bound {
     const template = this.TemplateClass(props);
 
     if (!template) {
-      this.dom = [];
+      return [];
     } else {
-      this.dom = template.render(renderKit);
+      return template.render(renderKit);
     }
-
-    return this.dom;
   }
 }
 

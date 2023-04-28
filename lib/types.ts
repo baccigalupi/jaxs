@@ -42,7 +42,7 @@ export type AttributesAndEvents = {
 export type TemplateEventListeners = Record<string, EventListener>;
 
 export interface Template {
-  dom: DomCollection;
+  dom?: DomCollection;
   render: (
     renderKit: RenderKit,
     parentElement?: Element,

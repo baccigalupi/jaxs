@@ -15,7 +15,6 @@ export class Tag implements Template {
   events: EventAttributes;
   attributes: Attributes;
   children: Children;
-  dom: DomCollection;
 
   constructor(
     tagType: string,
@@ -29,16 +28,14 @@ export class Tag implements Template {
     this.attributes = attributes;
 
     this.children = new Children(children);
-    this.dom = [];
   }
 
   render(renderKit: RenderKit): DomCollection {
     const dom = this.generateDom(renderKit);
-    if (!dom) return this.dom;
+    if (!dom) return [];
 
     this.children.render(renderKit, dom);
-    this.dom = [dom];
-    return this.dom;
+    return [dom];
   }
 
   generateDom(renderKit: RenderKit) {
