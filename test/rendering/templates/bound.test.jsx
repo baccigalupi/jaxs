@@ -20,4 +20,23 @@ describe('bound template', () => {
 
     expect(domToString(node)).toEqual('<h1>Hello Fred!</h1>');
   });
+
+  it('allows not rendering when returning something undefined', () => {
+    const viewModel = (state) => state;
+    const Template = ({ visible }) => {
+      if (!visible) return;
+      return <h1>Hi, I'm visible!</h1>;
+    };
+
+    const state = { visible: false };
+    const publish = () => {};
+
+    const BoundTemplate = bind(Template, viewModel);
+    const template = <BoundTemplate />;
+
+    const document = createTestDom();
+    template.render({ document, state, publish });
+
+    expect(document.getElementById('app').childNodes.length).toEqual(0);
+  });
 });

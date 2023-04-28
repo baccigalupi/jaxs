@@ -31,7 +31,12 @@ class Bound {
 
     const template = this.TemplateClass(props);
 
-    this.dom = template.render(renderKit);
+    if (!template) {
+      this.dom = [];
+    } else {
+      this.dom = template.render(renderKit);
+    }
+
     return this.dom;
   }
 }
