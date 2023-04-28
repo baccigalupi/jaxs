@@ -54,6 +54,9 @@ class Root {
     const renderKit = { ...this.renderKit, state: state };
     const newDom = this.render(renderKit);
     change(this.dom, newDom, this.parentElement as ExpandedElement);
+    if (this.dom.length === 0 && newDom.length !== 0) {
+      this.dom = newDom;
+    }
   }
 
   getParentElement() {

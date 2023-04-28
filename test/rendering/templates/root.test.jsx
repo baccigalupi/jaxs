@@ -54,4 +54,58 @@ describe('root templates', () => {
       );
     },
   );
+
+  it('clears the view on re-rerender when there is a no-op', () => {
+    const Template = ({ visible }) => {
+      if (!visible) return;
+      return <h1>Hi! I'm visible.</h1>;
+    };
+    const viewModel = (state) => state;
+    const BoundTemplate = bind(Template, viewModel);
+
+    const document = createAltTestDom();
+    const state = { visible: true };
+    const { publish, subscribe } = createBus();
+    const renderKit = { document, state, publish, subscribe };
+
+    render(<BoundTemplate />, '#app', renderKit);
+
+    expect(document.getElementById('app').innerHTML).toEqual(
+      '<h1>Hi! I\'m visible.</h1>',
+    );
+
+    const newState = { visible: false };
+    publish('stateChange', newState);
+
+    expect(document.getElementById('app').innerHTML).toEqual(
+      '',
+    );
+  });
+
+  it('re-renders appropirately when the previous render is a no-op', () => {
+    const Template = ({ visible }) => {
+      if (!visible) return;
+      return <h1>Hi! I'm visible.</h1>;
+    };
+    const viewModel = (state) => state;
+    const BoundTemplate = bind(Template, viewModel);
+
+    const document = createAltTestDom();
+    const state = { visible: false };
+    const { publish, subscribe } = createBus();
+    const renderKit = { document, state, publish, subscribe };
+
+    render(<BoundTemplate />, '#app', renderKit);
+
+    expect(document.getElementById('app').innerHTML).toEqual(
+      '',
+    );
+
+    const newState = { visible: true };
+    publish('stateChange', newState);
+
+    expect(document.getElementById('app').innerHTML).toEqual(
+      '<h1>Hi! I\'m visible.</h1>',
+    );
+  });
 });

@@ -115,4 +115,26 @@ describe('Rendering static jsx', () => {
       '<div><a href="/save-the-world"><button>Save!</button> Click here!</a><a href="/home">Home <img src="/my-image.jpg"></a><p>Here is some stuff</p></div>',
     );
   });
+
+  it('renders without issue when a compent returns without rendering dom', () => {
+    const Child = ({ visible }) => {
+      if (!visible) return;
+      return <h1>Hi! I'm visible.</h1>;
+    };
+    const Template = () => {
+      return (
+        <div id='wrapper'>
+          <Child visible={false} />
+        </div>
+      );
+    };
+
+    const template = <Template />;
+
+    const document = createTestDom();
+    const publish = spy();
+    const nodes = template.render({ document, publish });
+
+    expect(domToString(nodes)).toContain('<div id="wrapper"></div>');
+  });
 });
