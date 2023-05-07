@@ -14,8 +14,6 @@ export interface ExpandedElement extends Element {
 export interface InputElement extends ExpandedElement {
   // deno-lint-ignore no-explicit-any
   value: any;
-  // deno-lint-ignore no-explicit-any
-  checked: any;
 }
 export type Dom = Text | ExpandedElement;
 export type DomCollection = Dom[];
@@ -42,7 +40,6 @@ export type AttributesAndEvents = {
 export type TemplateEventListeners = Record<string, EventListener>;
 
 export interface Template {
-  dom?: DomCollection;
   render: (
     renderKit: RenderKit,
     parentElement?: Element,
@@ -53,6 +50,7 @@ export type TemplateClass = (attributes: Attributes) => Template;
 // deno-lint-ignore no-explicit-any
 export type State = Record<string, any>;
 export type StateSetter = (initialState: State) => void;
+export type StateGetter = () => State;
 export type ViewModel = (state: State) => State;
 
 // Message Bus ----
@@ -137,3 +135,15 @@ export enum ChangeInstructions {
 }
 
 export type Updater = (instruction: Instruction) => void;
+
+export type App = {
+  publish?: BusPublish;
+  subscribe?: BusSubscribe;
+  // deno-lint-ignore no-explicit-any
+  bus?: any;
+  getState?: StateGetter;
+  setState?: (setter: StateSetter) => void;
+  // deno-lint-ignore no-explicit-any
+  store: any;
+  renderKit: RenderKit;
+};
