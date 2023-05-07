@@ -9,3 +9,11 @@
   - multiple: select
   - readonly: input, textarea - but not certain ones. Also shouldn't be paired with require
   - required: input, textarea - but not certain ones. Shouldn't be paired with readonly or disabled?
+
+# Bundling
+
+There is a really crude bundler setup via this command:
+`deno run --allow-env --allow-read --allow-net --allow-write lib/bundle.js`.
+
+All the functions and classes are exposed as globals which makes it kind of
+garbage.

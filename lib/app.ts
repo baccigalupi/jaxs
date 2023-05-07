@@ -12,7 +12,7 @@ const setupBus = (app: App) => {
 
 const setupState = (app: App) => {
   const { getState, setState, store } = createStore({
-    publish: app.publish as BusPublish
+    publish: app.publish as BusPublish,
   });
   app.getState = getState;
   app.setState = setState;
