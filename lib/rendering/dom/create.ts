@@ -8,12 +8,13 @@ import {
   RenderKit,
 } from '../../types.ts';
 
-// TODO: address other special attributes, checked and ??
 export const setAttributesOnElement = (
   element: Element,
   attributes: Attributes,
 ) => {
   for (const key in attributes) {
+    if (key === "__source" || key === "__self") continue;
+
     if (key === 'value') {
       (element as InputElement).value = attributes[key];
     } else {
