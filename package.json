@@ -2,5 +2,5 @@
   "name": "jaxs",
   "version": "1.0.0",
   "description": "JSX front end framework build for maintainability",
-  "main": "lib/jaxs-1.0.1.js"
+  "main": "lib/jaxs-1.1.0.js"
 }

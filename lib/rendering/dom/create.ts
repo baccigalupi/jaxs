@@ -13,7 +13,7 @@ export const setAttributesOnElement = (
   attributes: Attributes,
 ) => {
   for (const key in attributes) {
-    if (key === "__source" || key === "__self") continue;
+    if (key === '__source' || key === '__self') continue;
 
     if (key === 'value') {
       (element as InputElement).value = attributes[key];

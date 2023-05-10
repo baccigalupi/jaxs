@@ -1,6 +1,8 @@
 import { App, BusPublish, BusSubscribe, StateGetter } from './types.ts';
 import { createBus } from './messageBus.ts';
 import { createStore } from './store.ts';
+import { setupHistory } from './navigation/setupHistory.js';
+import { setupNavigation } from './navigation/setupNavigation.js';
 
 const setupBus = (app: App) => {
   const { publish, subscribe, bus } = createBus();
@@ -24,7 +26,7 @@ const connectBusToState = (app: App) => {
   bus.addListenerOptions({ getState, setState });
 };
 
-const setupRenderKit = (app: App) => {
+const setupRenderKit = (app: App, document: Document) => {
   app.renderKit = {
     publish: app.publish as BusPublish,
     subscribe: app.subscribe as BusSubscribe,
@@ -33,13 +35,15 @@ const setupRenderKit = (app: App) => {
   };
 };
 
-export const createApp = () => {
+export const createApp = (document = window.document) => {
   const app = {} as App;
 
   setupBus(app);
   setupState(app);
   connectBusToState(app);
-  setupRenderKit(app);
+  setupRenderKit(app, document);
+  setupHistory(app);
+  setupNavigation(app);
 
   return app;
 };
