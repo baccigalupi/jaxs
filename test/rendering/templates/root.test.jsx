@@ -108,4 +108,52 @@ describe('root templates', () => {
       '<h1>Hi! I\'m visible.</h1>',
     );
   });
+
+  it('handles symmetrical changes that change all the children', () => {
+    const MembersArea = () => (
+      <>
+        <h1 class='member-content'>Hello member!</h1>
+        <p>Having a good day?</p>
+      </>
+    );
+    const GuestArea = () => (
+      <p class='guest-content'>Oh nothing to see! Move along ...</p>
+    );
+    const ContentTemplate = ({ membersOnly }) => {
+      if (membersOnly) return <MembersArea />;
+      return <GuestArea />;
+    };
+    const viewModel = (state) => state;
+    const Content = bind(ContentTemplate, viewModel);
+
+    let state = { membersOnly: false };
+
+    const document = createAltTestDom();
+    const { publish, subscribe } = createBus();
+    const renderKit = { document, state, publish, subscribe };
+
+    const root = render(<Content />, '#app', renderKit);
+    expect(document.getElementById('app').innerHTML).toEqual(
+      '<p class="guest-content">Oh nothing to see! Move along ...</p>',
+    );
+    expect(root.dom.length).toEqual(1);
+    expect(root.dom[0].nodeName).toEqual('P');
+
+    state = { membersOnly: true };
+    publish('stateChange', state);
+    expect(document.getElementById('app').innerHTML).toEqual(
+      '<h1 class="member-content">Hello member!</h1><p>Having a good day?</p>',
+    );
+    expect(root.dom.length).toEqual(2);
+    expect(root.dom[0].nodeName).toEqual('H1');
+    expect(root.dom[1].nodeName).toEqual('P');
+
+    state = { membersOnly: false };
+    publish('stateChange', state);
+    expect(document.getElementById('app').innerHTML).toEqual(
+      '<p class="guest-content">Oh nothing to see! Move along ...</p>',
+    );
+    expect(root.dom.length).toEqual(1);
+    expect(root.dom[0].nodeName).toEqual('P');
+  });
 });

@@ -1,9 +1,9 @@
-import { describe, expect, it, spy, xit } from '../../../../devDeps.ts';
-import { createAltTestDom, createTestDom } from '../../../support/testDom.js';
+import { describe, expect, it, spy, xit } from '../../devDeps.ts';
+import { createAltTestDom, createTestDom } from '../support/testDom.js';
 
-import jsx from '../../../../lib/jsx.js';
-import { ChangeInstructions } from '../../../../lib/types.ts';
-import { compileChange } from '../../../../lib/rendering/change/compile.ts';
+import jsx from '../../lib/jsx.js';
+import { ChangeInstructions } from '../../lib/types.ts';
+import { compileChange } from '../../lib/rendering/change/compile.ts';
 
 const addEmptyEventMaps = (element) => {
   element.eventMaps = {};
