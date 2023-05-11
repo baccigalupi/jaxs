@@ -146,4 +146,5 @@ export type App = {
   // deno-lint-ignore no-explicit-any
   store: any;
   renderKit: RenderKit;
+  render: (template: Template, selector: string) => Template;
 };

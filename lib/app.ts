@@ -1,8 +1,12 @@
 import { App, BusPublish, BusSubscribe, StateGetter } from './types.ts';
 import { createBus } from './messageBus.ts';
 import { createStore } from './store.ts';
-import { setupHistory } from './navigation/setupHistory.js';
+import {
+  locationChangeEvent,
+  setupHistory,
+} from './navigation/setupHistory.js';
 import { setupNavigation } from './navigation/setupNavigation.js';
+import { render } from './rendering/templates/root.ts';
 
 const setupBus = (app: App) => {
   const { publish, subscribe, bus } = createBus();
@@ -35,6 +39,19 @@ const setupRenderKit = (app: App, document: Document) => {
   };
 };
 
+const triggerRoute = (app: App) => {
+  const publish = app.publish as BusPublish;
+  setTimeout(() => {
+    publish(locationChangeEvent, null);
+  }, 0);
+};
+
+const addRender = (app: App) => {
+  app.render = (template, selector) => {
+    return render(template, selector, app.renderKit);
+  };
+};
+
 export const createApp = (document = window.document) => {
   const app = {} as App;
 
@@ -44,6 +61,8 @@ export const createApp = (document = window.document) => {
   setupRenderKit(app, document);
   setupHistory(app);
   setupNavigation(app);
+  triggerRoute(app);
+  addRender(app);
 
   return app;
 };
