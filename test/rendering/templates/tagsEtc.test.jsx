@@ -137,4 +137,46 @@ describe('Rendering static jsx', () => {
 
     expect(domToString(nodes)).toContain('<div id="wrapper"></div>');
   });
+
+  it('is able to handle complex conditional logic with fragments and render correctly', () => {
+    const document = createTestDom();
+    const publish = () => {};
+    const renderKit = { document, publish };
+
+    const RenderIf = ({ isVisible, children }) => {
+      if (!isVisible) return;
+      return <>{children}</>;
+    };
+
+    const Template = ({ inMembers }) => {
+      return (
+        <>
+          <RenderIf isVisible={!inMembers}>
+            <form>
+              <p class='guest-content'>
+                You are a guest, and I guess that is fine.
+              </p>
+              <input type='submit' value='Agree! or something' />
+            </form>
+          </RenderIf>
+          <RenderIf isVisible={inMembers}>
+            <h1>Oh great crickets!</h1>
+            <p>Sing me a tale of private content.</p>
+          </RenderIf>
+        </>
+      );
+    };
+
+    let template = <Template inMembers={true} />;
+    let nodes = template.render(renderKit);
+    expect(domToString(nodes)).toContain(
+      '<h1>Oh great crickets!</h1><p>Sing me a tale of private content.</p>',
+    );
+
+    template = <Template inMembers={false} />;
+    nodes = template.render(renderKit);
+    expect(domToString(nodes)).toContain(
+      '<form><p class="guest-content">You are a guest, and I guess that is fine.</p><input type="submit"',
+    );
+  });
 });

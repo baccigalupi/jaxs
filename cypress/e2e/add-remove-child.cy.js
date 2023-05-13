@@ -3,19 +3,24 @@ describe('Add and remove child nodes with state', () => {
     cy.visit('http://localhost:1234');
   });
 
-  it('if/else conditional children and toggling conditions', () => {
+  it('if/else conditional with nested children and toggling conditions', () => {
     cy.get('.member-content').should('not.exist');
-    cy.get('.guest-content').contains('nothing to see');
+    cy.get('.guest-content').contains('that is fine');
+    cy.get('form').should.exist;
+    cy.get('input[type=submit]').should.exist;
 
     cy.get('a.exclusive-link').click();
 
-    cy.get('.member-content').contains('member');
+    cy.get('.member-content').contains('Oh great crickets!');
+    cy.get('.member-content').contains('Sing me a tale');
     cy.get('.guest-content').should('not.exist');
 
     cy.go('back');
 
     cy.get('.member-content').should('not.exist');
-    cy.get('.guest-content').contains('nothing to see');
+    cy.get('.guest-content').contains('that is fine');
+    cy.get('form').should.exist;
+    cy.get('input[type=submit]').should.exist;
   });
 
   it('show/hide at the root level', () => {

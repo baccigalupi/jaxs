@@ -1,4 +1,5 @@
 import {
+  ChangeInstructions,
   Dom,
   ExpandedElement,
   HtmlChildren,
@@ -13,6 +14,14 @@ enum NodeTypes {
   TextNode = 3,
 }
 
+const shouldCompileChildren = (baseInstructions: Instructions) => {
+  if (baseInstructions.length === 0) return true;
+  if (baseInstructions.length > 1) return true;
+  const [instruction] = baseInstructions;
+  return instruction.type !== ChangeInstructions.removeNode &&
+    instruction.type !== ChangeInstructions.replaceNode;
+};
+
 export const compileForDom = (source: Dom, target: Dom) => {
   if (source.nodeType !== target.nodeType) {
     return [replaceNode(source, target)];
@@ -24,13 +33,15 @@ export const compileForDom = (source: Dom, target: Dom) => {
       sourceElement,
       targetElement,
     );
-    // NOTE: one or both of the DOM libraries don't have a children
-    // attribute/method.
-    const childrenInstructions = compileForCollection(
-      sourceElement.childNodes,
-      targetElement.childNodes,
-      sourceElement,
-    );
+
+    let childrenInstructions: Instructions = [];
+    if (shouldCompileChildren(baseInstructions)) {
+      childrenInstructions = compileForCollection(
+        sourceElement.childNodes,
+        targetElement.childNodes,
+        sourceElement,
+      );
+    }
 
     return baseInstructions.concat(childrenInstructions);
   } else if (source.nodeType === NodeTypes.TextNode) {

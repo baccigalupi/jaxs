@@ -1,6 +1,6 @@
 {
   "name": "jaxs",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "JSX front end framework build for maintainability",
   "main": "lib/jaxs-dist.js",
   "scripts": {

@@ -238,7 +238,6 @@ describe('compiledChange for a dom tree', () => {
     () => {
       const document = createAltTestDom();
       const parent = document.getElementById('app');
-
       const publish = () => {};
       const renderKit = { document, publish };
 
@@ -274,4 +273,46 @@ describe('compiledChange for a dom tree', () => {
       ]);
     },
   );
+
+  it.only('correctly toggles between different types of content', () => {
+    const document = createTestDom();
+    const parent = document.getElementById('app');
+    const publish = () => {};
+    const renderKit = { document, publish };
+
+    const RenderIf = ({ isVisible, children }) => {
+      if (!isVisible) return;
+      return <>{children}</>;
+    };
+
+    const MainContentTemplate = ({ inMembers }) => {
+      return (
+        <>
+          <RenderIf isVisible={!inMembers}>
+            <form>
+              <p class='guest-content'>
+                You are a guest, and I guess that is fine.
+              </p>
+              <input type='submit' value='Agree! or something' />
+            </form>
+          </RenderIf>
+          <RenderIf isVisible={inMembers}>
+            <h1>Oh great crickets!</h1>
+            <p>Sing me a tale of private content.</p>
+          </RenderIf>
+        </>
+      );
+    };
+
+    const sourceTemplate = <MainContentTemplate inMembers={true} />;
+    const source = sourceTemplate.render(renderKit);
+    const targetTemplate = <MainContentTemplate inMembers={false} />;
+    const target = targetTemplate.render(renderKit);
+
+    const instructions = compileChange(source, target, parent);
+
+    expect(instructions.length).toEqual(2);
+    expect(instructions[0].type).toEqual(ChangeInstructions.replaceNode);
+    expect(instructions[1].type).toEqual(ChangeInstructions.removeNode);
+  });
 });

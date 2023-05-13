@@ -46,7 +46,7 @@ describe('root templates', () => {
 
       render(<BoundTemplate greeting='Hello' />, '#app', renderKit);
 
-      const newState = { currentUser: { name: 'Janet', age: 83 } };
+      const newState = { currentUser: { name: 'Janet', age: 53 } };
       publish('stateChange', newState);
 
       expect(document.getElementById('app').innerHTML).toEqual(
