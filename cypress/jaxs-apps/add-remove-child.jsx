@@ -27,8 +27,8 @@ export const MainContentTemplate = ({ inMembers }) => {
         </form>
       </RenderIf>
       <RenderIf isVisible={inMembers}>
-        <h1>Oh great crickets!</h1>
-        <p>Sing me a tale of private content.</p>
+        <h1 class='member-content'>Oh great crickets!</h1>
+        <p class='member-content'>Sing me a tale of private content.</p>
       </RenderIf>
     </>
   );

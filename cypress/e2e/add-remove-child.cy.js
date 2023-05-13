@@ -11,8 +11,8 @@ describe('Add and remove child nodes with state', () => {
 
     cy.get('a.exclusive-link').click();
 
-    cy.get('.member-content').contains('Oh great crickets!');
-    cy.get('.member-content').contains('Sing me a tale');
+    cy.get('h1.member-content').contains('Oh great crickets!');
+    cy.get('p.member-content').contains('Sing me a tale');
     cy.get('.guest-content').should('not.exist');
 
     cy.go('back');
