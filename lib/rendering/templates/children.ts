@@ -1,4 +1,10 @@
-import { DomCollection, RenderKit, Template, TextValue } from '../../types.ts';
+import {
+  Dom,
+  DomCollection,
+  RenderKit,
+  Template,
+  TextValue,
+} from '../../types.ts';
 import { TextTemplate } from './text.ts';
 
 export const ensureArray = (children: Template | Template[]): Template[] => {
@@ -57,32 +63,29 @@ const textNode = (content: TextValue) => {
 
 export class Children implements Template {
   collection: Template[];
-  dom: DomCollection;
   parentElement: Element | undefined;
 
   constructor(jsxChildren: Template[]) {
     this.collection = ensureArray(jsxChildren);
     this.collection = this.collection.map(replaceTextNodes) as Template[];
     this.collection = this.collection.flat() as Template[];
-
-    this.dom = [];
   }
 
   render(renderKit: RenderKit, parentElement: Element | undefined) {
     this.parentElement = parentElement;
-    this.dom = this.generateDom(renderKit);
-    this.attachToParent();
-    return this.dom;
+    const dom = this.generateDom(renderKit);
+    this.attachToParent(dom);
+    return dom;
   }
 
   generateDom(renderKit: RenderKit) {
     return recursiveRender(this.collection, renderKit);
   }
 
-  attachToParent() {
+  attachToParent(dom: DomCollection) {
     if (this.parentElement === undefined) return;
 
     const parent = this.parentElement as Element;
-    this.dom.forEach((dom) => parent.appendChild(dom));
+    dom.forEach((node: Dom) => parent.appendChild(node));
   }
 }

@@ -274,7 +274,7 @@ describe('compiledChange for a dom tree', () => {
     },
   );
 
-  it.only('correctly toggles between different types of content', () => {
+  it('correctly toggles between different types of content', () => {
     const document = createTestDom();
     const parent = document.getElementById('app');
     const publish = () => {};
