@@ -9,7 +9,7 @@ export const separateAttrsAndEvents = (
 
   for (const key in combined) {
     const value = combined[key];
-    if (key.match(/on.+/i)) {
+    if (key.match(/^on.+/i)) {
       const eventKey = key.slice(2).toLowerCase();
       events[eventKey] = value;
     } else {

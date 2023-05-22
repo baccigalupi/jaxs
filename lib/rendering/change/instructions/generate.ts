@@ -1,11 +1,11 @@
 import {
-  AddNodeData,
   AttributeInstructionData,
   ChangeInstructions,
   Dom,
   EventInstructionData,
   ExpandedElement,
   InputElement,
+  InsertNodeData,
   Instruction,
   RemoveInstructionData,
   UpdateEventInstructionData,
@@ -100,13 +100,13 @@ export const removeNode = (
   data: {},
 });
 
-export const addNode = (
+export const insertNode = (
   target: ExpandedElement,
-  data: AddNodeData,
+  data: InsertNodeData,
 ) => ({
   target,
   source: target, // for type crap only
-  type: ChangeInstructions.addNode,
+  type: ChangeInstructions.insertNode,
   data,
 });
 

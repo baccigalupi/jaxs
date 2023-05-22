@@ -1,5 +1,5 @@
 import { ExpandedElement, InputElement, Instructions } from '../../../types.ts';
-import { changeValue, replaceNode } from './generate.ts';
+import { changeValue } from './generate.ts';
 import { compileForAttributes } from './attributes.ts';
 import { compileForEvents } from './events.ts';
 
@@ -7,17 +7,13 @@ export const compileForElement = (
   source: ExpandedElement,
   target: ExpandedElement,
 ) => {
-  if (source.tagName !== target.tagName) {
-    return [replaceNode(source, target)];
-  } else {
-    const attributeInstructions = compileForAttributes(source, target);
-    const eventInstructions = compileForEvents(source, target);
-    const valueInstructions = compileForInputValue(source, target);
+  const attributeInstructions = compileForAttributes(source, target);
+  const eventInstructions = compileForEvents(source, target);
+  const valueInstructions = compileForInputValue(source, target);
 
-    return attributeInstructions
-      .concat(eventInstructions)
-      .concat(valueInstructions);
-  }
+  return attributeInstructions
+    .concat(eventInstructions)
+    .concat(valueInstructions);
 };
 
 const compileForInputValue = (

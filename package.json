@@ -1,10 +1,10 @@
 {
   "name": "jaxs",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "JSX front end framework build for maintainability",
   "main": "lib/jaxs-dist.js",
   "scripts": {
-    "build": "deno run --allow-env --allow-read --allow-net --allow-write lib/bundle.js",
+    "build": "deno run --allow-env --allow-read --allow-net --allow-write lib/bundle.js; deno fmt;",
     "serve": "parcel serve --dist-dir=cypress/jaxs-apps/dist",
     "integration": "concurrently \"npm run serve\" \"npx cypress open\""
   },
@@ -15,7 +15,10 @@
   },
   "targets": {
     "html": {
-      "source": "./cypress/jaxs-apps/add-remove-child.html"
+      "source": [
+        "./cypress/jaxs-apps/add-remove-root-children.html",
+        "./cypress/jaxs-apps/add-remove-nested-children.html"
+      ]
     }
   }
 }

@@ -1,11 +1,11 @@
 import {
-  AddNodeData,
   AttributeInstructionData,
   ChangeInstructions,
   EventInstructionData,
   ExpandedElement,
   HtmlChildren,
   InputElement,
+  InsertNodeData,
   Instruction,
   RemoveInstructionData,
   UpdateEventInstructionData,
@@ -42,11 +42,16 @@ const removeNode: Updater = (instruction: Instruction) => {
   source.remove();
 };
 
-// TODO: Gah, how do I figure out what to do, just append I guess. But need a parent from the source
-const addNode: Updater = (instruction: Instruction) => {
+const insertNode: Updater = (instruction: Instruction) => {
   const { target, data } = instruction;
-  const { parent } = data as AddNodeData;
-  parent.appendChild(target);
+  const { parent, index } = data as InsertNodeData;
+  const sibling = parent.childNodes[index];
+  if (!sibling) {
+    parent.appendChild(target);
+  } else if (sibling && sibling !== target) {
+    parent.insertBefore(target, sibling);
+  }
+  // else case, sibling is target and so it is moving to the same place: no-op.
 };
 
 const replaceNode: Updater = (instruction: Instruction) => {
@@ -108,7 +113,7 @@ const changeValue: Updater = (instruction: Instruction) => {
 const performers = {
   [ChangeInstructions.changeText]: changeText,
   [ChangeInstructions.removeNode]: removeNode,
-  [ChangeInstructions.addNode]: addNode,
+  [ChangeInstructions.insertNode]: insertNode,
   [ChangeInstructions.replaceNode]: replaceNode,
   [ChangeInstructions.removeAttribute]: removeAttribute,
   [ChangeInstructions.addAttribute]: addAttribute,

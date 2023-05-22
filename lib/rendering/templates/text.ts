@@ -1,4 +1,4 @@
-import { RenderKit, Template, TextValue } from '../../types.ts';
+import { JsxId, RenderKit, Template, TextValue } from '../../types.ts';
 import { createTextNode } from '../dom/create.ts';
 
 export class TextTemplate implements Template {
@@ -11,6 +11,7 @@ export class TextTemplate implements Template {
   render(renderKit: RenderKit) {
     const textNode = createTextNode(this.value, renderKit.document);
     if (!textNode) return [];
+    (textNode as unknown as JsxId).__jsx = 'TextNode';
     return [textNode];
   }
 }

@@ -8,7 +8,10 @@ export type RenderKit = {
   state: State;
 };
 
-export interface ExpandedElement extends Element {
+export interface JsxId {
+  __jsx: string;
+}
+export interface ExpandedElement extends Element, JsxId {
   eventMaps: EventMaps;
 }
 export interface InputElement extends ExpandedElement {
@@ -97,8 +100,9 @@ export type UpdateEventInstructionData = {
   targetValue: EventListener;
 };
 
-export type AddNodeData = {
+export type InsertNodeData = {
   parent: ExpandedElement;
+  index: number;
 };
 
 type NullData = Record<string, never>;
@@ -108,7 +112,7 @@ export type InstructionData =
   | AttributeInstructionData
   | EventInstructionData
   | UpdateEventInstructionData
-  | AddNodeData
+  | InsertNodeData
   | NullData;
 
 export type Instruction = {
@@ -121,9 +125,8 @@ export type Instruction = {
 export type Instructions = Array<Instruction>;
 
 export enum ChangeInstructions {
-  changeText,
   removeNode,
-  addNode,
+  insertNode, // can be to move an existing element in the dom, or to add one
   replaceNode,
   removeAttribute,
   addAttribute,
@@ -132,6 +135,7 @@ export enum ChangeInstructions {
   addEvent,
   updateEvent,
   changeValue,
+  changeText,
 }
 
 export type Updater = (instruction: Instruction) => void;

@@ -1,6 +1,7 @@
 import {
   Dom,
   DomCollection,
+  ExpandedElement,
   RenderKit,
   Template,
   TextValue,

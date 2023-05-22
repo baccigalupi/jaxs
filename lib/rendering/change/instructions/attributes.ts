@@ -49,12 +49,13 @@ export const compileForAttributes = (
     }
   }
 
-  for (index = 0; index < sourceLength; index++) {
+  // iterate through the target to find additions
+  for (index = 0; index < targetLength; index++) {
     matchingAttribute = null;
     const targetAttribute = targetAttributes.item(index);
     if (!targetAttribute) continue;
 
-    for (innerIndex = 0; innerIndex < targetLength; innerIndex++) {
+    for (innerIndex = 0; innerIndex < sourceLength; innerIndex++) {
       const sourceAttribute = sourceAttributes.item(innerIndex);
       if (!sourceAttribute) continue;
       if (sourceAttribute.name == targetAttribute.name) {

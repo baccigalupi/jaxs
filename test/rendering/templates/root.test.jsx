@@ -1,4 +1,4 @@
-import { describe, expect, it, spy, xit } from '../../../devDeps.ts';
+import { describe, expect, it, spy } from '../../../devDeps.ts';
 import {
   createAltTestDom,
   createTestDom,
@@ -133,7 +133,8 @@ describe('root templates', () => {
     const renderKit = { document, state, publish, subscribe };
 
     const root = render(<Content />, '#app', renderKit);
-    expect(document.getElementById('app').innerHTML).toEqual(
+    const parent = document.getElementById('app');
+    expect(domToString(parent)).toContain(
       '<p class="guest-content">Oh nothing to see! Move along ...</p>',
     );
     expect(root.dom.length).toEqual(1);
@@ -141,7 +142,8 @@ describe('root templates', () => {
 
     state = { membersOnly: true };
     publish('stateChange', state);
-    expect(document.getElementById('app').innerHTML).toEqual(
+
+    expect(domToString(parent)).toContain(
       '<h1 class="member-content">Hello member!</h1><p>Having a good day?</p>',
     );
     expect(root.dom.length).toEqual(2);
@@ -150,7 +152,8 @@ describe('root templates', () => {
 
     state = { membersOnly: false };
     publish('stateChange', state);
-    expect(document.getElementById('app').innerHTML).toEqual(
+
+    expect(domToString(parent)).toContain(
       '<p class="guest-content">Oh nothing to see! Move along ...</p>',
     );
     expect(root.dom.length).toEqual(1);

@@ -1,6 +1,6 @@
 describe('Add and remove child nodes with state', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:1234');
+    cy.visit('http://localhost:1234/add-remove-root-children.html');
   });
 
   it('if/else conditional with nested children and toggling conditions', () => {
