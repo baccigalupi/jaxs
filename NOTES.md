@@ -20,17 +20,6 @@ garbage.
 
 # Navigation & related
 
-General setup
-
-1. Window - listen for popstate and trigger 'locationChange'
-2. On load - trigger 'locationChange' to make sure initial route/url is considered
-
-locationChange handler
-
-- gets path and query params from url
-- stores that data in the routes area, which triggers a re-render
-- trigger routeChange (for the request manager)
-
 Router
 
 - listens for data changes on the route data
@@ -41,9 +30,3 @@ Request manager
 
 - listens for routeChange events
 - triggers a request if setup
-
-Link navigation in the view
-
-- publish 'navigate' event with href
-- history.push href (for back button stuff)
-- trigger 'locationChange', which will get the data from location, etc

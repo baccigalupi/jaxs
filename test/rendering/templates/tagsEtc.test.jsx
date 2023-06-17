@@ -63,7 +63,7 @@ describe('Rendering static jsx', () => {
   it('renders custom types', () => {
     const Link = (props) => {
       const { children, ...rest } = props;
-      return <a {...rest} onClick='navigate'>{children}</a>;
+      return <a {...rest} onClick='goToHref'>{children}</a>;
     };
     const template = <Link href='/foo/bar'>Go get your foo!</Link>;
 
@@ -78,13 +78,13 @@ describe('Rendering static jsx', () => {
     const clickEvent = new Event('click');
     node.dispatchEvent(clickEvent);
 
-    expect(publish.calls[0].args).toEqual(['navigate', clickEvent]);
+    expect(publish.calls[0].args).toEqual(['goToHref', clickEvent]);
   });
 
   it('renders deeply nested stuff', () => {
     const Link = (props) => {
       const { children, ...rest } = props;
-      return <a {...rest} onClick='navigate'>{children}</a>;
+      return <a {...rest} onClick='goToHref'>{children}</a>;
     };
 
     const Page = ({ buttonText, children }) => {

@@ -1,5 +1,5 @@
 import jsx from '../jsx.js';
 
 export const Link = ({ children, ...props }) => {
-  return <a {...props} onClick='navigate'>{children}</a>;
+  return <a {...props} onClick='goToHref'>{children}</a>;
 };

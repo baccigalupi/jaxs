@@ -40,7 +40,7 @@ const ProfileAreaTemplate = ({ inMembers }) => {
   if (inMembers) return;
 
   return (
-    <a href='/members' onClick='navigate' class='exclusive-link'>
+    <a href='/members' onClick='goToHref' class='exclusive-link'>
       Go to members area
     </a>
   );

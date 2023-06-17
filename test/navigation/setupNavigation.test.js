@@ -1,10 +1,9 @@
-import { describe, expect, it, spy, xit } from '../../devDeps.ts';
+import { beforeEach, describe, expect, it, spy, xit } from '../../devDeps.ts';
 
 import { createApp } from '../../lib/app.ts';
 
 describe('navigation related events', () => {
-  it('the app sets up everything for link navigation', () => {
-    const pushSpy = spy();
+  const setupWindow = (pushSpy) => {
     window.history = {
       pushState: pushSpy,
     };
@@ -13,15 +12,21 @@ describe('navigation related events', () => {
       pathname: '/foo/bar',
       search: '?zardoz=weird',
     };
+  };
+
+  it('the app sets up everything for link navigation from the dom', () => {
+    const pushSpy = spy();
+    setupWindow(pushSpy);
+
     const app = createApp();
     const locationChangeListener = spy();
     app.subscribe('locationChange', locationChangeListener);
+
     const event = {
       target: { getAttribute: () => '/foo/bar' },
       preventDefault: () => {},
     };
-
-    app.publish('navigate', event);
+    app.publish('goToHref', event);
 
     expect(locationChangeListener.calls.length).toEqual(1);
     expect(pushSpy.calls.length).toEqual(1);
@@ -35,5 +40,20 @@ describe('navigation related events', () => {
         },
       },
     });
+  });
+
+  it('provides a way to programmatically navigate via publishing an event', () => {
+    const pushSpy = spy();
+    setupWindow(pushSpy);
+
+    const app = createApp();
+    const locationChangeListener = spy();
+    app.subscribe('locationChange', locationChangeListener);
+
+    app.publish('navigate', '/my/path');
+
+    expect(locationChangeListener.calls.length).toEqual(1);
+    expect(pushSpy.calls.length).toEqual(1);
+    expect(pushSpy.calls[0].args[2]).toEqual('/my/path');
   });
 });
