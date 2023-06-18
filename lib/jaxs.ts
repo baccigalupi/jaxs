@@ -5,3 +5,4 @@ export { createBus } from './messageBus.ts';
 export { createStore } from './store.ts';
 export { createApp } from './app.ts';
 export * as navigation from './navigation.ts';
+export { views } from './views.js';
