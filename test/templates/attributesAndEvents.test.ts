@@ -1,11 +1,11 @@
-import { describe, expect, it } from '../../devDeps.ts';
+import { describe, expect, test } from 'bun:test'
 
 import {
   separateAttrsAndEvents,
-} from '../../lib/rendering/dom/attributesAndEvents.ts';
+} from '../../src/rendering/dom/attributesAndEvents';
 
 describe('templates, attributes and events', () => {
-  it('separateAttrsAndEvents returns separate hashes', () => {
+  test('separateAttrsAndEvents returns separate hashes', () => {
     const combined = {
       onClick: 'submit-something',
       class: 'bg-white text-black',

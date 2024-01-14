@@ -1,59 +1,61 @@
-import { beforeEach, describe, expect, it, spy, xit } from '../../devDeps.ts';
+import { describe, expect, test, mock } from 'bun:test'
+const spy = () => mock(() => {})
 
-import { createApp } from '../../lib/app.ts';
+import { createApp } from '../../src/app'
 
 describe('navigation related events', () => {
   const setupWindow = (pushSpy) => {
     window.history = {
-      pushState: pushSpy,
-    };
+      pushState: pushSpy
+    }
+
     window.location = {
       host: 'www.example.com',
       pathname: '/foo/bar',
-      search: '?zardoz=weird',
-    };
-  };
+      search: '?zardoz=weird'
+    }
+  }
 
-  it('the app sets up everything for link navigation from the dom', () => {
-    const pushSpy = spy();
-    setupWindow(pushSpy);
+  test('the app sets up everything for link navigation from the dom', () => {
+    const pushSpy = spy()
+    setupWindow(pushSpy)
 
-    const app = createApp();
-    const locationChangeListener = spy();
-    app.subscribe('locationChange', locationChangeListener);
+    const app = createApp()
+    const locationChangeListener = spy()
+    app.subscribe('locationChange', locationChangeListener)
 
     const event = {
       target: { getAttribute: () => '/foo/bar' },
-      preventDefault: () => {},
-    };
-    app.publish('goToHref', event);
+      preventDefault: () => {}
+    }
+    app.publish('goToHref', event)
 
-    expect(locationChangeListener.calls.length).toEqual(1);
-    expect(pushSpy.calls.length).toEqual(1);
-    expect(pushSpy.calls[0].args[2]).toEqual('/foo/bar');
+    expect(locationChangeListener).toHaveBeenCalledTimes(1)
+    expect(pushSpy).toHaveBeenCalledTimes(1)
+    expect(pushSpy.mock.calls[0][2]).toEqual('/foo/bar')
     expect(app.getState()).toEqual({
       route: {
         host: 'www.example.com',
         path: '/foo/bar',
         query: {
-          zardoz: 'weird',
-        },
-      },
-    });
-  });
+          zardoz: 'weird'
+        }
+      }
+    })
+  })
 
-  it('provides a way to programmatically navigate via publishing an event', () => {
-    const pushSpy = spy();
-    setupWindow(pushSpy);
+  test('provides a way to programmatically navigate via publishing an event', () => {
+    const pushSpy = spy()
+    setupWindow(pushSpy)
 
-    const app = createApp();
-    const locationChangeListener = spy();
-    app.subscribe('locationChange', locationChangeListener);
+    const app = createApp()
+    const locationChangeListener = spy()
+    app.subscribe('locationChange', locationChangeListener)
 
-    app.publish('navigate', '/my/path');
+    app.publish('navigate', '/my/path')
 
-    expect(locationChangeListener.calls.length).toEqual(1);
-    expect(pushSpy.calls.length).toEqual(1);
-    expect(pushSpy.calls[0].args[2]).toEqual('/my/path');
-  });
-});
+    expect(locationChangeListener).toHaveBeenCalledTimes(1)
+    expect(pushSpy).toHaveBeenCalledTimes(1)
+    expect(pushSpy.mock.calls[0][2]).toEqual('/my/path')
+  })
+})

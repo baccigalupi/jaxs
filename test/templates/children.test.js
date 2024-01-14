@@ -1,18 +1,18 @@
-import { describe, expect, it } from '../../devDeps.ts';
+import { describe, expect, test } from 'bun:test'
 
-import { ensureArray } from '../../lib/rendering/templates/children.ts';
+import { ensureArray } from '../../src/rendering/templates/children'
 
 describe('templates, children, ensureArray', () => {
-  it('returns an empty array if nothing was passed in', () => {
-    expect(ensureArray()).toEqual([]);
-  });
+  test('returns an empty array if nothing was passed in', () => {
+    expect(ensureArray()).toEqual([])
+  })
 
-  it('returns an array if passed an  array', () => {
-    expect(ensureArray(['foo'])).toEqual(['foo']);
-  });
+  test('returns an array if passed an  array', () => {
+    expect(ensureArray(['foo'])).toEqual(['foo'])
+  })
 
-  it('returns a flat array if passed a nested array', () => {
-    expect(ensureArray([['bar']])).toEqual(['bar']);
-    expect(ensureArray(['foo', ['bar']])).toEqual(['foo', 'bar']);
-  });
-});
+  test('returns a flat array if passed a nested array', () => {
+    expect(ensureArray([['bar']])).toEqual(['bar'])
+    expect(ensureArray(['foo', ['bar']])).toEqual(['foo', 'bar'])
+  })
+})

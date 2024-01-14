@@ -1,59 +1,60 @@
-import { describe, expect, it, spy, xit } from '../../devDeps.ts';
+import { describe, expect, test, mock } from 'bun:test'
+const spy = () => mock(() => {})
 
-import { createApp } from '../../lib/app.ts';
+import { createApp } from '../../src/app'
 import {
   extractQueryParams,
-  onLocationChange,
-} from '../../lib/navigation/setupHistory.js';
+  onLocationChange
+} from '../../src/navigation/setupHistory'
 
 describe('navigation history related stuff', () => {
-  it('correctly extracts out query params from the url', () => {
-    const searchString = '?foo=bar&zardoz=weird';
-    const queryParams = extractQueryParams(searchString);
+  test('correctly extracts out query params from the url', () => {
+    const searchString = '?foo=bar&zardoz=weird'
+    const queryParams = extractQueryParams(searchString)
     expect(queryParams).toEqual({
       foo: 'bar',
-      zardoz: 'weird',
-    });
-  });
+      zardoz: 'weird'
+    })
+  })
 
-  it('gets location from the window and updates the store', () => {
-    const app = createApp();
+  test('gets location from the window and updates the store', () => {
+    const app = createApp()
     window.location = {
       host: 'www.example.com',
       pathname: '/foo/bar',
-      search: '?zardoz=weird',
-    };
+      search: '?zardoz=weird'
+    }
 
-    onLocationChange(null, app);
+    onLocationChange(null, app)
 
-    const state = app.getState();
+    const state = app.getState()
     expect(state).toEqual({
       route: {
         host: 'www.example.com',
         path: '/foo/bar',
         query: {
-          zardoz: 'weird',
-        },
-      },
-    });
-  });
+          zardoz: 'weird'
+        }
+      }
+    })
+  })
 
-  it('gets location from the window and updates the store', () => {
-    const app = createApp();
-    app.publish = spy();
+  test('gets location from the window and updates the store', () => {
+    const app = createApp()
+    app.publish = spy()
     window.location = {
       host: 'www.example.com',
       pathname: '/foo/bar',
-      search: '?zardoz=weird',
-    };
+      search: '?zardoz=weird'
+    }
 
-    onLocationChange(null, app);
+    onLocationChange(null, app)
 
-    expect(app.publish.calls[0].args[0]).toEqual('routeChange');
-    expect(app.publish.calls[0].args[1]).toEqual({
+    expect(app.publish.mock.calls[0][0]).toEqual('routeChange')
+    expect(app.publish.mock.calls[0][1]).toEqual({
       host: 'www.example.com',
       path: '/foo/bar',
-      query: { zardoz: 'weird' },
-    });
-  });
-});
+      query: { zardoz: 'weird' }
+    })
+  })
+})

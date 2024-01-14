@@ -1,89 +1,89 @@
-import { describe, expect, it, spy, xit } from '../../devDeps.ts';
-import { createTestDom, domToString } from '../support/testDom.js';
+import { describe, expect, test } from 'bun:test'
+import { createTestDom, domToString } from '../support/testDom'
 
-import { If, IfElse, Unless } from '../../lib/views/conditionals.jsx';
-import jsx from '../../lib/jsx.js';
+import { If, IfElse, Unless } from '../../src/views/conditionals.jsx'
+import jsx from '../../src/jsx'
 
 describe('conditional rendering views', () => {
   describe('If', () => {
-    it('does not render anything if the condition is false', () => {
+    test('does not render anything if the condition is false', () => {
       expect(
         <If condition={false}>
           <p>Hello</p>
-        </If>,
-      ).toEqual(undefined);
-    });
+        </If>
+      ).toEqual(undefined)
+    })
 
-    it('renders children if the condition is true', () => {
+    test('renders children if the condition is true', () => {
       const template = (
-        <If condition={true}>
+        <If condition>
           <p>Hello</p>
         </If>
-      );
-      expect(template).not.toEqual(undefined);
+      )
+      expect(template).not.toEqual(undefined)
 
-      const document = createTestDom();
-      const node = template.render({ document });
-      expect(domToString(node)).toContain('<p>Hello</p>');
-    });
-  });
+      const document = createTestDom()
+      const node = template.render({ document })
+      expect(domToString(node)).toContain('<p>Hello</p>')
+    })
+  })
 
   describe('Unless', () => {
-    it('does not render anything if the condition is true', () => {
+    test('does not render anything if the condition is true', () => {
       expect(
-        <Unless condition={true}>
+        <Unless condition>
           <p>Hello</p>
-        </Unless>,
-      ).toEqual(undefined);
-    });
+        </Unless>
+      ).toEqual(undefined)
+    })
 
-    it('renders children if the condition is false', () => {
+    test('renders children if the condition is false', () => {
       const template = (
         <Unless condition={false}>
           <p>Hello</p>
         </Unless>
-      );
-      expect(template).not.toEqual(undefined);
+      )
+      expect(template).not.toEqual(undefined)
 
-      const document = createTestDom();
-      const node = template.render({ document });
-      expect(domToString(node)).toContain('<p>Hello</p>');
-    });
-  });
+      const document = createTestDom()
+      const node = template.render({ document })
+      expect(domToString(node)).toContain('<p>Hello</p>')
+    })
+  })
 
   describe('IfElse', () => {
-    it('renders the first child if true, but not the remainder', () => {
+    test('renders the first child if true, but not the remainder', () => {
       const template = (
-        <IfElse condition={true}>
+        <IfElse condition>
           <p>Hello truth</p>
           <p>This is conditionally false</p>
-          <p>Along with the rest of it</p>
+          <p>Along with the rest of test</p>
         </IfElse>
-      );
-      const document = createTestDom();
-      const dom = template.render({ document });
+      )
+      const document = createTestDom()
+      const dom = template.render({ document })
 
-      const printedDom = domToString(dom);
-      expect(printedDom).toContain('Hello truth');
-      expect(printedDom).not.toContain('This is conditionally false');
-      expect(printedDom).not.toContain('Along with the rest of it');
-    });
+      const printedDom = domToString(dom)
+      expect(printedDom).toContain('Hello truth')
+      expect(printedDom).not.toContain('This is conditionally false')
+      expect(printedDom).not.toContain('Along with the rest of test')
+    })
 
-    it('omits the first child and render the rest if the condition is false', () => {
+    test('omits the first child and render the rest if the condition is false', () => {
       const template = (
         <IfElse condition={false}>
           <p>Hello truth</p>
           <p>This is conditionally false</p>
-          <p>Along with the rest of it</p>
+          <p>Along with the rest of test</p>
         </IfElse>
-      );
-      const document = createTestDom();
-      const dom = template.render({ document });
+      )
+      const document = createTestDom()
+      const dom = template.render({ document })
 
-      const printedDom = domToString(dom);
-      expect(printedDom).not.toContain('Hello truth');
-      expect(printedDom).toContain('This is conditionally false');
-      expect(printedDom).toContain('Along with the rest of it');
-    });
-  });
-});
+      const printedDom = domToString(dom)
+      expect(printedDom).not.toContain('Hello truth')
+      expect(printedDom).toContain('This is conditionally false')
+      expect(printedDom).toContain('Along with the rest of test')
+    })
+  })
+})
