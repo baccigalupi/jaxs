@@ -5,6 +5,7 @@
   "devDependencies": {
     "@happy-dom/global-registrator": "^13.0.6",
     "@types/bun": "latest",
+    "cypress": "^13.6.2",
     "standard": "^17.1.0"
   },
   "peerDependencies": {
