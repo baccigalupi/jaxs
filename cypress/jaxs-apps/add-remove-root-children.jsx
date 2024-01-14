@@ -1,4 +1,4 @@
-import { bind, createApp, jsx } from '../../lib/jaxs-dist.js';
+import { bind, createApp, jsx } from '../../dist/jaxs.js';
 
 const app = createApp();
 

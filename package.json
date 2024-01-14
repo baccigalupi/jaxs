@@ -5,7 +5,9 @@
   "devDependencies": {
     "@happy-dom/global-registrator": "^13.0.6",
     "@types/bun": "latest",
+    "concurrently": "^8.2.2",
     "cypress": "^13.6.2",
+    "parcel": "^2.11.0",
     "standard": "^17.1.0"
   },
   "peerDependencies": {
@@ -15,6 +17,17 @@
     "immer": "^10.0.3"
   },
   "scripts": {
-    "lint": "standard --fix"
+    "lint": "standard --fix",
+    "build": "bun run bundle.ts",
+    "serve": "bun run build && parcel serve --dist-dir=cypress/jaxs-apps/dist",
+    "integration": "concurrently \"npm run serve\" \"npx cypress open\""
+  },
+  "targets": {
+    "html": {
+      "source": [
+        "./cypress/jaxs-apps/add-remove-root-children.html",
+        "./cypress/jaxs-apps/add-remove-nested-children.html"
+      ]
+    }
   }
 }
