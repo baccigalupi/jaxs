@@ -1,4 +1,4 @@
-import {
+import type {
   Dom,
   ExpandedElement,
   HtmlChildren,
@@ -8,6 +8,7 @@ import {
 import { insertNode, removeNode, replaceNode } from './generate';
 import { createIdMap } from './idMap';
 import { compileForNodeGenerator } from './node';
+import { debug } from '../../../debugging';
 
 type DiffPair = {
   source: Dom;
@@ -29,13 +30,13 @@ export const compileChildren = (
   for (; index < length; index++) {
     const source = sourceList[index] as ExpandedElement;
     const target = targetList[index] as ExpandedElement;
-    // console.log(
-    //   '\n',
-    //   'loop index',
-    //   index,
-    //   source && source.__jsx,
-    //   target && target.__jsx,
-    // );
+    debug(
+      '\n',
+      'loop index',
+      index,
+      source && source.__jsx,
+      target && target.__jsx,
+    );
 
     // This algorithm uses the target as the source of truth, iterating
     // through it first figuring out what to do. The length could be larger than
@@ -43,47 +44,47 @@ export const compileChildren = (
     // Part of the goal of this flow is to ensure that insertions happen in
     // accending order.
     if (target && targetMap.check(target)) {
-      // console.log('target', target.__jsx, 'index', index);
+      debug('target', target.__jsx, 'index', index);
       const matchingSource = sourceMap.pullMatch(target);
       targetMap.clear(target); // mark target as resolved
 
       if (matchingSource.element) {
-        // console.log('matching source found for target');
+        debug('matching source found for target');
         if (matchingSource.index !== index) {
           // move source to index
-          // console.log('moving source', matchingSource.element.__jsx, index);
+          debug('moving source', matchingSource.element.__jsx, index);
           baseInstructions.push(
             insertNode(matchingSource.element, { parent, index }),
           );
         }
         // update element for attribute, event and child changes
-        // console.log('updating to match target',
-        //   matchingSource.element.__jsx,
-        //   matchingSource.element.classList,
-        //   target.__jsx,
-        //   target.classList
-        // );
+        debug('updating to match target',
+          matchingSource.element.__jsx,
+          matchingSource.element.classList,
+          target.__jsx,
+          target.classList
+        );
         nodesPairsToDiff.push({
           source: matchingSource.element,
           target,
         });
       } else if (source) {
-        // console.log('NO matching source for target but source in slot', source.__jsx);
+        debug('NO matching source for target but source in slot', source.__jsx);
 
         if (targetMap.check(source)) {
           // the source is somewhere else in the target, so just add this
           // target element and assume the source will get resolved later.
-          // console.log('adding', target.__jsx, 'at', index);
+          debug('adding', target.__jsx, 'at', index);
           baseInstructions.push(insertNode(target, { parent, index }));
         } else {
           // no matching target, but something is in the index/slot ... so swap
-          // console.log('replacing', source.__jsx, target.__jsx, 'at', index);
+          debug('replacing', source.__jsx, target.__jsx, 'at', index);
           sourceMap.clear(source); // resolve source
           baseInstructions.push(replaceNode(source as Dom, target as Dom));
         }
       } else {
         // extra targets, add these to the end of the parent in order received
-        // console.log('adding target to end', target.__jsx);
+        debug('adding target to end', target.__jsx);
         baseInstructions.push(insertNode(target, { parent, index }));
       }
     } else if (source) {
@@ -92,7 +93,7 @@ export const compileChildren = (
       // if not remove from dom
       const matchingSource = sourceMap.pullMatch(source);
       if (matchingSource.element) {
-        // console.log('removing', source.__jsx);
+        debug('removing', source.__jsx);
         baseInstructions.push(removeNode(source));
       }
     }
@@ -100,7 +101,7 @@ export const compileChildren = (
 
   // deal with unresolved sources
   sourceMap.remaining().forEach(({ element }) => {
-    // console.log('removing', element.__jsx);
+    debug('removing', element.__jsx);
     baseInstructions.push(removeNode(element));
   });
 

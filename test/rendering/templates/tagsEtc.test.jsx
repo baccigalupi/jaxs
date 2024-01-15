@@ -1,9 +1,9 @@
-import { describe, expect, test, mock } from 'bun:test'
-const spy = () => mock(() => {})
+import { describe, expect, test, mock, spyOn, beforeEach } from 'bun:test'
 
 import { createTestDom, domToString } from '../../support/testDom'
 
 import jsx from '../../../src/jsx'
+const spy = () => mock(() => {})
 
 describe('Rendering static jsx', () => {
   test('can render a self-closing tag and no attribute', () => {
@@ -56,7 +56,7 @@ describe('Rendering static jsx', () => {
     const publish = spy()
     const [node] = template.render({ document, publish })
 
-    const clickEvent = new Event('click')
+    const clickEvent = new window.MouseEvent('click')
     node.dispatchEvent(clickEvent)
 
     expect(publish.mock.calls[0]).toEqual(['saveSomething', clickEvent])
@@ -77,7 +77,7 @@ describe('Rendering static jsx', () => {
       '<a href="/foo/bar">Go get your foo!</a>'
     )
 
-    const clickEvent = new Event('click')
+    const clickEvent = new window.MouseEvent('click')
     node.dispatchEvent(clickEvent)
 
     expect(publish.mock.calls[0]).toEqual(['goToHref', clickEvent])

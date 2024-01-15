@@ -1,11 +1,11 @@
 import { describe, expect, test, mock } from 'bun:test'
-const spy = () => mock(() => {})
 import { createTestDom } from '../../support/testDom'
 
 import jsx from '../../../src/jsx'
 import { ChangeInstructions } from '../../../src/types'
 import { compileChange } from '../../../src/rendering/change/compile'
 import { compileForElement } from '../../../src/rendering/change/instructions/element'
+const spy = () => mock(() => {})
 
 const buildRenderKit = () => {
   return {

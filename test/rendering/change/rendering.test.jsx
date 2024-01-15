@@ -1,5 +1,4 @@
 import { describe, expect, test, mock } from 'bun:test'
-const spy = () => mock(() => {})
 
 import {
   createTestDom,
@@ -8,6 +7,7 @@ import {
 
 import jsx from '../../../src/jsx'
 import { change } from '../../../src/rendering/change'
+const spy = () => mock(() => {})
 
 const buildRenderKit = () => {
   return {
@@ -167,7 +167,7 @@ describe('rendering change', () => {
 
       change(source, target, parent)
 
-      const clickEvent = new Event('click')
+      const clickEvent = new window.MouseEvent('click')
       source[0].dispatchEvent(clickEvent)
 
       expect(renderKit.publish.mock.calls[0]).toEqual([
@@ -194,7 +194,7 @@ describe('rendering change', () => {
 
       change(source, target, parent)
 
-      const clickEvent = new Event('click')
+      const clickEvent = new window.MouseEvent('click')
       source[0].dispatchEvent(clickEvent)
 
       expect(renderKit.publish).toHaveBeenCalledTimes(1)
@@ -222,7 +222,7 @@ describe('rendering change', () => {
 
       change(source, target, parent)
 
-      const clickEvent = new Event('click')
+      const clickEvent = new window.MouseEvent('click')
       source[0].dispatchEvent(clickEvent)
 
       expect(renderKit.publish).not.toHaveBeenCalled()

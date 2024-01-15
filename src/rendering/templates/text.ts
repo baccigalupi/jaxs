@@ -1,4 +1,4 @@
-import { JsxId, RenderKit, Template, TextValue } from '../../types';
+import type { JsxId, RenderKit, Template, TextValue } from '../../types';
 import { createTextNode } from '../dom/create';
 
 export class TextTemplate implements Template {

@@ -1,4 +1,4 @@
-import {
+import type {
   Attributes,
   DomCollection,
   EventAttributes,

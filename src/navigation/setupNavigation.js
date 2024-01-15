@@ -5,7 +5,7 @@ export const linkNavigationEvent = 'goToHref'
 export const programmaticNavigationEvent = 'navigate'
 
 export const navigate = (path, { publish }) => {
-  history.pushState(null, '', path)
+  window.history.pushState(null, '', path)
   publish(locationChangeEvent)
 }
 

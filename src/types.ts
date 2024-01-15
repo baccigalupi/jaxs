@@ -1,4 +1,5 @@
 // Rendering & Dom ------
+import { State } from './state'
 export type DomEventPublisher = (eventName: string, domEvent: Event) => void;
 
 export type RenderKit = {
@@ -6,6 +7,7 @@ export type RenderKit = {
   publish: DomEventPublisher;
   subscribe: BusSubscribe;
   state: State;
+  parent?: Element | null;
 };
 
 export interface JsxId {
@@ -50,11 +52,7 @@ export interface Template {
 }
 export type TemplateClass = (attributes: Attributes) => Template;
 
-// deno-lint-ignore no-explicit-any
-export type State = Record<string, any>;
-export type StateSetter = (initialState: State) => void;
-export type StateGetter = () => State;
-export type ViewModel = (state: State) => State;
+export type ViewModel = (state: Record<string,any>) => State;
 
 // Message Bus ----
 export type BusEventName = string;
@@ -145,10 +143,7 @@ export type App = {
   subscribe?: BusSubscribe;
   // deno-lint-ignore no-explicit-any
   bus?: any;
-  getState?: StateGetter;
-  setState?: (setter: StateSetter) => void;
-  // deno-lint-ignore no-explicit-any
-  store: any;
+  state?: State
   renderKit: RenderKit;
   render: (template: Template, selector: string) => Template;
 };

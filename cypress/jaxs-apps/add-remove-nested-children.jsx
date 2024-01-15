@@ -1,48 +1,43 @@
-import { bind, createApp, jsx } from '../../dist/jaxs.js';
+import { bind, createApp, jsx, views } from '../../dist/jaxs.js'
+const { If } = views
 
-const app = createApp();
+const app = createApp()
 
-export const onInput = (event, { setState }) => {
-  const { name, value } = event.target;
-  setState((state) => {
-    return {
-      ...state,
-      [name]: value,
-    };
-  });
-};
+app.state.create('form', {
+  email: '',
+  emailValidation: '',
+  emailInvalid: false
+})
 
-export const onFocus = (event, { setState }) => {
-  console.log('onFocus');
-  const { name } = event.target;
-  setState((state) => {
-    return {
-      ...state,
-      [`${name}Validation`]: '',
-    };
-  });
-};
+export const onInput = (event, { state }) => {
+  const { form } = state
+  const { name, value } = event.target
+  state.form.update({
+    ...form,
+    [name]: value
+  })
+}
 
-export const onBlur = (event, { setState }) => {
-  console.log('onBlur');
+export const onFocus = (event, { state }) => {
+  const { form } = state
+  const { name } = event.target
+  state.form.update({
+    ...form,
+    [`${name}Validation`]: ''
+  })
+}
 
-  const { name, value } = event.target;
+export const onBlur = (event, { state }) => {
+  const { form } = state
+  const { name, value } = event.target
 
   if (value !== 'kane@example.com') {
-    setState((state) => {
-      return {
-        ...state,
-        [`${name}Validation`]: 'Email unknown',
-      };
-    });
+    state.form.update({
+      ...form,
+      [`${name}Validation`]: 'Email unknown'
+    })
   }
-};
-
-const RenderIf = ({ isVisible, children }) => {
-  if (!isVisible) return;
-
-  return <>{children}</>;
-};
+}
 
 const FormTemplate = ({ email, emailValidation, emailInvalid }) => {
   return (
@@ -51,9 +46,9 @@ const FormTemplate = ({ email, emailValidation, emailInvalid }) => {
         <p>
           <label for='email'>Email</label>
         </p>
-        <RenderIf isVisible={emailInvalid}>
+        <If condition={emailInvalid}>
           <p class='validation-error'>{emailValidation}</p>
-        </RenderIf>
+        </If>
         <input
           id='email'
           name='email'
@@ -66,19 +61,24 @@ const FormTemplate = ({ email, emailValidation, emailInvalid }) => {
 
       <input type='submit' value="Let's go!" class='button-primary mt-6' />
     </form>
-  );
-};
+  )
+}
 
-const viewModel = (state) => {
+const viewModel = ({ form }) => {
   return {
-    ...state,
-    emailInvalid: !!state.emailValidation,
-  };
-};
+    ...form,
+    emailInvalid: !!form.emailValidation
+  }
+}
 
-const Form = bind(FormTemplate, viewModel);
+const Form = bind({
+  Template: FormTemplate,
+  viewModel,
+  subscriptions: ['form']
+})
 
-app.subscribe('onInput', onInput);
-app.subscribe('onFocus', onFocus);
-app.subscribe('onBlur', onBlur);
-app.render(<Form />, '#app');
+app.subscribe('onInput', onInput)
+app.subscribe('onFocus', onFocus)
+app.subscribe('onBlur', onBlur)
+
+app.render(<Form />, '#app')

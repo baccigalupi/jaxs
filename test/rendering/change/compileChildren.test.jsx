@@ -1,10 +1,10 @@
 import { describe, expect, test, mock } from 'bun:test'
-const spy = () => mock(() => {})
 import { createTestDom } from '../../support/testDom'
 
 import jsx from '../../../src/jsx'
 import { ChangeInstructions } from '../../../src/types'
 import { compileChildren } from '../../../src/rendering/change/instructions/children'
+const spy = () => mock(() => {})
 
 describe('compileChildren: add, remove, replace and move operations', () => {
   const buildRenderKit = () => {

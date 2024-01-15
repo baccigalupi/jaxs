@@ -1,6 +1,6 @@
-import type { App, BusPublish, BusSubscribe, StateGetter } from './types';
+import type { App, BusPublish, BusSubscribe } from './types';
 import { createBus } from './messageBus';
-import { createStore } from './store';
+import { State } from './state'
 import {
   locationChangeEvent,
   setupHistory,
@@ -17,24 +17,20 @@ const setupBus = (app: App) => {
 };
 
 const setupState = (app: App) => {
-  const { getState, setState, store } = createStore({
-    publish: app.publish as BusPublish,
-  });
-  app.getState = getState;
-  app.setState = setState;
-  app.store = store;
+  const state = new State(app.publish as BusPublish);
+  app.state = state;
 };
 
 const connectBusToState = (app: App) => {
-  const { bus, getState, setState } = app;
-  bus.addListenerOptions({ getState, setState });
+  const { bus } = app;
+  bus.addListenerOptions({ state: app.state });
 };
 
 const setupRenderKit = (app: App, document: Document) => {
   app.renderKit = {
     publish: app.publish as BusPublish,
     subscribe: app.subscribe as BusSubscribe,
-    state: (app.getState as StateGetter)(),
+    state: app.state as State,
     document,
   };
 };

@@ -1,7 +1,6 @@
-import {
+import type {
   Dom,
   DomCollection,
-  ExpandedElement,
   RenderKit,
   Template,
   TextValue,

@@ -1,14 +1,10 @@
-import {
+import type {
   DomCollection,
-  ExpandedElement,
   RenderKit,
-  State,
   Template,
 } from '../../types';
-import { change } from '../change';
-import { stateChangeEvent } from '../../store';
 
-class Root {
+export class Root {
   template: Template;
   selector: string;
   renderKit: RenderKit;
@@ -25,14 +21,11 @@ class Root {
 
   renderAndAttach(renderKit: RenderKit) {
     this.parentElement = this.getParentElement();
-    this.dom = this.render(renderKit);
+    this.dom = this.render({...renderKit, parent: this.parentElement});
 
     if (this.parentElement) {
       this.attach();
-      this.subscribeForRerender(renderKit);
     }
-
-    return this.parentElement;
   }
 
   render(renderKit: RenderKit) {
@@ -44,19 +37,6 @@ class Root {
     this.dom.forEach((element) => {
       this.parentElement && this.parentElement.appendChild(element);
     });
-  }
-
-  subscribeForRerender({ subscribe }: RenderKit) {
-    subscribe(stateChangeEvent, (state) => this.rerender(state));
-  }
-
-  rerender(state: State) {
-    const renderKit = { ...this.renderKit, state: state };
-    const newDom = this.render(renderKit);
-    change(this.dom, newDom, this.parentElement as ExpandedElement);
-    if (this.parentElement) {
-      this.dom = Array.from(this.parentElement.childNodes) as DomCollection;
-    }
   }
 
   getParentElement() {

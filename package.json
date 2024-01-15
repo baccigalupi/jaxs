@@ -3,10 +3,12 @@
   "module": "src/jaxs.ts",
   "type": "module",
   "devDependencies": {
-    "@happy-dom/global-registrator": "^13.0.6",
     "@types/bun": "latest",
+    "@types/jsdom": "^21.1.6",
     "concurrently": "^8.2.2",
     "cypress": "^13.6.2",
+    "jsdom": "^23.2.0",
+    "npm": "^10.3.0",
     "parcel": "^2.11.0",
     "standard": "^17.1.0"
   },
@@ -20,7 +22,8 @@
     "lint": "standard --fix",
     "build": "bun run bundle.ts",
     "serve": "bun run build && parcel serve --dist-dir=cypress/jaxs-apps/dist",
-    "integration": "concurrently \"npm run serve\" \"npx cypress open\""
+    "integration": "concurrently \"npm run serve\" \"npx cypress open\"",
+    "integration:ci": "concurrently \"npm run serve\" \"npx cypress run\""
   },
   "targets": {
     "html": {
@@ -29,5 +32,8 @@
         "./cypress/jaxs-apps/add-remove-nested-children.html"
       ]
     }
+  },
+  "standard": {
+    "globals": [ "cy", "describe", "it", "beforeEach" ]
   }
 }

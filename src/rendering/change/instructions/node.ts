@@ -1,4 +1,4 @@
-import { Dom, ExpandedElement, Instructions } from '../../../types';
+import type { Dom, ExpandedElement, Instructions } from '../../../types';
 import { compileForElement } from './element';
 import { compileForText } from './text';
 

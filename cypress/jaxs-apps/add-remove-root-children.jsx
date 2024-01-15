@@ -1,52 +1,53 @@
-import { bind, createApp, jsx } from '../../dist/jaxs.js';
+import { bind, createApp, jsx, views } from '../../dist/jaxs.js'
+const { If, Unless } = views
 
-const app = createApp();
-
-const RenderIf = ({ isVisible, children }) => {
-  if (!isVisible) return;
-
-  return <>{children}</>;
-};
-
-const viewModel = (state) => {
-  return {
-    inMembers: state.route && state.route.path &&
-      state.route.path.match(/members/),
-  };
-};
+const app = createApp()
 
 export const MainContentTemplate = ({ inMembers }) => {
   return (
     <>
-      <RenderIf isVisible={!inMembers}>
+      <Unless condition={inMembers}>
         <form>
           <p class='guest-content'>
             You are a guest, and I guess that is fine.
           </p>
           <input type='submit' value='Agree! or something' />
         </form>
-      </RenderIf>
-      <RenderIf isVisible={inMembers}>
+      </Unless>
+      <If condition={inMembers}>
         <h1 class='member-content'>Oh great crickets!</h1>
         <p class='member-content'>Sing me a tale of private content.</p>
-      </RenderIf>
+      </If>
     </>
-  );
-};
-
-const MainContent = bind(MainContentTemplate, viewModel);
-
+  )
+}
 const ProfileAreaTemplate = ({ inMembers }) => {
-  if (inMembers) return;
-
   return (
-    <a href='/members' onClick='goToHref' class='exclusive-link'>
-      Go to members area
-    </a>
-  );
-};
+    <Unless condition={inMembers}>
+      <a href='/members' onClick='goToHref' class='exclusive-link'>
+        Go to members area
+      </a>
+    </Unless>
+  )
+}
 
-const ProfileArea = bind(ProfileAreaTemplate, viewModel);
+const viewModel = ({ route }) => {
+  return {
+    inMembers: route && route.path && route.path.match(/members/)
+  }
+}
 
-app.render(<MainContent />, '#main-content');
-app.render(<ProfileArea />, '#profile-area');
+const MainContent = bind({
+  Template: MainContentTemplate,
+  viewModel,
+  subscriptions: ['route']
+})
+
+const ProfileArea = bind({
+  Template: ProfileAreaTemplate,
+  viewModel,
+  subscriptions: ['route']
+})
+
+app.render(<MainContent />, '#main-content')
+app.render(<ProfileArea />, '#profile-area')

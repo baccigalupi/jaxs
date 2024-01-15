@@ -1,6 +1,5 @@
-import {
+import type {
   AttributeInstructionData,
-  ChangeInstructions,
   EventInstructionData,
   ExpandedElement,
   HtmlChildren,
@@ -11,7 +10,9 @@ import {
   UpdateEventInstructionData,
   Updater,
 } from '../types';
+import {  ChangeInstructions } from '../types'
 import { compileChange } from './change/compile';
+import { debug } from '../debugging';
 
 export const change = (
   source: HtmlChildren,
@@ -19,6 +20,8 @@ export const change = (
   parent: ExpandedElement,
 ) => {
   const instructions = compileChange(source, target, parent);
+
+  debug('instructions', instructions.map((instruction) => instruction.type))
 
   instructions.forEach((instruction) => {
     performInstruction(instruction);
@@ -40,6 +43,7 @@ const changeText: Updater = (instruction: Instruction) => {
 const removeNode: Updater = (instruction: Instruction) => {
   const { source } = instruction;
   source.remove();
+  debug('removeNode called on', source.nodeName)
 };
 
 const insertNode: Updater = (instruction: Instruction) => {
@@ -57,6 +61,8 @@ const insertNode: Updater = (instruction: Instruction) => {
 const replaceNode: Updater = (instruction: Instruction) => {
   const { source, target } = instruction;
   source.replaceWith(target);
+  debug('replaceNode called on', source.nodeName, 'with', target.nodeName)
+  debug('parent', source.parentElement)
 };
 
 const removeAttribute: Updater = (instruction: Instruction) => {

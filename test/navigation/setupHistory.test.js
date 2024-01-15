@@ -1,13 +1,20 @@
-import { describe, expect, test, mock } from 'bun:test'
-const spy = () => mock(() => {})
+import { describe, expect, test, mock, beforeEach, spyOn } from 'bun:test'
+import { setupWindow } from '../support/testDom'
 
 import { createApp } from '../../src/app'
 import {
   extractQueryParams,
   onLocationChange
 } from '../../src/navigation/setupHistory'
+const spy = () => mock(() => {})
 
 describe('navigation history related stuff', () => {
+  beforeEach(() => {
+    setupWindow()
+    // This prevents raising a navigation error in JSDOM
+    spyOn(window._virtualConsole, 'emit').mockImplementation(() => {})
+  })
+
   test('correctly extracts out query params from the url', () => {
     const searchString = '?foo=bar&zardoz=weird'
     const queryParams = extractQueryParams(searchString)
@@ -27,14 +34,11 @@ describe('navigation history related stuff', () => {
 
     onLocationChange(null, app)
 
-    const state = app.getState()
-    expect(state).toEqual({
-      route: {
-        host: 'www.example.com',
-        path: '/foo/bar',
-        query: {
-          zardoz: 'weird'
-        }
+    expect(app.state.route.value).toEqual({
+      host: 'www.example.com',
+      path: '/foo/bar',
+      query: {
+        zardoz: 'weird'
       }
     })
   })

@@ -1,10 +1,10 @@
 import { describe, expect, test, mock } from 'bun:test'
-const spy = () => mock(() => {})
 
 import { createTestDom, domToString } from '../support/testDom'
 
 import { Link } from '../../src/views/link.jsx'
 import jsx from '../../src/jsx'
+const spy = () => mock(() => {})
 
 describe('Link', () => {
   test('renders an archor tag passing along all the attributes', () => {
@@ -34,7 +34,7 @@ describe('Link', () => {
     )
     const [link] = template.render({ document, publish })
 
-    const clickEvent = new Event('click')
+    const clickEvent = new window.MouseEvent('click')
     link.dispatchEvent(clickEvent)
 
     expect(publish.mock.calls[0][0]).toEqual('goToHref')

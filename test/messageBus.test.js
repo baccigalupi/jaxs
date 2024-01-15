@@ -1,6 +1,6 @@
 import { describe, expect, test, mock } from 'bun:test'
-const spy = () => mock(() => {})
 import { createBus } from '../src/messageBus'
+const spy = () => mock(() => {})
 
 describe('MessageBus', () => {
   test('calls an added listener with the payload', () => {

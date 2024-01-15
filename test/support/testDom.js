@@ -1,3 +1,14 @@
+import { JSDOM } from 'jsdom'
+import { spyOn } from 'bun:test'
+
+export const setupWindow = () => {
+  const dom = new JSDOM('<!DOCTYPE html>', {
+    url: 'http://www.example.com/foo/bar?zardoz=weird'
+  })
+  spyOn(dom.window._virtualConsole, 'emit').mockImplementation(() => {})
+  global.window = dom.window
+}
+
 const defaultContent = '<div id=\'app\'></div>'
 
 export const domToString = (element) => {
@@ -19,7 +30,8 @@ const wrapElements = (elements) => {
 export const stripWhiteSpace = (string) => string.replace(/\s{2,}/g, '').trim()
 
 export const createTestDom = (content = defaultContent) => {
-  const document = window.document;
+  setupWindow()
+  const document = window.document
   document.body.innerHTML = `<!DOCTYPE html><body>${content}<body>`
   return document
 }
