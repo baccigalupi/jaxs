@@ -1,5 +1,7 @@
 {
   "name": "jaxs",
+  "version": "0.2.0",
+  "description": "Modular J/TSX application framework",
   "module": "src/jaxs.ts",
   "type": "module",
   "devDependencies": {
@@ -14,9 +16,6 @@
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
-  },
-  "dependencies": {
-    "immer": "^10.0.3"
   },
   "scripts": {
     "lint": "standard --fix",
