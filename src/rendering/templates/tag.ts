@@ -8,6 +8,7 @@ import type {
 
 import { createDecoratedNode } from '../dom/create';
 import { separateAttrsAndEvents } from '../dom/attributesAndEvents';
+import { isSvgTag, createSvgNode } from '../dom/svg'
 import { Children } from './children';
 
 export class Tag implements Template {
@@ -15,11 +16,13 @@ export class Tag implements Template {
   events: EventAttributes;
   attributes: Attributes;
   children: Children;
+  inSvg: boolean;
 
   constructor(
     tagType: string,
     combinedAttributes: Attributes,
     children: Template[],
+    inSvg = false
   ) {
     this.type = tagType;
 
@@ -27,7 +30,8 @@ export class Tag implements Template {
     this.events = events;
     this.attributes = attributes;
 
-    this.children = new Children(children);
+    this.inSvg = inSvg || isSvgTag(this.type);
+    this.children = new Children(children, this.inSvg);
   }
 
   render(renderKit: RenderKit): DomCollection {
@@ -39,10 +43,28 @@ export class Tag implements Template {
   }
 
   generateDom(renderKit: RenderKit) {
+    if (this.inSvg) {
+      return this.generateSvnDom(renderKit)
+    } else {
+      return this.generateHtmlDom(renderKit)
+    }
+  }
+
+  generateHtmlDom(renderKit: RenderKit) {
     const node = createDecoratedNode(
       this.type,
       this.attributes,
       this.events,
+      renderKit,
+    );
+    node.__jsx = this.key();
+    return node;
+  }
+
+  generateSvnDom(renderKit: RenderKit) {
+    const node = createSvgNode(
+      this.type,
+      this.attributes,
       renderKit,
     );
     node.__jsx = this.key();

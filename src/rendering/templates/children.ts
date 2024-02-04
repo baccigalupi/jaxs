@@ -61,14 +61,22 @@ const textNode = (content: TextValue) => {
   return new TextTemplate(content);
 };
 
+const withSvgFlag = (inSvg: boolean) => (template: Template) => {
+  template && (template.inSvg = inSvg)
+  return template
+}
+
 export class Children implements Template {
   collection: Template[];
   parentElement: Element | undefined;
+  inSvg: boolean;
 
-  constructor(jsxChildren: Template[]) {
-    this.collection = ensureArray(jsxChildren);
+  constructor(jsxChildren: Template[], inSvg = false) {
+    this.collection = ensureArray(jsxChildren)
     this.collection = this.collection.map(replaceTextNodes) as Template[];
     this.collection = this.collection.flat() as Template[];
+    this.collection = this.collection.map(withSvgFlag(inSvg))
+    this.inSvg = inSvg;
   }
 
   render(renderKit: RenderKit, parentElement: Element | undefined) {

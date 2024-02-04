@@ -28,4 +28,21 @@ describe('Tag templates', () => {
       expect(template.key()).toEqual('input[type=text][name=email]')
     })
   })
+
+  describe('svg', () => {
+    test('passes svg flag to children', () => {
+      const Circle = () => {
+        return (
+          <svg height="100" width="100" xmlns="http://www.w3.org/2000/svg">
+            <circle r="45" cx="50" cy="50" stroke="green" stroke-width="3" fill="red" />
+          </svg> 
+        )
+      }
+      const template = <Circle />
+
+      expect(template.inSvg).toEqual(true)
+      expect(template.children.inSvg).toEqual(true)
+      expect(template.children.collection[0].inSvg).toEqual(true)
+    })
+  })
 })
