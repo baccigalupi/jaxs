@@ -1,4 +1,4 @@
-import { ExpandedElement, Instructions } from '../../../types';
+import type { ExpandedElement, Instructions } from '../../../types';
 import { addAttribute, removeAttribute, updateAttribute } from './generate';
 
 export const compileForAttributes = (

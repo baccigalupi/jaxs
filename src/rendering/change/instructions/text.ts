@@ -1,4 +1,4 @@
-import { Instructions } from '../../../types';
+import type { Instructions } from '../../../types';
 import { changeText } from './generate';
 
 export const compileForText = (source: Text, target: Text) => {

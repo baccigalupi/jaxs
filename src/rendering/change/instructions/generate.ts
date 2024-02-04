@@ -1,6 +1,5 @@
-import {
+import type {
   AttributeInstructionData,
-  ChangeInstructions,
   Dom,
   EventInstructionData,
   ExpandedElement,
@@ -10,6 +9,7 @@ import {
   RemoveInstructionData,
   UpdateEventInstructionData,
 } from '../../../types';
+import { ChangeInstructions } from '../../../types'
 
 export const changeText = (source: Text, target: Text): Instruction => ({
   source,

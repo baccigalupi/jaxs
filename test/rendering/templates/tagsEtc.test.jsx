@@ -182,9 +182,7 @@ describe('Rendering static jsx', () => {
     )
   })
 
-  // This is causing a segfault when creating the ns element. I think this is a
-  // bug in the dom implementation??
-  test.skip('svg creates tags and attributes via the right mechanisms', () => {
+  test('svg creates tags and attributes via the right mechanisms', () => {
     const document = createTestDom()
     const createElementNS = document.createElementNS
     document.createElementNS = mock(createElementNS)

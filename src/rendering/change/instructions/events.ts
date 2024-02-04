@@ -1,4 +1,4 @@
-import { ExpandedElement, Instructions } from '../../../types';
+import type { ExpandedElement, Instructions } from '../../../types';
 import { addEvent, removeEvent, updateEvent } from './generate';
 
 export const compileForEvents = (

@@ -1,4 +1,4 @@
-import { ExpandedElement, InputElement, Instructions } from '../../../types';
+import type { ExpandedElement, InputElement, Instructions } from '../../../types';
 import { changeValue } from './generate';
 import { compileForAttributes } from './attributes';
 import { compileForEvents } from './events';
