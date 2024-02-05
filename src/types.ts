@@ -45,7 +45,7 @@ export type AttributesAndEvents = {
 export type TemplateEventListeners = Record<string, EventListener>;
 
 export interface Template {
-  inSvg?: boolean,
+  isSvg?: boolean,
   render: (
     renderKit: RenderKit,
     parentElement?: Element,

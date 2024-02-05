@@ -16,13 +16,13 @@ export class Tag implements Template {
   events: EventAttributes;
   attributes: Attributes;
   children: Children;
-  inSvg: boolean;
+  isSvg: boolean;
 
   constructor(
     tagType: string,
     combinedAttributes: Attributes,
     children: Template[],
-    inSvg = false
+    isSvg = false
   ) {
     this.type = tagType;
 
@@ -30,8 +30,8 @@ export class Tag implements Template {
     this.events = events;
     this.attributes = attributes;
 
-    this.inSvg = inSvg || isSvgTag(this.type);
-    this.children = new Children(children, this.inSvg);
+    this.isSvg = isSvg || isSvgTag(this.type);
+    this.children = new Children(children, this.isSvg);
   }
 
   render(renderKit: RenderKit): DomCollection {
@@ -43,7 +43,7 @@ export class Tag implements Template {
   }
 
   generateDom(renderKit: RenderKit) {
-    if (this.inSvg) {
+    if (this.isSvg) {
       return this.generateSvnDom(renderKit)
     } else {
       return this.generateHtmlDom(renderKit)

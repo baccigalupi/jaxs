@@ -28,7 +28,8 @@
     "html": {
       "source": [
         "./cypress/jaxs-apps/add-remove-root-children.html",
-        "./cypress/jaxs-apps/add-remove-nested-children.html"
+        "./cypress/jaxs-apps/add-remove-nested-children.html",
+        "./cypress/jaxs-apps/svg.html"
       ]
     }
   },

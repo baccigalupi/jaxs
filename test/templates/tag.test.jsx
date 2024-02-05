@@ -40,9 +40,9 @@ describe('Tag templates', () => {
       }
       const template = <Circle />
 
-      expect(template.inSvg).toEqual(true)
-      expect(template.children.inSvg).toEqual(true)
-      expect(template.children.collection[0].inSvg).toEqual(true)
+      expect(template.isSvg).toEqual(true)
+      expect(template.children.isSvg).toEqual(true)
+      expect(template.children.collection[0].isSvg).toEqual(true)
     })
   })
 })
