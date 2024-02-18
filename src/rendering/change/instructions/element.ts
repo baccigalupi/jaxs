@@ -16,6 +16,13 @@ export const compileForElement = (
     .concat(valueInstructions);
 };
 
+export const compileForSvg = (
+  source: ExpandedElement,
+  target: ExpandedElement,
+) => {
+  return compileForAttributes(source, target, true);
+}
+
 const compileForInputValue = (
   sourceElement: ExpandedElement,
   targetElement: ExpandedElement,

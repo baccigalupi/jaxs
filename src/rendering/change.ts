@@ -12,7 +12,7 @@ import type {
 } from '../types';
 import {  ChangeInstructions } from '../types'
 import { compileChange } from './change/compile';
-import { debug } from '../debugging';
+// import { debug } from '../debugging';
 
 export const change = (
   source: HtmlChildren,
@@ -21,7 +21,7 @@ export const change = (
 ) => {
   const instructions = compileChange(source, target, parent);
 
-  debug('instructions', instructions.map((instruction) => instruction.type))
+  // debug('instructions', instructions.map((instruction) => instruction.type))
 
   instructions.forEach((instruction) => {
     performInstruction(instruction);
@@ -43,7 +43,7 @@ const changeText: Updater = (instruction: Instruction) => {
 const removeNode: Updater = (instruction: Instruction) => {
   const { source } = instruction;
   source.remove();
-  debug('removeNode called on', source.nodeName)
+  // debug('removeNode called on', source.nodeName)
 };
 
 const insertNode: Updater = (instruction: Instruction) => {
@@ -61,22 +61,30 @@ const insertNode: Updater = (instruction: Instruction) => {
 const replaceNode: Updater = (instruction: Instruction) => {
   const { source, target } = instruction;
   source.replaceWith(target);
-  debug('replaceNode called on', source.nodeName, 'with', target.nodeName)
-  debug('parent', source.parentElement)
+  // debug('replaceNode called on', source.nodeName, 'with', target.nodeName)
+  // debug('parent', source.parentElement)
 };
 
 const removeAttribute: Updater = (instruction: Instruction) => {
   const { source, data } = instruction;
-  const { name } = data as RemoveInstructionData;
+  const { name, isSvg } = data as RemoveInstructionData;
 
-  (source as ExpandedElement).removeAttribute(name);
+  if (isSvg) {
+    (source as SVGElement).removeAttributeNS(null, name)
+  } else {
+    (source as ExpandedElement).removeAttribute(name);
+  }
 };
 
 const addAttribute: Updater = (instruction: Instruction) => {
   const { source, data } = instruction;
-  const { name, value } = data as AttributeInstructionData;
+  const { name, value, isSvg } = data as AttributeInstructionData;
 
-  (source as ExpandedElement).setAttribute(name, value);
+  if (isSvg) {
+    (source as SVGElement).setAttributeNS(null, name, value)
+  } else {
+    (source as ExpandedElement).setAttribute(name, value);
+  }
 };
 
 const updateAttribute: Updater = (instruction: Instruction) => {

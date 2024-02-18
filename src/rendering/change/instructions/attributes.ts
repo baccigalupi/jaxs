@@ -4,6 +4,7 @@ import { addAttribute, removeAttribute, updateAttribute } from './generate';
 export const compileForAttributes = (
   source: ExpandedElement,
   target: ExpandedElement,
+  isSvg = false,
 ) => {
   const instructions = [] as Instructions;
   const sourceAttributes = source.attributes;
@@ -37,13 +38,14 @@ export const compileForAttributes = (
 
     if (!matchingAttribute) {
       instructions.push(
-        removeAttribute(source, target, { name: sourceAttribute.name }),
+        removeAttribute(source, target, { name: sourceAttribute.name, isSvg, }),
       );
     } else if (sourceAttribute.value !== matchingAttribute.value) {
       instructions.push(
         updateAttribute(source, target, {
           name: sourceAttribute.name,
           value: matchingAttribute.value,
+          isSvg,
         }),
       );
     }
@@ -69,6 +71,7 @@ export const compileForAttributes = (
         addAttribute(source, target, {
           name: targetAttribute.name,
           value: targetAttribute.value,
+          isSvg,
         }),
       );
     }

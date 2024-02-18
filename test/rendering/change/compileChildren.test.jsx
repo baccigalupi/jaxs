@@ -232,7 +232,11 @@ describe('compileChildren: add, remove, replace and move operations', () => {
 
     expect(changeClass.type).toEqual(ChangeInstructions.updateAttribute)
     expect(changeClass.source).toEqual(source[0])
-    expect(changeClass.data).toEqual({ name: 'class', value: 'bar' })
+    expect(changeClass.data).toEqual({
+      name: 'class',
+      value: 'bar',
+      isSvg: false,
+    })
   })
 
   test('completely swaps out content', () => {

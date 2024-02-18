@@ -20,7 +20,7 @@ export interface InputElement extends ExpandedElement {
   // deno-lint-ignore no-explicit-any
   value: any;
 }
-export type Dom = Text | ExpandedElement;
+export type Dom = Text | ExpandedElement | SVGElement;
 export type DomCollection = Dom[];
 export type HtmlChildren =
   | HTMLCollection
@@ -81,11 +81,13 @@ export type BusListenersMap = Record<BusEventName, BusPayload>;
 // Change instructions
 export type RemoveInstructionData = {
   name: string;
+  isSvg?: boolean;
 };
 
 export type AttributeInstructionData = {
   name: string;
   value: string;
+  isSvg?: boolean;
 };
 
 export type EventInstructionData = {

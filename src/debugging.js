@@ -1,5 +1,5 @@
 export const debug = (...message) => {
-  if (process.env.DEBUG === 'true') {
+  // if (Bun.env.DEBUG === 'true') {
     console.log(...message)
-  }
+  // }
 }

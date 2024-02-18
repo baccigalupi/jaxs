@@ -90,14 +90,19 @@ describe('compileChange for a elements', () => {
       const instructions = compileChange(source, target, parent)
       const [removeAttribute, addAttribute, updateAttribute] = instructions
 
-      expect(removeAttribute.data).toEqual({ name: 'toberemoved' })
+      expect(removeAttribute.data).toEqual({
+        isSvg: false,
+        name: 'toberemoved'
+      })
       expect(addAttribute.data).toEqual({
         name: 'tobeadded',
-        value: 'add-me'
+        value: 'add-me',
+        isSvg: false,
       })
       expect(updateAttribute.data).toEqual({
         name: 'tobeupdated',
-        value: 'updated'
+        value: 'updated',
+        isSvg: false,
       })
     }
   )
@@ -116,7 +121,11 @@ describe('compileChange for a elements', () => {
     expect(instructions.length).toEqual(1)
     const [instruction] = instructions
     expect(instruction.type).toEqual(ChangeInstructions.addAttribute)
-    expect(instruction.data).toEqual({ name: 'class', value: 'guest-content' })
+    expect(instruction.data).toEqual({
+      name: 'class',
+      value: 'guest-content',
+      isSvg: false
+    })
   })
 
   test('returns change instructions for attributes when the source has more than the target', () => {
@@ -133,7 +142,10 @@ describe('compileChange for a elements', () => {
     expect(instructions.length).toEqual(1)
     const [instruction] = instructions
     expect(instruction.type).toEqual(ChangeInstructions.removeAttribute)
-    expect(instruction.data).toEqual({ name: 'class' })
+    expect(instruction.data).toEqual({
+      isSvg: false,
+      name: 'class',
+    })
   })
 
   test('identifies value changes for inputs even without an attribute', () => {
