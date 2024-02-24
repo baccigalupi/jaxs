@@ -235,7 +235,7 @@ describe('compileChildren: add, remove, replace and move operations', () => {
     expect(changeClass.data).toEqual({
       name: 'class',
       value: 'bar',
-      isSvg: false,
+      isSvg: false
     })
   })
 

@@ -97,12 +97,12 @@ describe('compileChange for a elements', () => {
       expect(addAttribute.data).toEqual({
         name: 'tobeadded',
         value: 'add-me',
-        isSvg: false,
+        isSvg: false
       })
       expect(updateAttribute.data).toEqual({
         name: 'tobeupdated',
         value: 'updated',
-        isSvg: false,
+        isSvg: false
       })
     }
   )
@@ -144,7 +144,7 @@ describe('compileChange for a elements', () => {
     expect(instruction.type).toEqual(ChangeInstructions.removeAttribute)
     expect(instruction.data).toEqual({
       isSvg: false,
-      name: 'class',
+      name: 'class'
     })
   })
 
