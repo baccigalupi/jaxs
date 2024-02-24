@@ -1,10 +1,11 @@
 import { eventName } from '../../state'
 import { change } from '../change'
 
+const passThroughViewModel = (state) => state
 export class Bound {
   constructor (TemplateClass, viewModel, subscriptions, attributes) {
     this.TemplateClass = TemplateClass
-    this.viewModel = viewModel
+    this.viewModel = viewModel || passThroughViewModel
     this.attributes = attributes || {}
     this.subscriptions = subscriptions
     this.dom = []

@@ -1,4 +1,5 @@
-import { bind, createApp, jsx, views } from '../../dist/jaxs.js'
+import { bind, createApp, jsx } from '../../dist/jaxs.js'
+import { views } from '../../src/views.js'
 const { If } = views
 
 const app = createApp()

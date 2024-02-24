@@ -179,8 +179,6 @@ describe('Bound/subscribing templates', () => {
       parent: document.getElementById('app')
     }
 
-    const viewModel = (state) => state
-
     const RenderIf = ({ isVisible, children }) => {
       if (!isVisible) return
       return <>{children}</>
@@ -204,7 +202,7 @@ describe('Bound/subscribing templates', () => {
         </>
       )
     }
-    const BoundTemplate = bind({ Template, viewModel, subscriptions: ['inMembers'] })
+    const BoundTemplate = bind({ Template, subscriptions: ['inMembers'] })
 
     render(<BoundTemplate />, '#app', renderKit)
     const appDom = document.getElementById('app')

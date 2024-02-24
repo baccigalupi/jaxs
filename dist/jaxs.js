@@ -896,10 +896,12 @@ var performers = {
 };
 
 // src/rendering/templates/bound.js
+var passThroughViewModel = (state2) => state2;
+
 class Bound {
   constructor(TemplateClass, viewModel, subscriptions, attributes2) {
     this.TemplateClass = TemplateClass;
-    this.viewModel = viewModel;
+    this.viewModel = viewModel || passThroughViewModel;
     this.attributes = attributes2 || {};
     this.subscriptions = subscriptions;
     this.dom = [];
@@ -1126,57 +1128,7 @@ __export(exports_navigation, {
     }
   }
 });
-// src/views/conditionals.jsx
-var exports_conditionals = {};
-__export(exports_conditionals, {
-  Unless: () => {
-    {
-      return Unless;
-    }
-  },
-  IfElse: () => {
-    {
-      return IfElse;
-    }
-  },
-  If: () => {
-    {
-      return If;
-    }
-  }
-});
-var If = ({ condition, children: children3 }) => {
-  if (!condition)
-    return;
-  return jsx_default(jsx_default.fragment, null, children3);
-};
-var Unless = ({ condition, children: children3 }) => {
-  if (condition)
-    return;
-  return jsx_default(jsx_default.fragment, null, children3);
-};
-var IfElse = ({ condition, children: children3 }) => {
-  const [first, ...rest] = children3;
-  if (condition)
-    return jsx_default(jsx_default.fragment, null, first);
-  return jsx_default(jsx_default.fragment, null, rest);
-};
-
-// src/views/link.jsx
-var Link = ({ children: children3, ...props }) => {
-  return jsx_default("a", {
-    ...props,
-    onClick: "goToHref"
-  }, children3);
-};
-
-// src/views.js
-var views = {
-  ...exports_conditionals,
-  Link
-};
 export {
-  views,
   render,
   exports_navigation as navigation,
   jsx_default as jsx,
