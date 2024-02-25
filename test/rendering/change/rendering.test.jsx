@@ -157,7 +157,8 @@ describe('rendering change', () => {
       const targetTemplate = <a onClick='go-somewhere'>Go</a>
 
       const renderKit = buildRenderKit()
-      const document = createTestDom() // this one does events right
+      const window = renderKit.document.defaultView
+      const document = createTestDom()
       renderKit.document = document
 
       const parent = renderKit.document.getElementById('app')
@@ -184,7 +185,8 @@ describe('rendering change', () => {
       const targetTemplate = <a onClick='go-somewhere-else'>Go</a>
 
       const renderKit = buildRenderKit()
-      const document = createTestDom() // this one does events right
+      const document = createTestDom()
+      const window = document.defaultView
       renderKit.document = document
 
       const parent = renderKit.document.getElementById('app')
@@ -212,7 +214,9 @@ describe('rendering change', () => {
       const targetTemplate = <a>Go</a>
 
       const renderKit = buildRenderKit()
-      const document = createTestDom() // this one does events right
+      const document = createTestDom()
+      const window = document.defaultView
+
       renderKit.document = document
 
       const parent = renderKit.document.getElementById('app')

@@ -4,6 +4,7 @@ export type DomEventPublisher = (eventName: string, domEvent: Event) => void;
 
 export type RenderKit = {
   document: Document;
+  window: Window;
   publish: DomEventPublisher;
   subscribe: BusSubscribe;
   state: State;
@@ -149,4 +150,11 @@ export type App = {
   state?: State
   renderKit: RenderKit;
   render: (template: Template, selector: string) => Template;
+  window: Window;
+  document: Document;
 };
+
+export type DomEnvironment = {
+  document?: Document;
+  window?: Window; 
+}

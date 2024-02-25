@@ -15,7 +15,7 @@ export const extractQueryParams = (queryString) => {
     }, {})
 }
 
-export const onLocationChange = (_payload, { publish, state }) => {
+export const onLocationChange = (_payload, { publish, state, window }) => {
   const { host, pathname, search } = window.location
   const path = pathname
   const query = extractQueryParams(search)
@@ -31,7 +31,7 @@ export const onLocationChange = (_payload, { publish, state }) => {
 }
 
 export const setupHistory = (app) => {
-  const { publish, subscribe, state } = app
+  const { publish, subscribe, state, window } = app
   createRouteState(state)
   window.addEventListener('popstate', () => publish(locationChangeEvent))
   subscribe(locationChangeEvent, onLocationChange)

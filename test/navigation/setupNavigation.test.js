@@ -1,15 +1,16 @@
 import { describe, expect, test, mock, spyOn } from 'bun:test'
-import { setupWindow } from '../support/testDom' // to setup window
+import { createTestDom } from '../support/testDom'
 import { createApp } from '../../src/app'
 const spy = () => mock(() => {})
 
 describe('navigation related events', () => {
   test('the app sets up everything for link navigation from the dom', () => {
-    setupWindow()
+    const document = createTestDom()
+    const window = document.defaultView
     spyOn(window.history, 'pushState')
     const pushSpy = window.history.pushState
 
-    const app = createApp()
+    const app = createApp({ document })
     const locationChangeListener = spy()
     app.subscribe('locationChange', locationChangeListener)
 
@@ -33,14 +34,15 @@ describe('navigation related events', () => {
   })
 
   test('provides a way to programmatically navigate via publishing an event', () => {
-    setupWindow()
+    const document = createTestDom()
+    const window = document.defaultView
     spyOn(window.history, 'pushState')
     const pushSpy = window.history.pushState
 
-    const app = createApp()
+    const app = createApp({ document })
     const locationChangeListener = spy()
-
     app.subscribe('locationChange', locationChangeListener)
+
     app.publish('navigate', '/my/path')
 
     expect(locationChangeListener).toHaveBeenCalledTimes(1)

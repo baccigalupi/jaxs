@@ -1,5 +1,5 @@
 import { describe, expect, test, mock, beforeEach, spyOn } from 'bun:test'
-import { setupWindow } from '../support/testDom'
+import { createTestDom } from '../support/testDom'
 
 import { createApp } from '../../src/app'
 import {
@@ -9,12 +9,6 @@ import {
 const spy = () => mock(() => {})
 
 describe('navigation history related stuff', () => {
-  beforeEach(() => {
-    setupWindow()
-    // This prevents raising a navigation error in JSDOM
-    spyOn(window._virtualConsole, 'emit').mockImplementation(() => {})
-  })
-
   test('correctly extracts out query params from the url', () => {
     const searchString = '?foo=bar&zardoz=weird'
     const queryParams = extractQueryParams(searchString)
@@ -25,7 +19,9 @@ describe('navigation history related stuff', () => {
   })
 
   test('gets location from the window and updates the store', () => {
-    const app = createApp()
+    const document = createTestDom()
+    const window = document.defaultView
+    const app = createApp({ document })
     window.location = {
       host: 'www.example.com',
       pathname: '/foo/bar',
@@ -44,7 +40,10 @@ describe('navigation history related stuff', () => {
   })
 
   test('gets location from the window and updates the store', () => {
-    const app = createApp()
+    const document = createTestDom()
+    const window = document.defaultView
+    const app = createApp({ document })
+
     app.publish = spy()
     window.location = {
       host: 'www.example.com',

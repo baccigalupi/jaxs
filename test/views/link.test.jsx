@@ -25,6 +25,7 @@ describe('Link', () => {
 
   test('adds onClick handling to navigate to the href', () => {
     const document = createTestDom()
+    const window = document.defaultView
     const publish = spy()
 
     const template = (

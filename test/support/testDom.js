@@ -6,7 +6,7 @@ export const setupWindow = () => {
     url: 'http://www.example.com/foo/bar?zardoz=weird'
   })
   spyOn(dom.window._virtualConsole, 'emit').mockImplementation(() => {})
-  global.window = dom.window
+  return dom
 }
 
 const defaultContent = '<div id=\'app\'></div>'
@@ -30,8 +30,8 @@ const wrapElements = (elements) => {
 export const stripWhiteSpace = (string) => string.replace(/\s{2,}/g, '').trim()
 
 export const createTestDom = (content = defaultContent) => {
-  setupWindow()
-  const document = window.document
+  const dom = setupWindow()
+  const document = dom.window.document
   document.body.innerHTML = `<!DOCTYPE html><body>${content}<body>`
   return document
 }

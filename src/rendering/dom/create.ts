@@ -45,12 +45,10 @@ export const setEventsOnElement = (
 };
 
 export const createNode = (type: string, document: Document) => {
-  document = document || window.document;
   return document.createElement(type);
 };
 
 export const createTextNode = (value: string, document: Document) => {
-  document = document || window.document;
   return document.createTextNode(value);
 };
 

@@ -1,4 +1,4 @@
-import type { App, BusPublish, BusSubscribe } from './types';
+import type { App, BusPublish, BusSubscribe, DomEnvironment } from './types';
 import { createBus } from './messageBus';
 import { State } from './state'
 import {
@@ -23,15 +23,20 @@ const setupState = (app: App) => {
 
 const connectBusToState = (app: App) => {
   const { bus } = app;
-  bus.addListenerOptions({ state: app.state });
+  bus.addListenerOptions({
+    state: app.state,
+    document: app.document,
+    window: app.window,
+  });
 };
 
-const setupRenderKit = (app: App, document: Document) => {
+const setupRenderKit = (app: App) => {
   app.renderKit = {
     publish: app.publish as BusPublish,
     subscribe: app.subscribe as BusSubscribe,
     state: app.state as State,
-    document,
+    document: app.document,
+    window: app.window,
   };
 };
 
@@ -48,13 +53,28 @@ const addRender = (app: App) => {
   };
 };
 
-export const createApp = (document = window.document) => {
+const setupDomEnvironment = (app: App, domEnvironment: DomEnvironment) => {
+  const { window, document } = domEnvironment
+  if (window) {
+    app.window = window
+    app.document = window.document
+  } else if (document) {
+    app.window = document.defaultView as Window
+    app.document = document
+  } else {
+    app.window = window
+    app.document = window?.document
+  }
+}
+
+export const createApp = (domEnvironment: DomEnvironment | undefined) => {
   const app = {} as App;
+  setupDomEnvironment(app, domEnvironment || {} as DomEnvironment)
 
   setupBus(app);
   setupState(app);
   connectBusToState(app);
-  setupRenderKit(app, document);
+  setupRenderKit(app);
   setupHistory(app);
   setupNavigation(app);
   triggerRoute(app);

@@ -5,7 +5,7 @@ export const isSvgTag = (tagType: string) => tagType === 'svg'
 export const isSvg = (element: SVGElement) => element.namespaceURI === namespace
 
 export const createSvgNode = (type: string, attributes: Attributes, renderKit: RenderKit) => {
-  const document = renderKit && renderKit.document || window.document;
+  const { document } = renderKit
   const node = document.createElementNS(namespace, type)
 
   for (const key in attributes) {

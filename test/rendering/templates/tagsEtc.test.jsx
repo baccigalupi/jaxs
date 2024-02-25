@@ -53,6 +53,7 @@ describe('Rendering static jsx', () => {
     const template = <button onClick='saveSomething'>Save</button>
 
     const document = createTestDom()
+    const window = document.defaultView
     const publish = spy()
     const [node] = template.render({ document, publish })
 
@@ -70,6 +71,7 @@ describe('Rendering static jsx', () => {
     const template = <Link href='/foo/bar'>Go get your foo!</Link>
 
     const document = createTestDom()
+    const window = document.defaultView
     const publish = spy()
     const [node] = template.render({ document, publish })
 
