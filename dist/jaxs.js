@@ -36,11 +36,9 @@ var setEventsOnElement = (element, events, publish) => {
   element.eventMaps = eventMaps;
 };
 var createNode = (type, document) => {
-  document = document || window.document;
   return document.createElement(type);
 };
 var createTextNode = (value, document) => {
-  document = document || window.document;
   return document.createTextNode(value);
 };
 var createDecoratedNode = (type, attributes, events, renderKit) => {
@@ -79,7 +77,7 @@ var namespace = "http://www.w3.org/2000/svg";
 var isSvgTag = (tagType) => tagType === "svg";
 var isSvg = (element) => element.namespaceURI === namespace;
 var createSvgNode = (type, attributes, renderKit) => {
-  const document = renderKit && renderKit.document || window.document;
+  const { document } = renderKit;
   const node = document.createElementNS(namespace, type);
   for (const key in attributes) {
     if (key === "__self" || key === "xmlns")
@@ -1018,7 +1016,7 @@ var extractQueryParams = (queryString) => {
     return aggregate;
   }, {});
 };
-var onLocationChange = (_payload, { publish, state: state2 }) => {
+var onLocationChange = (_payload, { publish, state: state2, window }) => {
   const { host, pathname, search } = window.location;
   const path = pathname;
   const query = extractQueryParams(search);
@@ -1030,7 +1028,7 @@ var onLocationChange = (_payload, { publish, state: state2 }) => {
   publish(routeChangeEvent, { host, path, query });
 };
 var setupHistory = (app) => {
-  const { publish, subscribe, state: state2 } = app;
+  const { publish, subscribe, state: state2, window } = app;
   createRouteState(state2);
   window.addEventListener("popstate", () => publish(locationChangeEvent));
   subscribe(locationChangeEvent, onLocationChange);
@@ -1051,16 +1049,16 @@ var findHref = (node2) => {
 // src/navigation/setupNavigation.js
 var linkNavigationEvent = "goToHref";
 var programmaticNavigationEvent = "navigate";
-var navigate = (path, { publish }) => {
+var navigate = (path, { publish, window }) => {
   window.history.pushState(null, "", path);
   publish(locationChangeEvent);
 };
-var onLinkClick = (domEvent, { publish }) => {
+var onLinkClick = (domEvent, { publish, window }) => {
   if (!domEvent || !domEvent.target)
     return;
   domEvent.preventDefault();
   const href = findHref(domEvent.target);
-  navigate(href, { publish });
+  navigate(href, { publish, window });
 };
 var setupNavigation = (app) => {
   const { subscribe } = app;
@@ -1081,14 +1079,19 @@ var setupState = (app) => {
 };
 var connectBusToState = (app) => {
   const { bus } = app;
-  bus.addListenerOptions({ state: app.state });
+  bus.addListenerOptions({
+    state: app.state,
+    document: app.document,
+    window: app.window
+  });
 };
-var setupRenderKit = (app, document) => {
+var setupRenderKit = (app) => {
   app.renderKit = {
     publish: app.publish,
     subscribe: app.subscribe,
     state: app.state,
-    document
+    document: app.document,
+    window: app.window
   };
 };
 var triggerRoute = (app) => {
@@ -1102,12 +1105,26 @@ var addRender = (app) => {
     return render(template, selector, app.renderKit);
   };
 };
-var createApp = (document = window.document) => {
+var setupDomEnvironment = (app, domEnvironment) => {
+  const { window, document } = domEnvironment;
+  if (window) {
+    app.window = window;
+    app.document = window.document;
+  } else if (document) {
+    app.window = document.defaultView;
+    app.document = document;
+  } else {
+    app.window = window;
+    app.document = window?.document;
+  }
+};
+var createApp = (domEnvironment) => {
   const app = {};
+  setupDomEnvironment(app, domEnvironment || {});
   setupBus(app);
   setupState(app);
   connectBusToState(app);
-  setupRenderKit(app, document);
+  setupRenderKit(app);
   setupHistory(app);
   setupNavigation(app);
   triggerRoute(app);
