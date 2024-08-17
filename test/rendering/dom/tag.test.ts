@@ -5,7 +5,7 @@ import {
   setEventsOnElement,
   createNode,
   createDecoratedNode,
-} from '../../../lib/rendering/dom/element'
+} from '../../../lib/rendering/dom/tag'
 import { createRenderKit } from '../../support/render-kit'
 
 describe('element dom management', () => {

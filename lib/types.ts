@@ -4,7 +4,6 @@ import type { JaxsState } from 'jaxs-state'
 // DOM
 export type TextValue = string | number
 export type TagAttributes = Record<string, TextValue>
-export type DomNode = Element | Text
 interface JsxIded {
   __jsx?: string
 }
