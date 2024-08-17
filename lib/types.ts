@@ -3,7 +3,7 @@ import type { JaxsState } from 'jaxs-state'
 
 // DOM
 export type TextValue = string | number
-export type TagAttributes = Record<string, TextValue>
+type NullValues = undefined | null
 interface JsxIded {
   __jsx?: string
 }
@@ -19,7 +19,10 @@ interface JsxEventMapped {
 export type JaxsElement = Element & JsxIded & JsxEventMapped
 export type JaxsText = Text & JsxIded
 export type JaxsNode = JaxsElement | JaxsText
+
+export type TagProps = Record<string, TextValue | NullValues | boolean>
 export type TagEventAttributes = Record<string, string>
+export type TagAttributes = Record<string, string>
 export type TagAttributesAndEvents = {
   attributes: TagAttributes
   events: TagEventAttributes
