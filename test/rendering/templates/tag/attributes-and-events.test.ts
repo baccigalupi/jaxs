@@ -1,5 +1,5 @@
 import { expect, describe, it } from 'vitest'
-import { separateAttrsAndEvents } from '../../../lib/rendering/translators/attributes-and-events'
+import { separateAttrsAndEvents } from '../../../../lib/rendering/templates/tag/attributes-and-events'
 
 describe('separateAttrsAndEvents', () => {
   it('builds a map for any key prefaced by `on`', () => {

@@ -3,7 +3,7 @@ import type {
   TagAttributes,
   TagAttributesAndEvents,
   TagEventAttributes,
-} from '../../types'
+} from '../../../types'
 
 export const separateAttrsAndEvents = (
   props: TagProps,

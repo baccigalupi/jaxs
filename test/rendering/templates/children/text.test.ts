@@ -1,5 +1,5 @@
 import { expect, describe, it } from 'vitest'
-import { isTextValue } from '../../../lib/rendering/translators/text'
+import { isTextValue } from '../../../../lib/rendering/templates/children/text'
 
 describe('text', () => {
   describe('isTextValue', () => {
