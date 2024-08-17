@@ -1,5 +1,5 @@
 import { expect, describe, it } from 'vitest'
-import { normalizeToArray } from '../../lib/utils/normalize-to-array'
+import { normalizeToArray } from '../../../lib/rendering/translators/normalize-to-array'
 
 describe('normalizeToArray', () => {
   it('returns a wrapped value, when not an array', () => {
