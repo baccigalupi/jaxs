@@ -3,13 +3,13 @@ import { vi } from 'vitest'
 
 export const setupWindow = () => {
   const dom = new JSDOM('<!DOCTYPE html>', {
-    url: 'http://www.example.com/foo/bar?zardoz=weird'
+    url: 'http://www.example.com/foo/bar?zardoz=weird',
   })
   vi.spyOn(dom.window._virtualConsole, 'emit').mockImplementation(() => {})
   return dom
 }
 
-const defaultContent = '<div id=\'app\'></div>'
+const defaultContent = "<div id='app'></div>"
 
 export const domToString = (element) => {
   if (element.outerHTML) return element.outerHTML

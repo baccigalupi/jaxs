@@ -6,7 +6,7 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, 'lib/jaxs-state.ts'),
       name: 'jaxs-state',
-      fileName: 'jaxs-state'
-    }
-  }
+      fileName: 'jaxs-state',
+    },
+  },
 })
