@@ -1,7 +1,7 @@
-import { Renderable, TextValue, RenderKit, JaxsNode } from '../../types'
+import { Template, TextValue, RenderKit, JaxsNode } from '../../types'
 import { createTextNode } from '../dom/text'
 
-export class TextTemplate<T> implements Renderable<T> {
+export class TextTemplate<T> implements Template<T> {
   value: string
 
   constructor(content: TextValue) {

@@ -2,7 +2,10 @@ import { expect, describe, it } from 'vitest'
 import {
   isTextValue,
   textNode,
+  replaceTextNodes,
 } from '../../../../lib/rendering/templates/children/text'
+import { Tag } from '../../../../lib/rendering/templates/tag'
+import { TextTemplate } from '../../../../lib/rendering/templates/text'
 
 describe('text', () => {
   describe('isTextValue', () => {
@@ -19,11 +22,25 @@ describe('text', () => {
     })
   })
 
-  describe('textNode', () => {
-    it('return a text template with the right value', () => {
-      const template = textNode(7)
+  it('textNode return a text template with the right value', () => {
+    const template = textNode(7)
 
-      expect(template.value).toEqual('7')
+    expect(template.value).toEqual('7')
+  })
+
+  describe('replaceTextNodes', () => {
+    it('return the element, if it is not a text value', () => {
+      const tag = new Tag('p', {})
+      const replacement = replaceTextNodes(tag)
+
+      expect(replacement).toEqual(tag)
+    })
+
+    it('return the element, if it is not a text value', () => {
+      const replacement = replaceTextNodes(88)
+
+      expect(replacement instanceof TextTemplate).toEqual(true)
+      expect((replacement as TextTemplate<string>).value).toEqual('88')
     })
   })
 })

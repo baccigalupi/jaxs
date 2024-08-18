@@ -2,7 +2,7 @@ import type {
   TagProps,
   JaxsNode,
   TagEventAttributes,
-  Renderable,
+  Template,
   RenderKit,
   TagAttributes,
 } from '../../types'
@@ -12,7 +12,7 @@ import { isSvgTag, createSvgNode } from '../dom/svg'
 import { separateAttrsAndEvents } from './tag/attributes-and-events'
 // import { Children } from './children';
 
-export class Tag<T> implements Renderable<T> {
+export class Tag<T> implements Template<T> {
   type: string
   events: TagEventAttributes
   attributes: TagAttributes
@@ -23,12 +23,12 @@ export class Tag<T> implements Renderable<T> {
   constructor(
     tagType: string,
     props: TagProps,
-    //     children: Template[],
     isSvg = false,
+    //     children: Template[],
   ) {
     this.type = tagType
 
-    const { events, attributes } = separateAttrsAndEvents(combinedAttributes)
+    const { events, attributes } = separateAttrsAndEvents(props)
     this.events = events
     this.attributes = attributes
 

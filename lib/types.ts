@@ -46,6 +46,6 @@ export type RenderKit<T> = {
   parent?: JaxsNode | null
 }
 
-export interface Renderable<T> {
+export interface Template<T> {
   render: (renderKit: RenderKit<T>) => JaxsNode[]
 }
