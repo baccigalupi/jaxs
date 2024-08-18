@@ -77,4 +77,25 @@ describe('separateAttrsAndEvents', () => {
       checked: 'true',
     })
   })
+
+  it('leaves the __source object attribute as is', () => {
+    const props = {
+      class: 'border bg-gold',
+      value: undefined,
+      checked: true,
+      __source: {
+        fileName: 'my-file.tsx',
+        lineNumber: '23',
+        columnNumber: '7',
+      },
+    }
+
+    const { attributes } = separateAttrsAndEvents(props)
+
+    expect(attributes.__source).toEqual({
+      fileName: 'my-file.tsx',
+      lineNumber: '23',
+      columnNumber: '7',
+    })
+  })
 })

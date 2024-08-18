@@ -5,26 +5,28 @@ import type {
   Template,
   RenderKit,
   TagAttributes,
+  JsxCollection,
 } from '../../types'
 
 import { createDecoratedNode } from '../dom/tag'
 import { isSvgTag, createSvgNode } from '../dom/svg'
 import { separateAttrsAndEvents } from './tag/attributes-and-events'
-// import { Children } from './children';
+import { Children } from './children'
+import { JsxKey } from './tag/jsx-key'
 
 export class Tag implements Template {
   type: string
   events: TagEventAttributes
   attributes: TagAttributes
   props: TagProps
-  //   children: Children;
+  children: Children
   isSvg: boolean
 
   constructor(
     tagType: string,
     props: TagProps,
+    children = [] as JsxCollection,
     isSvg = false,
-    //     children: Template[],
   ) {
     this.type = tagType
 
@@ -33,63 +35,43 @@ export class Tag implements Template {
     this.attributes = attributes
 
     this.isSvg = isSvg || isSvgTag(this.type)
-    //     this.children = new Children(children, this.isSvg);
+    this.children = new Children(children, this.isSvg)
   }
 
   render(renderKit: RenderKit): JaxsNode[] {
-    //     const dom = this.generateDom(renderKit);
-    //     if (!dom) return [];
+    const dom = this.generateDom(renderKit)
+    if (!dom) return []
 
-    //     this.children.render(renderKit, dom);
-    //     return [dom];
-    return []
+    this.children.render(renderKit, dom)
+    return [dom]
   }
 
-  //   generateDom(renderKit: RenderKit) {
-  //     if (this.isSvg) {
-  //       return this.generateSvnDom(renderKit)
-  //     } else {
-  //       return this.generateHtmlDom(renderKit)
-  //     }
-  //   }
+  generateDom(renderKit: RenderKit) {
+    if (this.isSvg) {
+      return this.generateSvgDom(renderKit)
+    } else {
+      return this.generateHtmlDom(renderKit)
+    }
+  }
 
-  //   generateHtmlDom(renderKit: RenderKit) {
-  //     const node = createDecoratedNode(
-  //       this.type,
-  //       this.attributes,
-  //       this.events,
-  //       renderKit,
-  //     );
-  //     node.__jsx = this.key();
-  //     return node;
-  //   }
+  generateHtmlDom(renderKit: RenderKit) {
+    const node = createDecoratedNode(
+      this.type,
+      this.attributes,
+      this.events,
+      renderKit,
+    )
+    node.__jsx = this.jsxKey()
+    return node
+  }
 
-  //   generateSvnDom(renderKit: RenderKit) {
-  //     const node = createSvgNode(
-  //       this.type,
-  //       this.attributes,
-  //       renderKit,
-  //     );
-  //     node.__jsx = this.key();
-  //     return node;
-  //   }
+  generateSvgDom(renderKit: RenderKit) {
+    const node = createSvgNode(this.type, this.attributes, renderKit.document)
+    node.__jsx = this.jsxKey()
+    return node
+  }
 
-  //   key() {
-  //     return this.attributes.key || this.source() || this.createKey();
-  //   }
-
-  //   source() {
-  //     if (this.attributes.__source) {
-  //       const { fileName, lineNumber, columnNumber } = this.attributes.__source;
-  //       return `${fileName}:${lineNumber}:${columnNumber}`;
-  //     }
-  //   }
-
-  //   createKey() {
-  //     const id = this.attributes.id ? `#${this.attributes.id}` : '';
-  //     const type = this.attributes.type ? `[type=${this.attributes.type}]` : '';
-  //     const name = this.attributes.name ? `[name=${this.attributes.name}]` : '';
-
-  //     return `${this.type}${id}${type}${name}`;
-  //   }
+  jsxKey() {
+    return new JsxKey(this.type, this.attributes).generate()
+  }
 }

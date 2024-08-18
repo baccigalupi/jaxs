@@ -19,10 +19,20 @@ interface JsxEventMapped {
 export type JaxsElement = Element & JsxIded & JsxEventMapped
 export type JaxsText = Text & JsxIded
 export type JaxsNode = JaxsElement | JaxsText
+export type JaxsNodes = JaxsNode[]
 
-export type TagProps = Record<string, TextValue | NullValues | boolean>
+export type ReactSourceObject = {
+  fileName: string
+  lineNumber: string
+  columnNumber: string
+}
+type SourceMap = {
+  __source?: ReactSourceObject
+}
+type TagPropValue = TextValue | NullValues | boolean
+export type TagProps = Record<string, TagPropValue> & SourceMap
 export type TagEventAttributes = Record<string, string>
-export type TagAttributes = Record<string, string>
+export type TagAttributes = Record<string, string> & SourceMap
 export type TagAttributesAndEvents = {
   attributes: TagAttributes
   events: TagEventAttributes
@@ -47,6 +57,7 @@ export type RenderKit = {
 }
 
 export interface Template {
-  render: (renderKit: RenderKit) => JaxsNode[]
+  render: (renderKit: RenderKit, parentElement?: JaxsElement) => JaxsNode[]
   isSvg: boolean
 }
+export type JsxCollection = (Template | TextValue)[]

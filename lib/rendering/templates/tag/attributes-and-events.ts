@@ -35,6 +35,7 @@ const normalizeValueForKey = (
   defaultValue = '',
 ) => {
   if (props[key] === undefined || props[key] === null) return defaultValue
+  if (key === '__source') return props[key]
 
   const value = props[key]
   return value.toString()
