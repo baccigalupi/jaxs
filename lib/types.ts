@@ -4,8 +4,12 @@ import type { JaxsState } from 'jaxs-state'
 // DOM
 export type TextValue = string | number
 type NullValues = undefined | null
-interface JsxIded {
+export interface JsxIded {
   __jsx?: string
+}
+export type JsxChangeId = {
+  element: JsxIded
+  index: number
 }
 export type EventMap = {
   domEvent: string
