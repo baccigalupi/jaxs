@@ -12,7 +12,7 @@ import { isSvgTag, createSvgNode } from '../dom/svg'
 import { separateAttrsAndEvents } from './tag/attributes-and-events'
 // import { Children } from './children';
 
-export class Tag<T> implements Template<T> {
+export class Tag implements Template {
   type: string
   events: TagEventAttributes
   attributes: TagAttributes
@@ -36,7 +36,7 @@ export class Tag<T> implements Template<T> {
     //     this.children = new Children(children, this.isSvg);
   }
 
-  render(renderKit: RenderKit<T>): JaxsNode[] {
+  render(renderKit: RenderKit): JaxsNode[] {
     //     const dom = this.generateDom(renderKit);
     //     if (!dom) return [];
 

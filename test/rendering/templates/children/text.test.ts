@@ -40,7 +40,7 @@ describe('text', () => {
       const replacement = replaceTextNodes(88)
 
       expect(replacement instanceof TextTemplate).toEqual(true)
-      expect((replacement as TextTemplate<string>).value).toEqual('88')
+      expect((replacement as TextTemplate).value).toEqual('88')
     })
   })
 })

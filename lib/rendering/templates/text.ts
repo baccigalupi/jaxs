@@ -1,14 +1,16 @@
 import { Template, TextValue, RenderKit, JaxsNode } from '../../types'
 import { createTextNode } from '../dom/text'
 
-export class TextTemplate<T> implements Template<T> {
+export class TextTemplate implements Template {
   value: string
+  isSvg: boolean
 
   constructor(content: TextValue) {
     this.value = content.toString()
+    this.isSvg = false
   }
 
-  render<T>(renderKit: RenderKit<T>) {
+  render(renderKit: RenderKit) {
     const textNode = createTextNode(this.value, renderKit.document)
     ;(textNode as JaxsNode).__jsx = 'TextNode'
     return [textNode]

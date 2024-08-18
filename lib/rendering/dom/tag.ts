@@ -48,11 +48,11 @@ export const setEventsOnElement = (
   element.eventMaps = eventMaps
 }
 
-export const createDecoratedNode = <T>(
+export const createDecoratedNode = (
   type: string,
   attributes: TagAttributes,
   events: TagEventAttributes,
-  renderKit: RenderKit<T>,
+  renderKit: RenderKit,
 ) => {
   const dom = createNode(type, renderKit.document)
   setAttributesOnElement(dom, attributes)

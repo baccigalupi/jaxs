@@ -30,22 +30,23 @@ export type TagAttributesAndEvents = {
 
 // Message bus types
 export type DomPublish = (eventName: string, domEvent: Event) => void
-export type Subscribe<T> = (
+export type Subscribe = (
   matcher: JaxsBusEventMatcher,
-  listener: JaxsBusListener<T>,
+  listener: JaxsBusListener<any>,
 ) => void
 
 // state types
 
-export type RenderKit<T> = {
+export type RenderKit = {
   document: Document
   window: Window
   publish: DomPublish
-  subscribe: Subscribe<T>
+  subscribe: Subscribe
   state: JaxsState
   parent?: JaxsNode | null
 }
 
-export interface Template<T> {
-  render: (renderKit: RenderKit<T>) => JaxsNode[]
+export interface Template {
+  render: (renderKit: RenderKit) => JaxsNode[]
+  isSvg: boolean
 }
