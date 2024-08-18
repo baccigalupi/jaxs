@@ -30,9 +30,9 @@ type SourceMap = {
   __source?: ReactSourceObject
 }
 type TagPropValue = TextValue | NullValues | boolean
-export type TagProps = Record<string, TagPropValue> & SourceMap
+export type TagProps = SourceMap & Record<string, TagPropValue>
+export type TagAttributes = SourceMap & Record<string, string>
 export type TagEventAttributes = Record<string, string>
-export type TagAttributes = Record<string, string> & SourceMap
 export type TagAttributesAndEvents = {
   attributes: TagAttributes
   events: TagEventAttributes
@@ -45,7 +45,7 @@ export type Subscribe = (
   listener: JaxsBusListener<any>,
 ) => void
 
-// state types
+// jsx and rendering
 
 export type RenderKit = {
   document: Document
