@@ -9,4 +9,9 @@ export default defineConfig({
       fileName: 'jaxs-state',
     },
   },
+  esbuild: {
+    jsx: 'transform',
+    jsxFactory: 'jsx',
+    jsxFragment: 'jsx.fragment',
+  },
 })

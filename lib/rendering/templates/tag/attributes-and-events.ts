@@ -1,12 +1,15 @@
 import type {
-  TagProps,
+  Props,
   TagAttributes,
   TagAttributesAndEvents,
   TagEventAttributes,
+  JsxCollection,
+  PropValue,
 } from '../../../types'
+import { ensureJsxChildrenArray } from '../children/normalize'
 
 export const separateAttrsAndEvents = (
-  props: TagProps,
+  props: Props,
   defaultValue = '',
 ): TagAttributesAndEvents => {
   const attributes: TagAttributes = {}
@@ -19,7 +22,11 @@ export const separateAttrsAndEvents = (
       events[eventKey] = value ? value.toString() : ''
     } else {
       if (value === false) continue
-      attributes[key] = normalizeValueForKey(props, key, defaultValue)
+      if (key === '__source') {
+        attributes.__source = props.__source
+      } else {
+        attributes[key] = normalizeValueForKey(key, value, defaultValue)
+      }
     }
   }
 
@@ -30,13 +37,21 @@ export const separateAttrsAndEvents = (
 }
 
 const normalizeValueForKey = (
-  props: TagProps,
   key: string,
+  value: PropValue,
   defaultValue = '',
 ) => {
-  if (props[key] === undefined || props[key] === null) return defaultValue
-  if (key === '__source') return props[key]
+  if (value === undefined || value === null) return defaultValue
 
-  const value = props[key]
   return value.toString()
+}
+
+export const packageJsxAttributes = (
+  maybeAttributes?: Props,
+  maybeChildren?: JsxCollection,
+) => {
+  const attributes = maybeAttributes || ({} as Props)
+  const children = ensureJsxChildrenArray(maybeChildren, attributes)
+  attributes.children = attributes.children || children
+  return attributes
 }

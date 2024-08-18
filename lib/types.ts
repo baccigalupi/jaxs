@@ -26,11 +26,21 @@ export type ReactSourceObject = {
   lineNumber: string
   columnNumber: string
 }
-type SourceMap = {
+
+interface SourceMap {
   __source?: ReactSourceObject
 }
-type TagPropValue = TextValue | NullValues | boolean
-export type TagProps = SourceMap & Record<string, TagPropValue>
+export type PropValue =
+  | TextValue
+  | NullValues
+  | boolean
+  | ReactSourceObject
+  | JsxCollection
+export type Props = {
+  __source?: ReactSourceObject
+  children?: JsxCollection
+  [key: string]: PropValue
+}
 export type TagAttributes = SourceMap & Record<string, string>
 export type TagEventAttributes = Record<string, string>
 export type TagAttributesAndEvents = {
@@ -60,4 +70,5 @@ export interface Template {
   render: (renderKit: RenderKit, parentElement?: JaxsElement) => JaxsNode[]
   isSvg: boolean
 }
+export type TemplateGenerator = (props: Props) => Template
 export type JsxCollection = (Template | TextValue)[]

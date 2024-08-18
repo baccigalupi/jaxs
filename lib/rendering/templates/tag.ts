@@ -1,5 +1,5 @@
 import type {
-  TagProps,
+  Props,
   JaxsNode,
   TagEventAttributes,
   Template,
@@ -18,13 +18,13 @@ export class Tag implements Template {
   type: string
   events: TagEventAttributes
   attributes: TagAttributes
-  props: TagProps
+  props: Props
   children: Children
   isSvg: boolean
 
   constructor(
     tagType: string,
-    props: TagProps,
+    props: Props,
     children = [] as JsxCollection,
     isSvg = false,
   ) {
