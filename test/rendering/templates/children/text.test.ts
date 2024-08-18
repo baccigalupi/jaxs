@@ -1,5 +1,8 @@
 import { expect, describe, it } from 'vitest'
-import { isTextValue } from '../../../../lib/rendering/templates/children/text'
+import {
+  isTextValue,
+  textNode,
+} from '../../../../lib/rendering/templates/children/text'
 
 describe('text', () => {
   describe('isTextValue', () => {
@@ -13,6 +16,14 @@ describe('text', () => {
 
     it('is false when anything else', () => {
       expect(isTextValue({})).toEqual(false)
+    })
+  })
+
+  describe('textNode', () => {
+    it('return a text template with the right value', () => {
+      const template = textNode(7)
+
+      expect(template.value).toEqual('7')
     })
   })
 })
