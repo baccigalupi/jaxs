@@ -1,7 +1,7 @@
 import type { JaxsBusEventMatcher, JaxsBusListener } from 'jaxs-bus'
 import type { JaxsState } from 'jaxs-state'
 
-// DOM
+// DOM & Jax & Jsx
 export type TextValue = string | number
 type NullValues = undefined | null
 export interface JsxIded {
@@ -24,6 +24,7 @@ export type JaxsElement = Element & JsxIded & JsxEventMapped
 export type JaxsText = Text & JsxIded
 export type JaxsNode = JaxsElement | JaxsText
 export type JaxsNodes = JaxsNode[]
+export type JaxsInput = HTMLInputElement & JsxIded & JsxEventMapped
 
 export type ReactSourceObject = {
   fileName: string
@@ -60,7 +61,6 @@ export type Subscribe = (
 ) => void
 
 // jsx and rendering
-
 export type RenderKit = {
   document: Document
   window: Window
@@ -69,10 +69,70 @@ export type RenderKit = {
   state: JaxsState
   parent?: JaxsNode | null
 }
-
 export interface Template {
   render: (renderKit: RenderKit, parentElement?: JaxsElement) => JaxsNode[]
   isSvg: boolean
 }
 export type TemplateGenerator = (props: Props) => Template
 export type JsxCollection = (Template | TextValue)[]
+
+// Change instructions and change compilation
+export enum ChangeInstructionTypes {
+  removeNode,
+  insertNode, // can be to move an existing element in the dom, or to add one
+  replaceNode,
+  removeAttribute,
+  addAttribute,
+  updateAttribute,
+  removeEvent,
+  addEvent,
+  updateEvent,
+  changeValue,
+  changeText,
+}
+
+export type RemoveInstructionData = {
+  name: string
+  isSvg?: boolean
+}
+
+export type AttributeInstructionData = {
+  name: string
+  value: string
+  isSvg?: boolean
+}
+
+export type EventInstructionData = {
+  name: string
+  value: EventListener
+}
+
+export type UpdateEventInstructionData = {
+  name: string
+  sourceValue: EventListener
+  targetValue: EventListener
+}
+
+export type InsertNodeData = {
+  parent: JaxsElement
+  index: number
+}
+
+type NullData = Record<string, never>
+
+export type InstructionData =
+  | RemoveInstructionData
+  | AttributeInstructionData
+  | EventInstructionData
+  | UpdateEventInstructionData
+  | InsertNodeData
+  | NullData
+
+export type ChangeInstruction = {
+  source: JaxsNode
+  target: JaxsNode
+  type: ChangeInstructionTypes
+  data: InstructionData
+}
+
+export type ChangeInstructions = Array<ChangeInstruction>
