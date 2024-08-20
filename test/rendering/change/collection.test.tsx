@@ -5,7 +5,11 @@ import { jsx } from '../../../lib/jaxs'
 import { describe, expect, test, vi } from 'vitest'
 import { createRenderKit } from '../../support/render-kit'
 
-import { ChangeInstructionTypes } from '../../../lib/types'
+import {
+  ChangeInstructionTypes,
+  InsertNodeData,
+  AttributeInstructionData,
+} from '../../../lib/types'
 import { compileCollection } from '../../../lib/rendering/change/collection'
 
 describe('compileCollection: add, remove, replace and move operations', () => {
@@ -122,7 +126,7 @@ describe('compileCollection: add, remove, replace and move operations', () => {
     const [instruction] = instructions
     expect(instruction.type).toEqual(ChangeInstructionTypes.insertNode)
     expect(instruction.source).toEqual(target[1])
-    expect(instruction.data.index).toEqual(1)
+    expect((instruction.data as InsertNodeData).index).toEqual(1)
   })
 
   test('creates insert instructions when the same element gets reordeded', () => {
@@ -152,11 +156,11 @@ describe('compileCollection: add, remove, replace and move operations', () => {
 
     expect(moveH1.type).toEqual(ChangeInstructionTypes.insertNode)
     expect(moveH1.source).toEqual(source[1])
-    expect(moveH1.data.index).toEqual(0)
+    expect((moveH1.data as InsertNodeData).index).toEqual(0)
 
     expect(moveP.type).toEqual(ChangeInstructionTypes.insertNode)
     expect(moveP.source).toEqual(source[0])
-    expect(moveP.data.index).toEqual(1)
+    expect((moveP.data as InsertNodeData).index).toEqual(1)
   })
 
   test('adds an element in the middle and shifts the remainder down', () => {
@@ -187,15 +191,15 @@ describe('compileCollection: add, remove, replace and move operations', () => {
 
     expect(insertP.type).toEqual(ChangeInstructionTypes.insertNode)
     expect(insertP.source).toEqual(target[1])
-    expect(insertP.data.index).toEqual(1)
+    expect((insertP.data as InsertNodeData).index).toEqual(1)
 
     expect(moveInput.type).toEqual(ChangeInstructionTypes.insertNode)
     expect(moveInput.source).toEqual(source[1])
-    expect(moveInput.data.index).toEqual(2)
+    expect((moveInput.data as InsertNodeData).index).toEqual(2)
 
     expect(moveSubmit.type).toEqual(ChangeInstructionTypes.insertNode)
     expect(moveSubmit.source).toEqual(source[2])
-    expect(moveSubmit.data.index).toEqual(3)
+    expect((moveSubmit.data as InsertNodeData).index).toEqual(3)
   })
 
   test('does the right recursion stuff when updating a child', () => {
@@ -252,11 +256,13 @@ describe('compileCollection: add, remove, replace and move operations', () => {
 
     expect(moveP.type).toEqual(ChangeInstructionTypes.insertNode)
     expect(moveP.source).toEqual(source[1])
-    expect(moveP.data.index).toEqual(0)
+    expect((moveP.data as InsertNodeData).index).toEqual(0)
 
     expect(addAttribute.type).toEqual(ChangeInstructionTypes.addAttribute)
     expect(addAttribute.source).toEqual(source[1])
-    expect(addAttribute.data.name).toEqual('class')
+    expect((addAttribute.data as AttributeInstructionData).name).toEqual(
+      'class',
+    )
 
     expect(changeText.type).toEqual(ChangeInstructionTypes.changeText)
     expect(changeText.source).toEqual(source[1].childNodes[0])

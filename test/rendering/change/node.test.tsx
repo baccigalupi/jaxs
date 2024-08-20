@@ -5,7 +5,10 @@ import { jsx } from '../../../lib/jaxs'
 import { describe, expect, test, vi } from 'vitest'
 
 import { createRenderKit } from '../../support/render-kit'
-import { ChangeInstructionTypes } from '../../../lib/types'
+import {
+  ChangeInstructionTypes,
+  AttributeInstructionData,
+} from '../../../lib/types'
 import { compileCollection } from '../../../lib/rendering/change/collection'
 import { compileForElement } from '../../../lib/rendering/change/nodes/element'
 
@@ -136,8 +139,8 @@ describe('compileChange for a elements', () => {
 
     expect(instructions.length).toEqual(1)
     const [instruction] = instructions
-    expect(instruction.data.value).toEqual('hola')
     expect(instruction.type).toEqual(ChangeInstructionTypes.changeValue)
+    expect((instruction.data as AttributeInstructionData).value).toEqual('hola')
   })
 
   test('returns an add event instruction when an event exists only on the target', () => {
