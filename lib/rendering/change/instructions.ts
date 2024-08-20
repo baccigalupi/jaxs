@@ -120,3 +120,12 @@ export const changeValue = (
   type: ChangeInstructionTypes.changeValue,
   data,
 })
+
+export const instructionsSorter = (
+  left: ChangeInstruction,
+  right: ChangeInstruction,
+) => {
+  if (left.type > right.type) return 1
+  if (left.type < right.type) return -1
+  return 0
+}

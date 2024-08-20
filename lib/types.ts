@@ -8,7 +8,7 @@ export interface JsxIded {
   __jsx?: string
 }
 export type JsxChangeId = {
-  element: JsxIded
+  element: JaxsNode
   index: number
 }
 export type EventMap = {

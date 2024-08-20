@@ -18,3 +18,6 @@ export const createSvgNode = (
 
   return node as unknown as JaxsElement
 }
+
+export const elementIsSvg = (element: JaxsElement) =>
+  element.namespaceURI === namespace

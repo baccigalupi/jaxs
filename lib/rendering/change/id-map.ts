@@ -1,4 +1,4 @@
-import type { JsxIded, JsxChangeId } from '../../types'
+import type { JaxsNode, JsxChangeId } from '../../types'
 
 const nullMatch = { index: -1 } as JsxChangeId
 
@@ -9,7 +9,7 @@ export class IdMap {
     this.map = {}
   }
 
-  populate(list: JsxIded[]) {
+  populate(list: NodeListOf<JaxsNode>) {
     list.forEach((element, i) => {
       const id = element.__jsx
       if (id) {
@@ -22,7 +22,7 @@ export class IdMap {
     })
   }
 
-  pullMatch(element: JsxIded): JsxChangeId {
+  pullMatch(element: JaxsNode): JsxChangeId {
     const id = element && element.__jsx
     if (!id) return nullMatch
     if (!(this.map[id] && this.map[id].length)) return nullMatch
@@ -30,7 +30,7 @@ export class IdMap {
     return this.map[id].shift() as JsxChangeId
   }
 
-  clear(element: JsxIded) {
+  clear(element: JaxsNode) {
     const id = element && element.__jsx
     if (!(id && this.map[id] && this.map[id].length)) return
 
@@ -41,7 +41,7 @@ export class IdMap {
     }, [] as JsxChangeId[])
   }
 
-  check(element: JsxIded) {
+  check(element: JaxsNode) {
     const id = element && element.__jsx
     if (!(id && this.map[id])) return false
     return this.map[id].length > 0
@@ -52,7 +52,7 @@ export class IdMap {
   }
 }
 
-export const createIdMap = (list: JsxIded[]) => {
+export const createIdMap = (list: NodeListOf<JaxsNode>) => {
   const map = new IdMap()
   map.populate(list)
   return map
