@@ -22,7 +22,8 @@ interface JsxEventMapped {
 }
 export type JaxsElement = Element & JsxIded & JsxEventMapped
 export type JaxsText = Text & JsxIded
-export type JaxsNode = JaxsElement | JaxsText
+export type JaxsSvgElement = SVGElement & JsxIded
+export type JaxsNode = JaxsElement | JaxsText | JaxsSvgElement
 export type JaxsNodes = JaxsNode[]
 export type JaxsInput = HTMLInputElement & JsxIded & JsxEventMapped
 
@@ -136,3 +137,5 @@ export type ChangeInstruction = {
 }
 
 export type ChangeInstructions = Array<ChangeInstruction>
+
+export type Updater = (instruction: ChangeInstruction) => void
