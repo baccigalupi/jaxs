@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { createIdMap } from '../../../lib/rendering/change/id-map'
-import { JsxIded } from '../../../lib/types'
+import { createIdMap } from '../../../../lib/rendering/change/instructions/id-map'
+import { JsxIded, JaxsNode } from '../../../../lib/types'
 
 describe('createIdMap', () => {
   it('populates the map helper and allows you to pull via matching jsx ids', () => {
@@ -9,11 +9,11 @@ describe('createIdMap', () => {
       { __jsx: 'input#email[type=text][name=email]' },
       { __jsx: 'input[type=submit]' },
     ]
-    const map = createIdMap(list)
+    const map = createIdMap(list as unknown as NodeListOf<JaxsNode>)
 
     const match = map.pullMatch({
       __jsx: 'input#email[type=text][name=email]',
-    })
+    } as JaxsNode)
 
     expect(match.index).toEqual(1)
     expect(match.element).toEqual({
@@ -32,12 +32,12 @@ describe('createIdMap', () => {
       { __jsx: 'input#email[type=text][name=email]' },
       { __jsx: 'TextNode', textContent: 'two' },
     ]
-    const map = createIdMap(list)
+    const map = createIdMap(list as unknown as NodeListOf<JaxsNode>)
 
     const match = map.pullMatch({
       __jsx: 'TextNode',
       textContent: 'two',
-    } as TextElement)
+    } as JaxsNode)
     expect(match.index).toEqual(0)
     expect(match.element).toEqual({
       __jsx: 'TextNode',
@@ -50,9 +50,9 @@ describe('createIdMap', () => {
       { __jsx: 'TextNode', textContent: 'one' },
       { __jsx: 'input#email[type=text][name=email]' },
     ]
-    const map = createIdMap(list)
+    const map = createIdMap(list as unknown as NodeListOf<JaxsNode>)
 
-    const match = map.pullMatch({ __jsx: 'input[type=submit]' })
+    const match = map.pullMatch({ __jsx: 'input[type=submit]' } as JaxsNode)
     expect(match.element).toBeFalsy()
     expect(match.index).toEqual(-1)
   })
@@ -62,12 +62,12 @@ describe('createIdMap', () => {
       { __jsx: 'p' },
       { __jsx: 'input#email[type=text][name=email]' },
     ]
-    const map = createIdMap(list)
+    const map = createIdMap(list as unknown as NodeListOf<JaxsNode>)
 
-    map.clear({ __jsx: 'p' })
+    map.clear({ __jsx: 'p' } as JaxsNode)
     expect(map.remaining().length).toEqual(2)
 
-    map.clear(list[0])
+    map.clear(list[0] as JaxsNode)
     expect(map.remaining().length).toEqual(1)
   })
 
@@ -77,12 +77,12 @@ describe('createIdMap', () => {
       { __jsx: 'input#email[type=text][name=email]' },
       { __jsx: 'p' },
     ]
-    const map = createIdMap(list)
+    const map = createIdMap(list as unknown as NodeListOf<JaxsNode>)
 
-    map.clear({ __jsx: 'p' })
+    map.clear({ __jsx: 'p' } as JaxsNode)
     expect(map.remaining().length).toEqual(3)
 
-    map.clear(list[0])
+    map.clear(list[0] as JaxsNode)
     expect(map.remaining().length).toEqual(2)
   })
 
@@ -93,14 +93,14 @@ describe('createIdMap', () => {
       { __jsx: 'p' },
     ]
 
-    const map = createIdMap(list)
+    const map = createIdMap(list as unknown as NodeListOf<JaxsNode>)
 
-    expect(map.check({ __jsx: 'p' })).toEqual(true)
+    expect(map.check({ __jsx: 'p' } as JaxsNode)).toEqual(true)
 
-    map.clear(list[0])
-    expect(map.check({ __jsx: 'p' })).toEqual(true)
+    map.clear(list[0] as JaxsNode)
+    expect(map.check({ __jsx: 'p' } as JaxsNode)).toEqual(true)
 
-    map.clear(list[2])
-    expect(map.check({ __jsx: 'p' })).toEqual(false)
+    map.clear(list[2] as JaxsNode)
+    expect(map.check({ __jsx: 'p' } as JaxsNode)).toEqual(false)
   })
 })

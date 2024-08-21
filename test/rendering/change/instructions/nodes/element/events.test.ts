@@ -1,7 +1,10 @@
 import { describe, expect, it, vi } from 'vitest'
-import { createTestDom } from '../../../../support/test-dom'
-import { ChangeInstructionTypes, JaxsElement } from '../../../../../lib/types'
-import { compileForEvents } from '../../../../../lib/rendering/change/nodes/element/events'
+import { createTestDom } from '../../../../../support/test-dom'
+import {
+  ChangeInstructionTypes,
+  JaxsElement,
+} from '../../../../../../lib/types'
+import { compileForEvents } from '../../../../../../lib/rendering/change/instructions/nodes/element/events'
 
 describe('compileForEvents instructions', () => {
   it('is empty when neither source nor target have an event map', () => {

@@ -8,7 +8,7 @@ import {
   EventInstructionData,
   UpdateEventInstructionData,
   InsertNodeData,
-} from '../../types'
+} from '../../../types'
 
 export const changeText = (source: Text, target: Text): ChangeInstruction => ({
   source,

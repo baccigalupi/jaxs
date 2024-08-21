@@ -1,4 +1,4 @@
-import type { JaxsElement, ChangeInstructions } from '../../../../types'
+import type { JaxsElement, ChangeInstructions } from '../../../../../types'
 import { addEvent, removeEvent, updateEvent } from '../../instructions'
 
 export const compileForEvents = (source: JaxsElement, target: JaxsElement) => {

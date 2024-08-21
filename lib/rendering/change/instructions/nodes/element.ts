@@ -1,4 +1,4 @@
-import type { JaxsElement } from '../../../types'
+import type { JaxsElement } from '../../../../types'
 import { compileForAttributes } from './element/attributes'
 import { compileForEvents } from './element/events'
 import { compileForInputValue } from './input'

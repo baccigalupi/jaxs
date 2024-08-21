@@ -1,4 +1,4 @@
-import { ChangeInstructions, JaxsElement, JaxsInput } from '../../../types'
+import { ChangeInstructions, JaxsElement, JaxsInput } from '../../../../types'
 import { changeValue } from '../instructions'
 
 const notInput = (element: JaxsElement) => element.tagName !== 'INPUT'

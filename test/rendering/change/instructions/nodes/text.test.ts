@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { compileForText } from '../../../../lib/rendering/change/nodes/text'
-import { createTestDom } from '../../../support/test-dom'
-import { ChangeInstructionTypes } from '../../../../lib/types'
+import { compileForText } from '../../../../../lib/rendering/change/instructions/nodes/text'
+import { createTestDom } from '../../../../support/test-dom'
+import { ChangeInstructionTypes } from '../../../../../lib/types'
 
 describe('compileForText instructions', () => {
   it('returns an empty instruction set if the value is the same', () => {

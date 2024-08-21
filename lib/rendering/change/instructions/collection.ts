@@ -1,4 +1,4 @@
-import type { ChangeInstructions, JaxsElement, JaxsNode } from '../../types'
+import type { ChangeInstructions, JaxsElement, JaxsNode } from '../../../types'
 import {
   insertNode,
   removeNode,

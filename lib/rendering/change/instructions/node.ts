@@ -1,8 +1,8 @@
-import type { JaxsElement, JaxsNode, ChangeInstructions } from '../../types'
+import type { JaxsElement, JaxsNode, ChangeInstructions } from '../../../types'
 import { compileForElement } from './nodes/element'
 import { compileForSvg } from './nodes/svg'
 import { compileForText } from './nodes/text'
-import { elementIsSvg } from '../dom/svg'
+import { elementIsSvg } from '../../dom/svg'
 
 enum NodeTypes {
   ElementNode = 1,

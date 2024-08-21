@@ -1,16 +1,16 @@
 /** @jsx jsx */
 /** @jsxFrag jsx.fragment */
-import { jsx } from '../../../lib/jaxs'
+import { jsx } from '../../../../lib/jaxs'
 
 import { describe, expect, test, vi } from 'vitest'
-import { createRenderKit } from '../../support/render-kit'
+import { createRenderKit } from '../../../support/render-kit'
 
 import {
   ChangeInstructionTypes,
   InsertNodeData,
   AttributeInstructionData,
-} from '../../../lib/types'
-import { compileCollection } from '../../../lib/rendering/change/collection'
+} from '../../../../lib/types'
+import { compileCollection } from '../../../../lib/rendering/change/instructions/collection'
 
 describe('compileCollection: add, remove, replace and move operations', () => {
   test('leaves identical text as is', () => {
