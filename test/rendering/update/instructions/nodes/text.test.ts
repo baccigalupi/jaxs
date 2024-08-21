@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { compileForText } from '../../../../../lib/rendering/change/instructions/nodes/text'
+import { compileForText } from '../../../../../lib/rendering/update/instructions/nodes/text'
 import { createTestDom } from '../../../../support/test-dom'
 import { ChangeInstructionTypes } from '../../../../../lib/types'
 

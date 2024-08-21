@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { createTestDom } from '../../../../support/test-dom'
 import { ChangeInstructionTypes } from '../../../../../lib/types'
-import { compileForInputValue } from '../../../../../lib/rendering/change/instructions/nodes/input'
+import { compileForInputValue } from '../../../../../lib/rendering/update/instructions/nodes/input'
 
 describe('compileForInputValue instructions', () => {
   it('returns an empty instruction set if the value is not an input', () => {

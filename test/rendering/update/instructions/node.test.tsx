@@ -9,8 +9,8 @@ import {
   ChangeInstructionTypes,
   AttributeInstructionData,
 } from '../../../../lib/types'
-import { compileCollection } from '../../../../lib/rendering/change/instructions/collection'
-import { compileForElement } from '../../../../lib/rendering/change/instructions/nodes/element'
+import { compileCollection } from '../../../../lib/rendering/update/instructions/collection'
+import { compileForElement } from '../../../../lib/rendering/update/instructions/nodes/element'
 
 // add/replace/insert/move handled by children tests
 describe('compileChange for a elements', () => {

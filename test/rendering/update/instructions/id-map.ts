@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { createIdMap } from '../../../../lib/rendering/change/instructions/id-map'
+import { createIdMap } from '../../../../lib/rendering/update/instructions/id-map'
 import { JsxIded, JaxsNode } from '../../../../lib/types'
 
 describe('createIdMap', () => {

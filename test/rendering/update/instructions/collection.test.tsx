@@ -10,7 +10,7 @@ import {
   InsertNodeData,
   AttributeInstructionData,
 } from '../../../../lib/types'
-import { compileCollection } from '../../../../lib/rendering/change/instructions/collection'
+import { compileCollection } from '../../../../lib/rendering/update/instructions/collection'
 
 describe('compileCollection: add, remove, replace and move operations', () => {
   test('leaves identical text as is', () => {

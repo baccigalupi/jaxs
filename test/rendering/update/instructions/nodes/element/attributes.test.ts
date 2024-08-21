@@ -4,7 +4,7 @@ import {
   ChangeInstructionTypes,
   JaxsElement,
 } from '../../../../../../lib/types'
-import { compileForAttributes } from '../../../../../../lib/rendering/change/instructions/nodes/element/attributes'
+import { compileForAttributes } from '../../../../../../lib/rendering/update/instructions/nodes/element/attributes'
 
 describe('compileForEvents instructions', () => {
   it('is empty when neither source nor target have an attributes', () => {
