@@ -24,7 +24,7 @@ export type JaxsElement = Element & JsxIded & JsxEventMapped
 export type JaxsText = Text & JsxIded
 export type JaxsSvgElement = SVGElement & JsxIded
 export type JaxsNode = JaxsElement | JaxsText | JaxsSvgElement
-export type JaxsNodes = JaxsNode[]
+export type JaxsNodes = JaxsNode[] | NodeListOf<JaxsNode>
 export type JaxsInput = HTMLInputElement & JsxIded & JsxEventMapped
 
 export type ReactSourceObject = {
@@ -74,7 +74,7 @@ export interface Template {
   render: (renderKit: RenderKit, parentElement?: JaxsElement) => JaxsNode[]
   isSvg: boolean
 }
-export type TemplateGenerator = (props: Props) => Template
+export type TemplateGenerator = (props?: Props) => Template
 export type JsxCollection = (Template | TextValue)[]
 
 // Change instructions and change compilation

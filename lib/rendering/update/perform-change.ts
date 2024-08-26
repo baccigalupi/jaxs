@@ -10,13 +10,14 @@ import type {
   JaxsElement,
   JaxsInput,
   JaxsSvgElement,
+  JaxsNodes,
 } from '../../types'
 import { ChangeInstructionTypes } from '../../types'
 import { compileCollection } from './instructions/collection'
 
 export const performChange = (
-  source: NodeListOf<JaxsNode>,
-  target: NodeListOf<JaxsNode>,
+  source: JaxsNodes,
+  target: JaxsNodes,
   parent: JaxsElement,
 ) => {
   const instructions = compileCollection(source, target, parent)

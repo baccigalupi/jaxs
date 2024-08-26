@@ -4,6 +4,7 @@ import {
   removeNode,
   replaceNode,
   instructionsSorter,
+  JaxsNodes,
 } from './instructions'
 import { createIdMap } from './id-map'
 import { compileForNode } from './node'
@@ -14,8 +15,8 @@ type DiffPair = {
 }
 
 export const compileCollection = (
-  sourceList: NodeListOf<JaxsNode>,
-  targetList: NodeListOf<JaxsNode>,
+  sourceList: JaxsNodes,
+  targetList: JaxsNodes,
   parent: JaxsElement,
 ) => {
   const baseInstructions = [] as ChangeInstructions
@@ -124,10 +125,7 @@ export const compileCollection = (
   return baseInstructions.concat(nodeInstructions).sort(instructionsSorter)
 }
 
-const largerLength = (
-  sourceList: NodeListOf<JaxsNode>,
-  targetList: NodeListOf<JaxsNode>,
-) => {
+const largerLength = (sourceList: JaxsNodes, targetList: JaxsNodes) => {
   const sourceLength = sourceList.length
   const targetLength = targetList.length
   return sourceLength > targetLength ? sourceLength : targetLength

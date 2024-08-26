@@ -9,7 +9,7 @@ export class IdMap {
     this.map = {}
   }
 
-  populate(list: NodeListOf<JaxsNode>) {
+  populate(list: JaxsNodes) {
     list.forEach((element, i) => {
       const id = element.__jsx
       if (id) {
@@ -52,7 +52,7 @@ export class IdMap {
   }
 }
 
-export const createIdMap = (list: NodeListOf<JaxsNode>) => {
+export const createIdMap = (list: JaxsNodes) => {
   const map = new IdMap()
   map.populate(list)
   return map

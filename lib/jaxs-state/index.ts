@@ -74,6 +74,13 @@ export class JaxsState {
     return this.store(name).value
   }
 
+  getAll(names: JaxsStoreName[]) {
+    return names.reduce((collection, name) => {
+      collection[name] = this.get(name)
+      return collection
+    }, {})
+  }
+
   notify(name: JaxsStoreName) {
     if (this.inTransaction) {
       this.notifications.add(name)
@@ -109,6 +116,10 @@ export class JaxsState {
   event(name: JaxsStoreName) {
     return `${this.eventNamePrefix}:${name}`
   }
+}
+
+export const createState = (publisher: JaxsStatePublisher) => {
+  return new JaxsState(publisher)
 }
 
 export { JaxsStore, BooleanUpdater, ListUpdater, ObjectUpdater }

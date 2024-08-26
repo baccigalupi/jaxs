@@ -10,8 +10,8 @@ enum NodeTypes {
 }
 
 type CompileChildren = (
-  sourceList: NodeListOf<JaxsNode>,
-  targetList: NodeListOf<JaxsNode>,
+  sourceList: JaxsNodes,
+  targetList: JaxsNodes,
   parent: JaxsElement,
 ) => ChangeInstructions
 
@@ -31,8 +31,8 @@ export const compileForNode = (
     const baseInstructions = compileForSvg(sourceElement, targetElement)
 
     const childrenInstructions = compileChildren(
-      sourceElement.childNodes as NodeListOf<JaxsNode>,
-      targetElement.childNodes as NodeListOf<JaxsNode>,
+      sourceElement.childNodes as JaxsNodes,
+      targetElement.childNodes as JaxsNodes,
       sourceElement,
     )
 
@@ -44,8 +44,8 @@ export const compileForNode = (
     const baseInstructions = compileForElement(sourceElement, targetElement)
 
     const childrenInstructions = compileChildren(
-      sourceElement.childNodes as NodeListOf<JaxsNode>,
-      targetElement.childNodes as NodeListOf<JaxsNode>,
+      sourceElement.childNodes as JaxsNodes,
+      targetElement.childNodes as JaxsNodes,
       sourceElement,
     )
 
