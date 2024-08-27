@@ -32,6 +32,13 @@ export const stripWhiteSpace = (string) => string.replace(/\s{2,}/g, '').trim()
 export const createTestDom = (content = defaultContent) => {
   const dom = setupWindow()
   const document = dom.window.document
-  document.body.innerHTML = `<!DOCTYPE html><body>${content}<body>`
+  addAppContainerToDocument(document, content)
   return document
+}
+
+export const addAppContainerToDocument = (
+  document,
+  content = defaultContent,
+) => {
+  document.body.innerHTML = `<!DOCTYPE html><body>${content}<body>`
 }
