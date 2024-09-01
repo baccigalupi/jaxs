@@ -7,9 +7,9 @@ import { describe, expect, it, vi } from 'vitest'
 import { domToString } from '../../support/test-dom'
 import { createRenderKit } from '../../support/render-kit'
 
-import { bind, JaxsViewModel } from '../../../lib/rendering/templates/bound'
+import { bind } from '../../../lib/rendering/templates/bound'
 import { createBus } from 'jaxs-bus'
-import { JaxsTemplate, Renderable } from '../../../lib/types'
+import { JaxsTemplate } from '../../../lib/types'
 
 describe('Bound templates', () => {
   it('renders correctly the first time', () => {
@@ -50,7 +50,7 @@ describe('Bound templates', () => {
     }
     const BoundTemplate = bind({
       subscriptions,
-      JaxsTemplate: Greetings,
+      Template: Greetings,
       viewModel,
     })
 
@@ -91,7 +91,7 @@ describe('Bound templates', () => {
     }
     const BoundTemplate = bind({
       subscriptions: ['currentUser'],
-      JaxsTemplate: Renderable,
+      Template: Renderable,
       viewModel,
     })
     const template = <BoundTemplate greeting="Hello" />
@@ -141,7 +141,7 @@ describe('Bound templates', () => {
     }
     const BoundTemplate = bind({
       subscriptions: ['currentUser'],
-      JaxsTemplate: Renderable,
+      Template: Renderable,
       viewModel,
     })
     const template = <BoundTemplate greeting="Hello" />
@@ -171,7 +171,7 @@ describe('Bound templates', () => {
     }
 
     const BoundTemplate = bind({
-      JaxsTemplate: Renderable,
+      Template: Renderable,
       subscriptions: ['visible'],
     })
     const template = <BoundTemplate />
