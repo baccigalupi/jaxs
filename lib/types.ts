@@ -3,7 +3,6 @@ import type { JaxsState } from 'jaxs-state'
 
 // DOM & Jax & Jsx
 export type TextValue = string | number
-type NullValues = undefined | null
 export interface JsxIded {
   __jsx?: string
 }
@@ -65,14 +64,14 @@ export type RenderKit = {
   parent?: JaxsNode | null
 }
 
-export interface Template {
+export interface Renderable {
   render: (renderKit: RenderKit, parentElement?: JaxsElement) => JaxsNode[]
   isSvg: boolean
 }
-export type LiteralComponent = () => Template
-export type TypedComponent<T> = (props: Props<T>) => Template
+export type LiteralComponent = () => Renderable
+export type TypedComponent<T> = (props: Props<T>) => Renderable
 export type Component<T> = LiteralComponent | TypedComponent<T>
-export type JsxCollection = (Template | TextValue)[]
+export type JsxCollection = (Renderable | TextValue)[]
 
 // Change instructions and change compilation
 export enum ChangeInstructionTypes {

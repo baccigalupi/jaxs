@@ -1,4 +1,4 @@
-import { JsxCollection, Template, Props } from '../../../types'
+import { JsxCollection, Renderable, Props } from '../../../types'
 import { replaceTextNodes } from './text'
 import { withSvgFlag } from './svg'
 
@@ -9,7 +9,7 @@ export const normalizeJsxChildren = (
   return normalizeToArray(jsxChildren)
     .map(replaceTextNodes)
     .flat()
-    .map(withSvgFlag(isSvg)) as Template[]
+    .map(withSvgFlag(isSvg)) as Renderable[]
 }
 
 export const normalizeToArray = <T>(children: T | T[]): T[] => {

@@ -2,18 +2,18 @@ import type {
   JaxsElement,
   JaxsNodes,
   RenderKit,
-  Template,
+  Renderable,
   JaxsNode,
 } from '../../types'
 
 export class Root {
-  template: Template
+  template: Renderable
   selector: string
   renderKit: RenderKit
   dom: JaxsNodes
   parentElement?: JaxsElement | null
 
-  constructor(template: Template, selector: string, renderKit: RenderKit) {
+  constructor(template: Renderable, selector: string, renderKit: RenderKit) {
     this.template = template
     this.selector = selector
     this.renderKit = renderKit
@@ -46,7 +46,7 @@ export class Root {
 }
 
 export const render = (
-  template: Template,
+  template: Renderable,
   selector: string,
   renderKit: RenderKit,
 ) => {

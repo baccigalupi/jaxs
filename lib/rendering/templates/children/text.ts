@@ -1,4 +1,4 @@
-import { TextValue, Template } from '../../../types'
+import { TextValue, Renderable } from '../../../types'
 import { TextTemplate } from '../text'
 
 export const isTextValue = <T>(child: TextValue | T) => {
@@ -9,7 +9,7 @@ export const textNode = (content: TextValue) => {
   return new TextTemplate(content)
 }
 
-export const replaceTextNodes = (child: TextValue | Template) => {
+export const replaceTextNodes = (child: TextValue | Renderable) => {
   if (isTextValue(child)) {
     return textNode(child)
   }

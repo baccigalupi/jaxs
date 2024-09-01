@@ -1,6 +1,6 @@
 import {
   JaxsElement,
-  Template,
+  Renderable,
   JsxCollection,
   RenderKit,
   JaxsNodes,
@@ -8,8 +8,8 @@ import {
 } from '../../types'
 import { normalizeJsxChildren } from './children/normalize'
 import { recursiveRender } from './children/render'
-export class Children implements Template {
-  collection: Template[]
+export class Children implements Renderable {
+  collection: Renderable[]
   parentElement?: JaxsElement
   isSvg: boolean
 

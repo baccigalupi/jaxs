@@ -2,7 +2,7 @@ import type {
   Props,
   JaxsNode,
   TagEventAttributes,
-  Template,
+  Renderable,
   RenderKit,
   TagAttributes,
   JsxCollection,
@@ -14,7 +14,7 @@ import { separateAttrsAndEvents } from './tag/attributes-and-events'
 import { Children } from './children'
 import { JsxKey } from './tag/jsx-key'
 
-export class Tag implements Template {
+export class Tag implements Renderable {
   type: string
   events: TagEventAttributes
   attributes: TagAttributes

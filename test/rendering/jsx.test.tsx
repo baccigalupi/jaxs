@@ -130,7 +130,7 @@ describe('Rendering static jsx', () => {
       if (!visible) return
       return <h1>Hi! I'm visible.</h1>
     }
-    const Template = () => {
+    const Renderable = () => {
       return (
         <div id="wrapper">
           <Child visible={false} />
@@ -138,7 +138,7 @@ describe('Rendering static jsx', () => {
       )
     }
 
-    const template = <Template />
+    const template = <Renderable />
 
     const renderKit = createRenderKit()
     const nodes = template.render(renderKit)
@@ -154,7 +154,7 @@ describe('Rendering static jsx', () => {
       return <>{children}</>
     }
 
-    const Template = ({ inMembers }) => {
+    const Renderable = ({ inMembers }) => {
       return (
         <>
           <RenderIf isVisible={!inMembers}>
@@ -173,13 +173,13 @@ describe('Rendering static jsx', () => {
       )
     }
 
-    let template = <Template inMembers />
+    let template = <Renderable inMembers />
     let nodes = template.render(renderKit)
     expect(domToString(nodes)).toContain(
       '<h1>Oh great crickets!</h1><p>Sing me a tale of private content.</p>',
     )
 
-    template = <Template inMembers={false} />
+    template = <Renderable inMembers={false} />
     nodes = template.render(renderKit)
     expect(domToString(nodes)).toContain(
       '<form><p class="guest-content">You are a guest, and I guess that is fine.</p><input type="submit"',

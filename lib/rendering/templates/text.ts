@@ -1,7 +1,7 @@
-import { Template, TextValue, RenderKit, JaxsNode } from '../../types'
+import { Renderable, TextValue, RenderKit, JaxsNode } from '../../types'
 import { createTextNode } from '../dom/text'
 
-export class TextTemplate implements Template {
+export class TextTemplate implements Renderable {
   value: string
   isSvg: boolean
 

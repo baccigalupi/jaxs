@@ -1,4 +1,4 @@
-import type { JsxCollection, Props, Component, Template } from '../types'
+import type { JsxCollection, Props, Component, Renderable } from '../types'
 import { Tag } from './templates/tag'
 import { Children } from './templates/children'
 import { ensureJsxChildrenArray } from './templates/children/normalize'
@@ -8,7 +8,7 @@ const jsx = <T>(
   type: string | Component<T>,
   attributes: Props<T>,
   ...children: JsxCollection
-): Template => {
+): Renderable => {
   if (typeof type === 'string') {
     return new Tag(type, attributes, children)
   }

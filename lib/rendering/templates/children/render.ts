@@ -1,4 +1,4 @@
-import { Template, RenderKit, JaxsNode } from '../../../types'
+import { Renderable, RenderKit, JaxsNode } from '../../../types'
 
 /* three options for children
   1. there is no view
@@ -6,14 +6,14 @@ import { Template, RenderKit, JaxsNode } from '../../../types'
   3. view is a renderable thing
 */
 export const recursiveRender = (
-  children: Template[],
+  children: Renderable[],
   renderKit: RenderKit,
   rendered = [] as JaxsNode[],
 ): JaxsNode[] => children.reduce(renderReducer(renderKit), rendered).flat()
 
 const renderReducer =
   (renderKit: RenderKit) =>
-  (aggregate: JaxsNode[], view: Template): JaxsNode[] => {
+  (aggregate: JaxsNode[], view: Renderable): JaxsNode[] => {
     if (!view) return aggregate
 
     if (Array.isArray(view)) {
