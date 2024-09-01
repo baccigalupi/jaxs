@@ -68,9 +68,9 @@ export interface Renderable {
   render: (renderKit: RenderKit, parentElement?: JaxsElement) => JaxsNode[]
   isSvg: boolean
 }
-export type LiteralComponent = () => Renderable
-export type TypedComponent<T> = (props: Props<T>) => Renderable
-export type Component<T> = LiteralComponent | TypedComponent<T>
+export type StaticTemplate = () => Renderable
+export type TypedTemplate<T> = (props: Props<T>) => Renderable
+export type Template<T> = StaticTemplate | TypedTemplate<T>
 export type JsxCollection = (Renderable | TextValue)[]
 
 // Change instructions and change compilation

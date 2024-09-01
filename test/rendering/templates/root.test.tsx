@@ -19,14 +19,14 @@ describe('root templates', () => {
 
     state.create('currentUser', { name: 'Fred', age: 83 })
 
-    const Component = ({ greeting, userName }) => (
+    const Template = ({ greeting, userName }) => (
       <h1>
         {greeting} {userName}!
       </h1>
     )
     const viewModel = ({ currentUser }) => ({ userName: currentUser.name })
     const BoundTemplate = bind({
-      Component,
+      Template,
       viewModel,
       subscriptions: ['currentUser'],
     })
@@ -46,14 +46,14 @@ describe('root templates', () => {
 
     state.create('currentUser', { name: 'Fred', age: 83 })
 
-    const Component = ({ greeting, userName }) => (
+    const Template = ({ greeting, userName }) => (
       <h1>
         {greeting} {userName}!
       </h1>
     )
     const viewModel = (state) => ({ userName: state.currentUser.name })
     const BoundTemplate = bind({
-      Component,
+      Template,
       viewModel,
       subscriptions: ['currentUser'],
     })
@@ -82,12 +82,12 @@ describe('root templates', () => {
 
     state.create('visible', true)
 
-    const Component = ({ visible }) => {
+    const Template = ({ visible }) => {
       if (!visible) return
       return <h1>Hi! I'm visible.</h1>
     }
     const BoundTemplate = bind({
-      Component,
+      Template,
       subscriptions: ['visible'],
     })
 
@@ -110,12 +110,12 @@ describe('root templates', () => {
 
     state.create('visible', false)
 
-    const Component = ({ visible }) => {
+    const Template = ({ visible }) => {
       if (!visible) return
       return <h1>Hi! I'm visible.</h1>
     }
     const BoundTemplate = bind({
-      Component,
+      Template,
       subscriptions: ['visible'],
     })
 
@@ -153,7 +153,7 @@ describe('root templates', () => {
     }
     const viewModel = (state) => state
     const Content = bind({
-      Component: ContentTemplate,
+      Template: ContentTemplate,
       viewModel,
       subscriptions: ['membersOnly'],
     })

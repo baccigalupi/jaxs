@@ -1,11 +1,11 @@
-import type { JsxCollection, Props, Component, Renderable } from '../types'
+import type { JsxCollection, Props, Template, Renderable } from '../types'
 import { Tag } from './templates/tag'
 import { Children } from './templates/children'
 import { ensureJsxChildrenArray } from './templates/children/normalize'
 import { packageJsxAttributes } from './templates/tag/attributes-and-events'
 
 const jsx = <T>(
-  type: string | Component<T>,
+  type: string | Template<T>,
   attributes: Props<T>,
   ...children: JsxCollection
 ): Renderable => {
