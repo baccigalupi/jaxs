@@ -1,9 +1,15 @@
 import { eventName } from '../../jaxs-state'
 import { performChange } from '../update/perform-change'
-import { JaxsElement, JaxsNodes, Props, Template, RenderKit } from '../../types'
+import {
+  JaxsElement,
+  JaxsNodes,
+  Props,
+  JaxsTemplate,
+  RenderKit,
+} from '../../types'
 
 export class Bound<T> {
-  Template: Template<T>
+  JaxsTemplate: JaxsTemplate<T>
   viewModel: JaxsViewModel
   attributes: Partial<Props<T>>
   subscriptions: string[]
@@ -12,12 +18,12 @@ export class Bound<T> {
   renderKit?: RenderKit
 
   constructor(
-    Template: Template<T>,
+    JaxsTemplate: JaxsTemplate<T>,
     viewModel?: JaxsViewModel,
     subscriptions: string[],
     attributes: Partial<Props<T>>,
   ) {
-    this.Template = Template
+    this.JaxsTemplate = JaxsTemplate
     this.viewModel = viewModel
     this.attributes = attributes
     this.subscriptions = subscriptions
@@ -39,7 +45,7 @@ export class Bound<T> {
       ...this.viewModel(renderKit.state.getAll(this.subscriptions)),
     }
 
-    const template = this.Template(props as Props<T>)
+    const template = this.JaxsTemplate(props as Props<T>)
 
     const dom = !template ? [] : template.render(renderKit)
     return dom
@@ -85,18 +91,18 @@ export type JaxsViewModel<SUBSCRIPTIONS, ATTRIBUTES> = (
 ) => ATTRIBUTES
 type BindSubscriptionList = string[]
 type BindParams<T> = {
-  Template: Template<T>
+  JaxsTemplate: JaxsTemplate<T>
   viewModel?: JaxsViewModel<BindSubscriptionList, Partial<T>>
   subscriptions?: BindSubscriptionList
 }
 
 export const bind = <T>({
-  Template,
+  JaxsTemplate,
   viewModel,
   subscriptions,
 }: BindParams<T>) => {
   subscriptions = subscriptions || ([] as const)
   viewModel = viewModel || ((stateMap) => stateMap)
   return (attributes: Partial<Props<T>>) =>
-    new Bound(Template, viewModel, subscriptions, attributes)
+    new Bound(JaxsTemplate, viewModel, subscriptions, attributes)
 }

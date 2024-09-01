@@ -70,7 +70,7 @@ export interface Renderable {
 }
 export type StaticTemplate = () => Renderable
 export type TypedTemplate<T> = (props: Props<T>) => Renderable
-export type Template<T> = StaticTemplate | TypedTemplate<T>
+export type JaxsTemplate<T> = StaticTemplate | TypedTemplate<T>
 export type JsxCollection = (Renderable | TextValue)[]
 
 // Change instructions and change compilation

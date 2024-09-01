@@ -9,7 +9,7 @@ import { createRenderKit } from '../../support/render-kit'
 
 import { bind, JaxsViewModel } from '../../../lib/rendering/templates/bound'
 import { createBus } from 'jaxs-bus'
-import { Template, Renderable } from '../../../lib/types'
+import { JaxsTemplate, Renderable } from '../../../lib/types'
 
 describe('Bound templates', () => {
   it('renders correctly the first time', () => {
@@ -38,7 +38,7 @@ describe('Bound templates', () => {
       path: '/behind-the-wall',
     })
 
-    const Greetings: Template<GreetingProps> = ({ greeting, name }) => (
+    const Greetings: JaxsTemplate<GreetingProps> = ({ greeting, name }) => (
       <h1>
         {greeting} {name}
       </h1>
@@ -50,7 +50,7 @@ describe('Bound templates', () => {
     }
     const BoundTemplate = bind({
       subscriptions,
-      Template: Greetings,
+      JaxsTemplate: Greetings,
       viewModel,
     })
 
@@ -91,7 +91,7 @@ describe('Bound templates', () => {
     }
     const BoundTemplate = bind({
       subscriptions: ['currentUser'],
-      Template: Renderable,
+      JaxsTemplate: Renderable,
       viewModel,
     })
     const template = <BoundTemplate greeting="Hello" />
@@ -141,7 +141,7 @@ describe('Bound templates', () => {
     }
     const BoundTemplate = bind({
       subscriptions: ['currentUser'],
-      Template: Renderable,
+      JaxsTemplate: Renderable,
       viewModel,
     })
     const template = <BoundTemplate greeting="Hello" />
@@ -171,7 +171,7 @@ describe('Bound templates', () => {
     }
 
     const BoundTemplate = bind({
-      Template: Renderable,
+      JaxsTemplate: Renderable,
       subscriptions: ['visible'],
     })
     const template = <BoundTemplate />
