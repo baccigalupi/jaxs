@@ -10,19 +10,14 @@ import {
 
 export class Bound<T> {
   Template: JaxsTemplate<T>
-  viewModel: JaxsViewModel
+  viewModel: JaxsViewModel<T>
   attributes: Partial<Props<T>>
-  subscriptions: string[]
+  subscriptions: BindSubscriptionList
   dom: JaxsNodes
   parentElement: JaxsElement | null
   renderKit?: RenderKit
 
-  constructor(
-    Template: JaxsTemplate<T>,
-    viewModel?: JaxsViewModel,
-    subscriptions: string[],
-    attributes: Partial<Props<T>>,
-  ) {
+  constructor({ Template, subscriptions, attributes, viewModel }) {
     this.Template = Template
     this.viewModel = viewModel
     this.attributes = attributes
@@ -78,6 +73,9 @@ export class Bound<T> {
   }
 }
 
+const passthroughViewModel: JaxsViewModel<StoreMap> = (storeMap: StoreMap) =>
+  storeMap
+
 type StoreValue =
   | string
   | number
@@ -85,15 +83,25 @@ type StoreValue =
   | null
   | StoreValue[]
   | { [key: string]: StoreValue }
-type StoreMap<SUBSCRIPTIONS> = { [key: keyof SUBSCRIPTIONS]: StoreValue }
-export type JaxsViewModel<SUBSCRIPTIONS, ATTRIBUTES> = (
-  storeMap: StoreMap<SUBSCRIPTIONS>,
-) => ATTRIBUTES
+
+// TODO: figure out how to tie the
+// subscriptions to the store keys, and the view model to the store keys
+
+// type StoreMap<SUBSCRIPTIONS> = {
+//   [key in keyof SUBSCRIPTIONS]: StoreValue
+// }
+type StoreMap = {
+  [key: string]: StoreValue
+}
+
+export type JaxsViewModel<ATTRIBUTES> = (
+  storeMap: StoreMap,
+) => Partial<ATTRIBUTES>
 type BindSubscriptionList = string[]
 
 type BindParams<T> = {
   Template: JaxsTemplate<T>
-  viewModel?: JaxsViewModel<BindSubscriptionList, Partial<T>>
+  viewModel?: JaxsViewModel<T>
   subscriptions?: BindSubscriptionList
 }
 export const bind = <T>({
@@ -101,8 +109,8 @@ export const bind = <T>({
   viewModel,
   subscriptions,
 }: BindParams<T>) => {
-  subscriptions = subscriptions || ([] as const)
-  viewModel = viewModel || ((stateMap) => stateMap)
+  subscriptions = (subscriptions || []) as BindSubscriptionList
+  viewModel = (viewModel || passthroughViewModel) as JaxsViewModel<T>
   return (attributes: Partial<Props<T>>) =>
-    new Bound(Template, viewModel, subscriptions, attributes)
+    new Bound({ Template, viewModel, subscriptions, attributes })
 }
