@@ -5,10 +5,9 @@ import { jsx } from '../../../lib/jaxs'
 
 import { describe, expect, it, vi } from 'vitest'
 import { domToString } from '../../support/test-dom'
-import { createRenderKit } from '../../support/render-kit'
+import { createRenderKitWithBus } from '../../support/render-kit'
 
 import { bind } from '../../../lib/rendering/templates/bound'
-import { createBus } from 'jaxs-bus'
 import { JaxsTemplate } from '../../../lib/types'
 
 describe('Bound templates', () => {
@@ -23,8 +22,7 @@ describe('Bound templates', () => {
       loggedIn: boolean
     }
 
-    const messageBus = createBus()
-    const renderKit = createRenderKit(messageBus)
+    const renderKit = createRenderKitWithBus()
     const { state } = renderKit
 
     state.create('currentUser', {
@@ -61,8 +59,7 @@ describe('Bound templates', () => {
   })
 
   it('does not re-render if another store was changed', () => {
-    const messageBus = createBus()
-    const renderKit = createRenderKit(messageBus)
+    const renderKit = createRenderKitWithBus()
     const { state } = renderKit
 
     state.create('currentUser', {
@@ -108,8 +105,7 @@ describe('Bound templates', () => {
   })
 
   it('re-renders on subscribed store change', () => {
-    const messageBus = createBus()
-    const renderKit = createRenderKit(messageBus)
+    const renderKit = createRenderKitWithBus()
     const { state } = renderKit
 
     state.create('currentUser', {
@@ -159,8 +155,7 @@ describe('Bound templates', () => {
   })
 
   it('allows not rendering when returning something undefined', () => {
-    const messageBus = createBus()
-    const renderKit = createRenderKit(messageBus)
+    const renderKit = createRenderKitWithBus()
     const { state } = renderKit
 
     state.create('visible', false)

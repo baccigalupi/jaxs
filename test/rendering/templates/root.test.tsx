@@ -4,16 +4,14 @@ import { jsx } from '../../../lib/jaxs'
 
 import { describe, expect, it } from 'vitest'
 import { addAppContainerToDocument, domToString } from '../../support/test-dom'
-import { createRenderKit } from '../../support/render-kit'
+import { createRenderKitWithBus } from '../../support/render-kit'
 
 import { bind } from '../../../lib/rendering/templates/bound'
 import { render } from '../../../lib/rendering/templates/root'
-import { createBus } from 'jaxs-bus'
 
 describe('root templates', () => {
   it('renders a bound template into the document, in the right place', () => {
-    const messageBus = createBus()
-    const renderKit = createRenderKit(messageBus)
+    const renderKit = createRenderKitWithBus()
     const { state, document } = renderKit
     addAppContainerToDocument(document)
 
@@ -39,8 +37,7 @@ describe('root templates', () => {
   })
 
   it("updates the dom when a bound template's data changes", () => {
-    const messageBus = createBus()
-    const renderKit = createRenderKit(messageBus)
+    const renderKit = createRenderKitWithBus()
     const { state, document } = renderKit
     addAppContainerToDocument(document)
 
@@ -75,8 +72,7 @@ describe('root templates', () => {
   })
 
   it('clears the view on re-rerender when there is a no-op', () => {
-    const messageBus = createBus()
-    const renderKit = createRenderKit(messageBus)
+    const renderKit = createRenderKitWithBus()
     const { state, document } = renderKit
     addAppContainerToDocument(document)
 
@@ -103,8 +99,7 @@ describe('root templates', () => {
   })
 
   it('re-renders appropirately when the previous render is a no-op', () => {
-    const messageBus = createBus()
-    const renderKit = createRenderKit(messageBus)
+    const renderKit = createRenderKitWithBus()
     const { state, document } = renderKit
     addAppContainerToDocument(document)
 
@@ -131,8 +126,7 @@ describe('root templates', () => {
   })
 
   it('handles symmetrical changes that change all the children', () => {
-    const messageBus = createBus()
-    const renderKit = createRenderKit(messageBus)
+    const renderKit = createRenderKitWithBus()
     const { state, document } = renderKit
     addAppContainerToDocument(document)
 

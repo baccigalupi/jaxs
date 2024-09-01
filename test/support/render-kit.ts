@@ -6,6 +6,7 @@ import {
   JaxsPublishFunction,
   JaxsBusEventMatcher,
   JaxsBusListener,
+  createBus,
 } from 'jaxs-bus'
 type Subscribe<T> = (
   matcher: JaxsBusEventMatcher,
@@ -27,4 +28,9 @@ export const createRenderKit = <T>(messageBus = {} as Partial<JaxsBus<T>>) => {
     state,
     ...busOptions,
   }
+}
+
+export const createRenderKitWithBus = () => {
+  const messageBus = createBus()
+  return createRenderKit(messageBus)
 }
