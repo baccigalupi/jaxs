@@ -29,7 +29,7 @@ export class JaxsState {
     this.inTransaction = false
   }
 
-  create(name: JaxsStoreName, initialState: any) {
+  create<T>(name: JaxsStoreName, initialState: T) {
     const store = new JaxsStore({
       name,
       parent: this,
@@ -47,13 +47,13 @@ export class JaxsState {
     return store
   }
 
-  createRecord(name: JaxsStoreName, initialState: Record<string, any>) {
+  createRecord<T>(name: JaxsStoreName, initialState: T) {
     const store = this.create(name, initialState)
     store.updater = new ObjectUpdater(store)
     return store
   }
 
-  createList(name: JaxsStoreName, initialState: Record<string, any>) {
+  createList<T>(name: JaxsStoreName, initialState: T[]) {
     const store = this.create(name, initialState)
     store.updater = new ListUpdater(store)
     return store

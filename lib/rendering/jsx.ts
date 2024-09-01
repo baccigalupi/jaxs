@@ -1,14 +1,14 @@
-import type { JsxCollection, Props, TemplateGenerator } from '../types'
+import type { JsxCollection, Props, Component, Template } from '../types'
 import { Tag } from './templates/tag'
 import { Children } from './templates/children'
 import { ensureJsxChildrenArray } from './templates/children/normalize'
 import { packageJsxAttributes } from './templates/tag/attributes-and-events'
 
-const jsx = (
-  type: string | TemplateGenerator,
-  attributes: Props,
+const jsx = <T>(
+  type: string | Component<T>,
+  attributes: Props<T>,
   ...children: JsxCollection
-) => {
+): Template => {
   if (typeof type === 'string') {
     return new Tag(type, attributes, children)
   }
@@ -16,7 +16,7 @@ const jsx = (
   return type(packageJsxAttributes(attributes, children))
 }
 
-jsx.fragment = (attributes: Props, maybeChildren: JsxCollection) => {
+jsx.fragment = <T>(attributes: Props<T>, maybeChildren: JsxCollection) => {
   const children = ensureJsxChildrenArray(maybeChildren, attributes)
   return new Children(children)
 }

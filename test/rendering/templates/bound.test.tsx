@@ -7,11 +7,22 @@ import { describe, expect, it, vi } from 'vitest'
 import { domToString } from '../../support/test-dom'
 import { createRenderKit } from '../../support/render-kit'
 
-import { bind } from '../../../lib/rendering/templates/bound'
+import { bind, JaxsViewModel } from '../../../lib/rendering/templates/bound'
 import { createBus } from 'jaxs-bus'
+import { Component, Template } from '../../../lib/types'
 
 describe('Bound templates', () => {
   it('renders correctly the first time', () => {
+    type GreetingProps = {
+      greeting: string
+      name: string
+    }
+    type CurrentUser = {
+      name: string
+      email: string
+      loggedIn: boolean
+    }
+
     const messageBus = createBus()
     const renderKit = createRenderKit(messageBus)
     const { state } = renderKit
@@ -20,23 +31,26 @@ describe('Bound templates', () => {
       name: 'Janet',
       email: 'dammit-janet@example.com',
       loggedIn: true,
-    })
+    } as CurrentUser)
+
     state.create('route', {
       host: 'example.com',
       path: '/behind-the-wall',
     })
 
-    const Template = ({ greeting, name }) => (
+    const Greetings: Component<GreetingProps> = ({ greeting, name }) => (
       <h1>
         {greeting} {name}
       </h1>
     )
+
+    const subscriptions = ['currentUser']
     const viewModel = ({ currentUser }) => {
       return { name: currentUser.name }
     }
     const BoundTemplate = bind({
-      subscriptions: ['currentUser'],
-      Template,
+      subscriptions,
+      Component: Greetings,
       viewModel,
     })
 
@@ -77,7 +91,7 @@ describe('Bound templates', () => {
     }
     const BoundTemplate = bind({
       subscriptions: ['currentUser'],
-      Template,
+      Component: Template,
       viewModel,
     })
     const template = <BoundTemplate greeting="Hello" />
@@ -127,7 +141,7 @@ describe('Bound templates', () => {
     }
     const BoundTemplate = bind({
       subscriptions: ['currentUser'],
-      Template,
+      Component: Template,
       viewModel,
     })
     const template = <BoundTemplate greeting="Hello" />
@@ -156,7 +170,10 @@ describe('Bound templates', () => {
       return <h1>Hi, I'm visible!</h1>
     }
 
-    const BoundTemplate = bind({ Template, subscriptions: ['visible'] })
+    const BoundTemplate = bind({
+      Component: Template,
+      subscriptions: ['visible'],
+    })
     const template = <BoundTemplate />
 
     const dom = template.render(renderKit)

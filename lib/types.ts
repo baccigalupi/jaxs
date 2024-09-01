@@ -36,17 +36,11 @@ export type ReactSourceObject = {
 interface SourceMap {
   __source?: ReactSourceObject
 }
-export type PropValue =
-  | TextValue
-  | NullValues
-  | boolean
-  | ReactSourceObject
-  | JsxCollection
-export type Props = {
-  __source?: ReactSourceObject
-  children?: JsxCollection
-  [key: string]: PropValue
-}
+export type Props<T> = Partial<{
+  __source: ReactSourceObject
+  children: JsxCollection
+}> &
+  T
 export type TagAttributes = SourceMap & Record<string, string>
 export type TagEventAttributes = Record<string, string>
 export type TagAttributesAndEvents = {
@@ -70,11 +64,14 @@ export type RenderKit = {
   state: JaxsState
   parent?: JaxsNode | null
 }
+
 export interface Template {
   render: (renderKit: RenderKit, parentElement?: JaxsElement) => JaxsNode[]
   isSvg: boolean
 }
-export type TemplateGenerator = (props?: Props) => Template
+export type LiteralComponent = () => Template
+export type TypedComponent<T> = (props: Props<T>) => Template
+export type Component<T> = LiteralComponent | TypedComponent<T>
 export type JsxCollection = (Template | TextValue)[]
 
 // Change instructions and change compilation

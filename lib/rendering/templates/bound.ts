@@ -5,29 +5,26 @@ import {
   JaxsElement,
   JaxsNodes,
   Props,
-  TemplateGenerator,
+  Component,
   RenderKit,
 } from '../../types'
 
-type JaxsStoreMap = Record<string, JaxsStore>
-type JaxsViewModel = (storeMap: JaxsStoreMap) => Record<string, any>
-
-export class Bound {
-  TemplateGenerator: TemplateGenerator
+export class Bound<T> {
+  Component: Component<T>
   viewModel: JaxsViewModel
-  attributes: Props
+  attributes: Partial<Props<T>>
   subscriptions: string[]
   dom: JaxsNodes
   parentElement: JaxsElement | null
   renderKit?: RenderKit
 
   constructor(
-    TemplateGenerator: TemplateGenerator,
-    viewModel: JaxsViewModel,
+    Component: Component<T>,
+    viewModel?: JaxsViewModel,
     subscriptions: string[],
-    attributes: Props,
+    attributes: Partial<Props<T>>,
   ) {
-    this.TemplateGenerator = TemplateGenerator
+    this.Component = Component
     this.viewModel = viewModel
     this.attributes = attributes
     this.subscriptions = subscriptions
@@ -49,7 +46,7 @@ export class Bound {
       ...this.viewModel(renderKit.state.getAll(this.subscriptions)),
     }
 
-    const template = this.TemplateGenerator(props)
+    const template = this.Component(props as Props<T>)
 
     const dom = !template ? [] : template.render(renderKit)
     return dom
@@ -82,16 +79,31 @@ export class Bound {
   }
 }
 
-const passThroughViewModel = () => (state: any) => state
-
-type BindParams = {
-  Template: TemplateGenerator
-  viewModel?: JaxsViewModel
-  subscriptions?: string[]
+type StoreValue =
+  | string
+  | number
+  | boolean
+  | null
+  | StoreValue[]
+  | { [key: string]: StoreValue }
+type StoreMap<SUBSCRIPTIONS> = { [key: keyof SUBSCRIPTIONS]: StoreValue }
+export type JaxsViewModel<SUBSCRIPTIONS, ATTRIBUTES> = (
+  storeMap: StoreMap<SUBSCRIPTIONS>,
+) => ATTRIBUTES
+type BindSubscriptionList = string[]
+type BindParams<T> = {
+  Component: Component<T>
+  viewModel?: JaxsViewModel<BindSubscriptionList, Partial<T>>
+  subscriptions?: BindSubscriptionList
 }
-export const bind = ({ Template, viewModel, subscriptions }: BindParams) => {
-  subscriptions = subscriptions || []
-  viewModel = viewModel || passThroughViewModel()
-  return (attributes: Props) =>
-    new Bound(Template, viewModel, subscriptions, attributes)
+
+export const bind = <T>({
+  Component,
+  viewModel,
+  subscriptions,
+}: BindParams<T>) => {
+  subscriptions = subscriptions || ([] as const)
+  viewModel = viewModel || ((stateMap) => stateMap)
+  return (attributes: Partial<Props<T>>) =>
+    new Bound(Component, viewModel, subscriptions, attributes)
 }
