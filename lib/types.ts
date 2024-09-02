@@ -1,5 +1,5 @@
 import type { JaxsBusEventMatcher, JaxsBusListener } from 'jaxs-bus'
-import type { JaxsState } from 'jaxs-state'
+import { JaxsState } from './jaxs-state'
 
 // DOM & Jax & Jsx
 export type TextValue = string | number
@@ -26,12 +26,12 @@ export type JaxsNode = JaxsElement | JaxsText | JaxsSvgElement
 export type JaxsNodes = JaxsNode[] | NodeListOf<JaxsNode>
 export type JaxsInput = HTMLInputElement & JsxIded & JsxEventMapped
 
+type NullValues = null | undefined
 export type ReactSourceObject = {
   fileName: string
   lineNumber: string
   columnNumber: string
 }
-
 interface SourceMap {
   __source?: ReactSourceObject
 }
@@ -40,6 +40,12 @@ export type Props<T> = Partial<{
   children: JsxCollection
 }> &
   T
+export type PropValue =
+  | TextValue
+  | NullValues
+  | boolean
+  | ReactSourceObject
+  | JsxCollection
 export type TagAttributes = SourceMap & Record<string, string>
 export type TagEventAttributes = Record<string, string>
 export type TagAttributesAndEvents = {
@@ -135,3 +141,33 @@ export type ChangeInstruction = {
 export type ChangeInstructions = Array<ChangeInstruction>
 
 export type Updater = (instruction: ChangeInstruction) => void
+
+// --- BIND
+type StoreValue =
+  | string
+  | number
+  | boolean
+  | null
+  | StoreValue[]
+  | { [key: string]: StoreValue }
+
+// TODO: figure out how to tie the
+// subscriptions to the store keys, and the view model to the store keys
+
+// type StoreMap<SUBSCRIPTIONS> = {
+//   [key in keyof SUBSCRIPTIONS]: StoreValue
+// }
+export type StoreMap = {
+  [key: string]: StoreValue
+}
+
+export type JaxsViewModel<ATTRIBUTES, STORE_MAP> = (
+  storeMap: STORE_MAP,
+) => Partial<ATTRIBUTES>
+export type BindSubscriptionList = string[]
+
+export type BindParams<T, U> = {
+  Template: JaxsTemplate<T>
+  viewModel?: JaxsViewModel<T, U>
+  subscriptions?: BindSubscriptionList
+}

@@ -8,34 +8,30 @@ import { domToString } from '../../support/test-dom'
 import { createRenderKitWithBus } from '../../support/render-kit'
 
 import { bind } from '../../../lib/rendering/templates/bound'
-import { JaxsTemplate } from '../../../lib/types'
+import { JaxsTemplate, JaxsViewModel } from '../../../lib/types'
+import { JaxsState } from '../../../lib/jaxs-state'
 
 describe('Bound templates', () => {
-  it('renders correctly the first time', () => {
-    type GreetingProps = {
-      greeting: string
-      name: string
-    }
-    type CurrentUser = {
-      name: string
-      email: string
-      loggedIn: boolean
-    }
+  const setupState = (state: JaxsState) => {}
 
+  it('renders correctly the first time', () => {
     const renderKit = createRenderKitWithBus()
     const { state } = renderKit
-
     state.create('currentUser', {
       name: 'Janet',
       email: 'dammit-janet@example.com',
       loggedIn: true,
-    } as CurrentUser)
+    })
 
     state.create('route', {
       host: 'example.com',
       path: '/behind-the-wall',
     })
 
+    type GreetingProps = {
+      greeting: string
+      name: string
+    }
     const Greetings: JaxsTemplate<GreetingProps> = ({ greeting, name }) => (
       <h1>
         {greeting} {name}
@@ -43,9 +39,7 @@ describe('Bound templates', () => {
     )
 
     const subscriptions = ['currentUser']
-    const viewModel = ({ currentUser }) => {
-      return { name: currentUser.name }
-    }
+    const viewModel = ({ currentUser }) => ({ name: currentUser.name })
     const BoundTemplate = bind({
       subscriptions,
       Template: Greetings,

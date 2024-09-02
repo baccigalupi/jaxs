@@ -14,17 +14,17 @@ import { separateAttrsAndEvents } from './tag/attributes-and-events'
 import { Children } from './children'
 import { JsxKey } from './tag/jsx-key'
 
-export class Tag implements Renderable {
+export class Tag<T> implements Renderable {
   type: string
   events: TagEventAttributes
   attributes: TagAttributes
-  props: Props
+  props: Props<T>
   children: Children
   isSvg: boolean
 
   constructor(
     tagType: string,
-    props: Props,
+    props: Props<T>,
     children = [] as JsxCollection,
     isSvg = false,
   ) {

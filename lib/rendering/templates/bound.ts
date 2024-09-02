@@ -6,12 +6,16 @@ import {
   Props,
   JaxsTemplate,
   RenderKit,
+  JaxsViewModel,
+  BindParams,
+  BindSubscriptionList,
+  StoreMap,
 } from '../../types'
 
-export class Bound<T> {
-  Template: JaxsTemplate<T>
-  viewModel: JaxsViewModel<T>
-  attributes: Partial<Props<T>>
+export class Bound<ATTRIBUTES, STATE_MAP> {
+  Template: JaxsTemplate<ATTRIBUTES>
+  viewModel: JaxsViewModel<ATTRIBUTES, STATE_MAP>
+  attributes: Partial<Props<ATTRIBUTES>>
   subscriptions: BindSubscriptionList
   dom: JaxsNodes
   parentElement: JaxsElement | null
@@ -37,10 +41,12 @@ export class Bound<T> {
   generateDom(renderKit: RenderKit) {
     const props = {
       ...this.attributes,
-      ...this.viewModel(renderKit.state.getAll(this.subscriptions)),
+      ...this.viewModel(
+        renderKit.state.getAll(this.subscriptions) as STATE_MAP,
+      ),
     }
 
-    const template = this.Template(props as Props<T>)
+    const template = this.Template(props as Props<ATTRIBUTES>)
 
     const dom = !template ? [] : template.render(renderKit)
     return dom
@@ -73,44 +79,20 @@ export class Bound<T> {
   }
 }
 
-const passthroughViewModel: JaxsViewModel<StoreMap> = (storeMap: StoreMap) =>
-  storeMap
-
-type StoreValue =
-  | string
-  | number
-  | boolean
-  | null
-  | StoreValue[]
-  | { [key: string]: StoreValue }
-
-// TODO: figure out how to tie the
-// subscriptions to the store keys, and the view model to the store keys
-
-// type StoreMap<SUBSCRIPTIONS> = {
-//   [key in keyof SUBSCRIPTIONS]: StoreValue
-// }
-type StoreMap = {
-  [key: string]: StoreValue
-}
-
-export type JaxsViewModel<ATTRIBUTES> = (
+const passthroughViewModel: JaxsViewModel<StoreMap, StoreMap> = (
   storeMap: StoreMap,
-) => Partial<ATTRIBUTES>
-type BindSubscriptionList = string[]
+) => storeMap
 
-type BindParams<T> = {
-  Template: JaxsTemplate<T>
-  viewModel?: JaxsViewModel<T>
-  subscriptions?: BindSubscriptionList
-}
-export const bind = <T>({
+export const bind = <ATTRIBUTES, STATE_MAP>({
   Template,
   viewModel,
   subscriptions,
-}: BindParams<T>) => {
+}: BindParams<ATTRIBUTES, STATE_MAP>) => {
   subscriptions = (subscriptions || []) as BindSubscriptionList
-  viewModel = (viewModel || passthroughViewModel) as JaxsViewModel<T>
-  return (attributes: Partial<Props<T>>) =>
+  viewModel = (viewModel || passthroughViewModel) as JaxsViewModel<
+    ATTRIBUTES,
+    STATE_MAP
+  >
+  return (attributes: Partial<Props<ATTRIBUTES>>) =>
     new Bound({ Template, viewModel, subscriptions, attributes })
 }

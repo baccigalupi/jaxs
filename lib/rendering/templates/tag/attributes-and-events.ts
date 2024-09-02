@@ -8,8 +8,8 @@ import type {
 } from '../../../types'
 import { ensureJsxChildrenArray } from '../children/normalize'
 
-export const separateAttrsAndEvents = (
-  props: Props,
+export const separateAttrsAndEvents = <T>(
+  props: Props<T>,
   defaultValue = '',
 ): TagAttributesAndEvents => {
   const attributes: TagAttributes = {}
@@ -46,11 +46,11 @@ const normalizeValueForKey = (
   return value.toString()
 }
 
-export const packageJsxAttributes = (
-  maybeAttributes?: Props,
+export const packageJsxAttributes = <T>(
+  maybeAttributes?: Props<T>,
   maybeChildren?: JsxCollection,
 ) => {
-  const attributes = maybeAttributes || ({} as Props)
+  const attributes = maybeAttributes || ({} as Props<T>)
   const children = ensureJsxChildrenArray(maybeChildren, attributes)
   attributes.children = attributes.children || children
   return attributes

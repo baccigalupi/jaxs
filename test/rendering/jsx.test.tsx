@@ -4,7 +4,7 @@ import { jsx } from '../../lib/jaxs'
 
 import { describe, expect, it, vi } from 'vitest'
 
-import { createTestDom, domToString } from '../support/test-dom'
+import { domToString } from '../support/test-dom'
 import { createRenderKit } from '../support/render-kit'
 
 describe('Rendering static jsx', () => {

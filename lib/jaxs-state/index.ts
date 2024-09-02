@@ -30,7 +30,7 @@ export class JaxsState {
   }
 
   create<T>(name: JaxsStoreName, initialState: T) {
-    const store = new JaxsStore({
+    const store = new JaxsStore<T>({
       name,
       parent: this,
       value: initialState,

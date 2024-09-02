@@ -24,8 +24,8 @@ export const normalizeToArray = <T>(children: T | T[]): T[] => {
   return [children]
 }
 
-type AttributesWithChildren = Props & { children?: JsxCollection }
+type AttributesWithChildren<T> = Props<T> & { children?: JsxCollection }
 export const ensureJsxChildrenArray = <T>(
   maybeChildren?: JsxCollection,
-  attributes = {} as AttributesWithChildren,
+  attributes = {} as AttributesWithChildren<T>,
 ) => maybeChildren || attributes.children || []
