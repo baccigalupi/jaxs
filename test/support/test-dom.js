@@ -1,7 +1,7 @@
 import { JSDOM } from 'jsdom'
 import { vi } from 'vitest'
 
-export const setupWindow = () => {
+export const setupDom = () => {
   const dom = new JSDOM('<!DOCTYPE html>', {
     url: 'http://www.example.com/foo/bar?zardoz=weird',
   })
@@ -30,7 +30,7 @@ const wrapElements = (elements) => {
 export const stripWhiteSpace = (string) => string.replace(/\s{2,}/g, '').trim()
 
 export const createTestDom = (content = defaultContent) => {
-  const dom = setupWindow()
+  const dom = setupDom()
   const document = dom.window.document
   addAppContainerToDocument(document, content)
   return document

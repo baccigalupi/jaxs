@@ -1,5 +1,5 @@
 import { vi, Mocked } from 'vitest'
-import { setupWindow } from './test-dom'
+import { setupDom } from './test-dom'
 import { createState } from '../../lib/jaxs-state'
 import {
   JaxsBus,
@@ -14,7 +14,7 @@ type Subscribe<T> = (
 ) => void
 
 export const createRenderKit = <T>(messageBus = {} as Partial<JaxsBus<T>>) => {
-  const dom = setupWindow()
+  const dom = setupDom()
 
   const busOptions = {
     publish: messageBus.publish || (vi.fn() as Mocked<JaxsPublishFunction<T>>),
