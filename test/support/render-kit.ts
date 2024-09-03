@@ -1,13 +1,13 @@
 import { vi, Mocked } from 'vitest'
 import { setupDom } from './test-dom'
 import { createState } from '../../lib/jaxs-state'
+import { createBus, type JaxsBus } from '../../lib/jaxs-bus'
 import {
-  JaxsBus,
   JaxsPublishFunction,
   JaxsBusEventMatcher,
   JaxsBusListener,
-  createBus,
-} from 'jaxs-bus'
+} from '../../lib/types'
+
 type Subscribe<T> = (
   matcher: JaxsBusEventMatcher,
   listener: JaxsBusListener<T>,
@@ -23,7 +23,7 @@ export const createRenderKit = <T>(messageBus = {} as Partial<JaxsBus<T>>) => {
   const state = createState(busOptions.publish)
 
   return {
-    document: dom.window.document,
+    document: dom.window._document,
     window: dom.window,
     state,
     ...busOptions,

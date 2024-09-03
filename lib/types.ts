@@ -1,4 +1,3 @@
-import type { JaxsBusEventMatcher, JaxsBusListener } from 'jaxs-bus'
 import { JaxsState } from './jaxs-state'
 
 // DOM & Jax & Jsx
@@ -170,4 +169,39 @@ export type BindParams<T, U> = {
   Template: JaxsTemplate<T>
   viewModel?: JaxsViewModel<T, U>
   subscriptions?: BindSubscriptionList
+}
+
+// BUS
+export type JaxsBusListenerOptions<T> = {
+  publish: JaxsPublishFunction<T>
+  eventName: string
+  [key: string]: any
+}
+export type JaxsBusOptions = Record<string, any>
+
+export type JaxsPublishFunction<T> = (event: string, payload: T) => void
+export type JaxsBusListener<T> = (
+  payload: T,
+  listenerKit: JaxsBusListenerOptions<T>,
+) => void
+export type JaxsBusEventMatcher = string | RegExp
+
+export type ExactSubscriptionData<T> = {
+  listener: JaxsBusListener<T>
+  index: number
+  matcher: string
+}
+
+export type FuzzySubscriptionData<T> = {
+  listener: JaxsBusListener<T>
+  index: number
+  matcher: RegExp
+}
+
+export type BusListenerOptions = {
+  state: JaxsState
+  document: Document
+  window: Window
+  publish: JaxsPublishFunction<any>
+  subscribe: Subscribe
 }
