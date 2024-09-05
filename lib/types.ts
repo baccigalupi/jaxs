@@ -142,7 +142,7 @@ export type ChangeInstructions = Array<ChangeInstruction>
 export type Updater = (instruction: ChangeInstruction) => void
 
 // --- BIND
-type StoreValue =
+export type StoreValue =
   | string
   | number
   | boolean

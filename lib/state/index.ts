@@ -2,6 +2,7 @@ import { JaxsStore } from './store'
 import { BooleanUpdater } from './updaters/boolean'
 import { ListUpdater } from './updaters/list'
 import { ObjectUpdater } from './updaters/object'
+import type { StoreValue } from '../types'
 export { JaxsStoreUpdater } from './store-updater'
 
 export type JaxsStatePublisher = (event: string, payload: any) => void
@@ -59,7 +60,7 @@ export class JaxsState {
     return store
   }
 
-  store(name: JaxsStoreName) {
+  store(name: JaxsStoreName): JaxsStore<any> {
     return (
       this.stores[name] ||
       new JaxsStore({
@@ -70,7 +71,7 @@ export class JaxsState {
     )
   }
 
-  get(name: JaxsStoreName) {
+  get(name: JaxsStoreName): StoreValue {
     return this.store(name).value
   }
 
