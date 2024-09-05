@@ -172,17 +172,22 @@ export type BindParams<T, U> = {
 }
 
 // BUS
-export type JaxsBusListenerOptions<T> = {
+export type AppAdditionListenerOptions = {
+  state: JaxsState
+  document: Document
+  window: Window
+}
+export type DefaultBusListenerOptions<T> = {
   publish: JaxsPublishFunction<T>
   eventName: string
-  [key: string]: any
 }
-export type JaxsBusOptions = Record<string, any>
+export type JaxsBusOptions = AppAdditionListenerOptions &
+  DefaultBusListenerOptions<any>
 
 export type JaxsPublishFunction<T> = (event: string, payload: T) => void
 export type JaxsBusListener<T> = (
   payload: T,
-  listenerKit: JaxsBusListenerOptions<T>,
+  listenerKit: JaxsBusOptions,
 ) => void
 export type JaxsBusEventMatcher = string | RegExp
 
@@ -198,10 +203,4 @@ export type FuzzySubscriptionData<T> = {
   matcher: RegExp
 }
 
-export type BusListenerOptions = {
-  state: JaxsState
-  document: Document
-  window: Window
-  publish: JaxsPublishFunction<any>
-  subscribe: Subscribe
-}
+export type Unsubscribe = () => void

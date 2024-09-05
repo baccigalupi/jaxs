@@ -2,15 +2,17 @@
 /** @jsxFrag jsx.fragment */
 import { jsx } from '../lib/jaxs'
 
-import { describe, expect, it, vi, beforeEach } from 'vitest'
+import { describe, expect, it, vi, beforeEach, Mocked } from 'vitest'
 import { createApp } from '../lib/app'
 import { createTestDom, setupDom, domToString } from './support/test-dom'
-import type { JaxsBusOptions } from 'jaxs-bus'
-import { StaticTemplate } from '../lib/types'
+import type { StaticTemplate, JaxsBusOptions } from '../lib/types'
 
 describe('App', () => {
-  const globalWindow = vi.fn()
-  const globalDocument = vi.fn()
+  const globalWindow = {
+    location: { host: 'http://localhost', pathname: '', search: '' },
+    addEventListener: vi.fn(),
+  } as unknown as Mocked<Window>
+  const globalDocument = {} as unknown as Mocked<Document>
 
   beforeEach(() => {
     vi.stubGlobal('window', globalWindow)

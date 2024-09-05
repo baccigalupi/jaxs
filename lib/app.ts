@@ -1,12 +1,13 @@
-import type { Renderable, RenderKit, Subscribe } from './types'
+import type {
+  Renderable,
+  RenderKit,
+  Subscribe,
+  JaxsPublishFunction,
+} from './types'
 import { createState, type JaxsState } from './jaxs-state'
-import { createBus, JaxsPublishFunction, type JaxsBus } from 'jaxs-bus'
+import { createBus, type JaxsBus } from './jaxs-bus'
 import { render, Root } from './rendering/templates/root'
-// import {
-//   locationChangeEvent,
-//   setupHistory,
-// } from './navigation/setupHistory';
-// import { setupNavigation } from './navigation/setupNavigation';
+import { startNavigation } from './navigation'
 
 type CreateAppBuilderArguments = {
   window?: Window
@@ -18,7 +19,7 @@ export class AppBuilder {
   document: Document
   publish: JaxsPublishFunction<any>
   subscribe: Subscribe
-  bus: JaxsBus<any>
+  bus: JaxsBus
   state: JaxsState
   renderKit: RenderKit
 
@@ -91,7 +92,7 @@ export class App {
   document: Document
   publish: JaxsPublishFunction<any>
   subscribe: Subscribe
-  bus: JaxsBus<any>
+  bus: JaxsBus
   state: JaxsState
   renderKit: RenderKit
   roots: Root[]
@@ -112,18 +113,15 @@ export class App {
     this.roots.push(root)
     return root
   }
-}
 
-// const triggerRoute = (app: App) => {
-//   const publish = app.publish as BusPublish;
-//   setTimeout(() => {
-//     publish(locationChangeEvent, null);
-//   }, 0);
-// };
+  startNavigation() {
+    startNavigation(this)
+  }
+}
 
 export const createApp = (domEnvironment: CreateAppBuilderArguments = {}) => {
   const builder = new AppBuilder(domEnvironment)
   const app = builder.setup()
-  // app.setupHistory()
+  app.startNavigation()
   return app
 }

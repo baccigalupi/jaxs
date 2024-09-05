@@ -1,114 +1,46 @@
 import {
-  ExactSubscriptionData,
-  FuzzySubscriptionData,
   JaxsBusEventMatcher,
   JaxsBusListener,
+  Unsubscribe,
+  AppAdditionListenerOptions,
   JaxsBusOptions,
 } from '../types'
 
-class ExactSubscriptions<T> {
-  lookup: Record<string, ExactSubscriptionData<T>[]>
+import { ExactSubscriptions } from './exact-subscriptions'
+import { FuzzySubscriptions } from './fuzzy-subscriptions'
 
-  constructor() {
-    this.lookup = {}
-  }
-
-  add(
-    matcher: JaxsBusEventMatcher,
-    listener: JaxsBusListener<T>,
-    index: number,
-  ) {
-    this.ensureArrayFor(matcher as string)
-    const subscription = {
-      listener,
-      index,
-      matcher,
-    } as ExactSubscriptionData<T>
-    this.lookup[matcher as string].push(subscription)
-    return () => this.remove(subscription)
-  }
-
-  remove(subscription: ExactSubscriptionData<T>) {
-    if (!this.lookup[subscription.matcher]) return
-
-    this.lookup[subscription.matcher] = this.lookup[
-      subscription.matcher
-    ].reduce((aggregate, currentSubscription) => {
-      if (currentSubscription !== subscription) {
-        aggregate.push(currentSubscription)
-      }
-      return aggregate
-    }, [] as ExactSubscriptionData<T>[])
-  }
-
-  matches(event: string) {
-    return this.lookup[event] || []
-  }
-
-  ensureArrayFor(matcher: string) {
-    if (!this.lookup[matcher]) {
-      this.lookup[matcher] = []
-    }
-  }
-}
-
-class FuzzySubscriptions<T> {
-  lookup: FuzzySubscriptionData<T>[]
-
-  constructor() {
-    this.lookup = []
-  }
-
-  add(
-    matcher: JaxsBusEventMatcher,
-    listener: JaxsBusListener<T>,
-    index: number,
-  ) {
-    const subscription = { listener, index, matcher: matcher as RegExp }
-    this.lookup.push(subscription)
-    return () => this.remove(subscription)
-  }
-
-  remove(subscription: FuzzySubscriptionData<T>) {
-    this.lookup = this.lookup.reduce((aggregate, currentSubscription) => {
-      if (currentSubscription !== subscription) {
-        aggregate.push(currentSubscription)
-      }
-      return aggregate
-    }, [] as FuzzySubscriptionData<T>[])
-  }
-
-  matches(event: string) {
-    return this.lookup.filter((subscription) =>
-      subscription.matcher.test(event),
-    )
-  }
-}
-
-export class JaxsBus<T> {
-  options: JaxsBusOptions
-  exactSubscriptions: ExactSubscriptions<T>
-  fuzzySubscriptions: FuzzySubscriptions<T>
+export class JaxsBus {
+  options?: AppAdditionListenerOptions
+  exactSubscriptions: ExactSubscriptions
+  fuzzySubscriptions: FuzzySubscriptions
   currentIndex: number
 
   constructor() {
-    this.options = {}
     this.exactSubscriptions = new ExactSubscriptions()
     this.fuzzySubscriptions = new FuzzySubscriptions()
     this.currentIndex = 0
   }
 
-  subscribe(matcher: JaxsBusEventMatcher, listener: JaxsBusListener<T>) {
-    const collection =
-      typeof matcher === 'string'
-        ? this.exactSubscriptions
-        : this.fuzzySubscriptions
-    const unsubscribe = collection.add(matcher, listener, this.currentIndex)
+  subscribe<T>(matcher: JaxsBusEventMatcher, listener: JaxsBusListener<T>) {
+    let unsubscribe: Unsubscribe
+    if (typeof matcher === 'string') {
+      unsubscribe = this.exactSubscriptions.add(
+        matcher,
+        listener,
+        this.currentIndex,
+      )
+    } else {
+      unsubscribe = this.fuzzySubscriptions.add(
+        matcher as RegExp,
+        listener,
+        this.currentIndex,
+      )
+    }
     this.currentIndex += 1
     return unsubscribe
   }
 
-  publish(event: string, payload: T) {
+  publish<T>(event: string, payload: T) {
     const subscriptions = [
       ...this.exactSubscriptions.matches(event),
       ...this.fuzzySubscriptions.matches(event),
@@ -119,7 +51,7 @@ export class JaxsBus<T> {
     })
   }
 
-  addListenerOptions(options: JaxsBusOptions) {
+  addListenerOptions(options: AppAdditionListenerOptions) {
     this.options = options
   }
 
@@ -128,18 +60,18 @@ export class JaxsBus<T> {
       eventName: event,
       ...this.options,
       publish: this.publish.bind(this),
-    }
+    } as JaxsBusOptions
   }
 }
 
-export const createBus = <T>() => {
-  const bus = new JaxsBus<T>()
+export const createBus = () => {
+  const bus = new JaxsBus()
 
-  const publish = (event: string, payload: T) => bus.publish(event, payload)
+  const publish = (event: string, payload: any) => bus.publish(event, payload)
 
   const subscribe = (
     matcher: JaxsBusEventMatcher,
-    listener: JaxsBusListener<T>,
+    listener: JaxsBusListener<any>,
   ) => bus.subscribe(matcher, listener)
 
   return {
