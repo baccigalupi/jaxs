@@ -3,18 +3,20 @@ import { routeChangeEvent } from './events'
 import { JaxsBusOptions } from '../types'
 
 export const onLocationChange = (_: null, listenerOptions: JaxsBusOptions) => {
-  const { state, publish } = listenerOptions
+  const { state, publish, window } = listenerOptions
   const { host, pathname, search } = window.location
   const path = pathname
   const query = extractQueryParams(search)
 
-  state.store('route').update({
+  const route = {
     host,
     path,
     query,
-  })
+  }
+
+  state.store('route').update(route)
 
   // notify next in chain about location change ... though now that data events
   // are per store, maybe not necessary
-  publish(routeChangeEvent, listenerOptions)
+  publish(routeChangeEvent, route)
 }

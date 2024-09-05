@@ -13,7 +13,7 @@ type Subscribe<T> = (
   listener: JaxsBusListener<T>,
 ) => void
 
-export const createRenderKit = <T>(messageBus = {} as Partial<JaxsBus<T>>) => {
+export const createRenderKit = <T>(messageBus = {} as Partial<JaxsBus>) => {
   const dom = setupDom()
 
   const busOptions = {

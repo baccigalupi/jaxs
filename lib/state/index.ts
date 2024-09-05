@@ -105,6 +105,7 @@ export class JaxsState {
     this.notifications.forEach((name: JaxsStoreName) => {
       this.publish(name)
     })
+    this.notifications.clear()
   }
 
   publish(name: JaxsStoreName) {
