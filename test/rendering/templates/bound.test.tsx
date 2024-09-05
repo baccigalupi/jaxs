@@ -9,7 +9,7 @@ import { createRenderKitWithBus } from '../../support/render-kit'
 
 import { bind } from '../../../lib/rendering/templates/bound'
 import { JaxsTemplate, JaxsViewModel } from '../../../lib/types'
-import { JaxsState } from '../../../lib/jaxs-state'
+import { JaxsState } from '../../../lib/state'
 
 describe('Bound templates', () => {
   const setupState = (state: JaxsState) => {}

@@ -1,4 +1,4 @@
-import { eventName } from '../../jaxs-state'
+import { eventName } from '../../state'
 import { performChange } from '../update/perform-change'
 import {
   JaxsElement,

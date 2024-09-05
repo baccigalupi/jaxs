@@ -1,4 +1,4 @@
-import { JaxsStoreUpdater } from '../jaxs-store-updater'
+import { JaxsStoreUpdater } from '../store-updater'
 export type JaxsStoreListSorter<T> = (left: T, right: T) => number
 
 export class ListUpdater<T> extends JaxsStoreUpdater<T[]> {

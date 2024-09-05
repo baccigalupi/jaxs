@@ -1,6 +1,6 @@
 import type { JaxsState, JaxsStoreName } from '.'
 import { areEqual } from './equality'
-import { JaxsStoreUpdater } from './jaxs-store-updater'
+import { JaxsStoreUpdater } from './store-updater'
 import { ListUpdater, JaxsStoreListSorter } from './updaters/list'
 
 type JaxsStoreInitializationOptions<T> = {

@@ -1,4 +1,4 @@
-import { JaxsStoreUpdater } from '../jaxs-store-updater'
+import { JaxsStoreUpdater } from '../store-updater'
 
 export class BooleanUpdater extends JaxsStoreUpdater<boolean> {
   toggle() {

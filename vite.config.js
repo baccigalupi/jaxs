@@ -4,9 +4,9 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   build: {
     lib: {
-      entry: resolve(__dirname, 'lib/jaxs-state.ts'),
-      name: 'jaxs-state',
-      fileName: 'jaxs-state',
+      entry: resolve(__dirname, 'lib/jaxs.ts'),
+      name: 'jaxs',
+      fileName: 'jaxs',
     },
   },
   esbuild: {

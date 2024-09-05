@@ -1,5 +1,5 @@
 import { expect, describe, it, vi } from 'vitest'
-import { createBus } from '../lib/jaxs-bus'
+import { createBus } from '../lib/bus'
 
 describe('JaxsBus', () => {
   it('when the bus is configured with special optional payload, that is passed along when the listener is called', () => {

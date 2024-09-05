@@ -1,9 +1,9 @@
 import { expect, it, describe, vi } from 'vitest'
-import { JaxsStore } from '../../lib/jaxs-state/jaxs-store'
-import { JaxsState } from '../../lib/jaxs-state'
-import { BooleanUpdater } from '../../lib/jaxs-state/updaters/boolean'
-import { ObjectUpdater } from '../../lib/jaxs-state/updaters/object'
-import { ListUpdater } from '../../lib/jaxs-state/updaters/list'
+import { JaxsStore } from '../../lib/state/store'
+import { JaxsState } from '../../lib/state'
+import { BooleanUpdater } from '../../lib/state/updaters/boolean'
+import { ObjectUpdater } from '../../lib/state/updaters/object'
+import { ListUpdater } from '../../lib/state/updaters/list'
 
 describe('JaxsState', () => {
   it('allows the creation and reading of stores', () => {
@@ -98,7 +98,7 @@ describe('JaxsState', () => {
     state.update('loggedIn', true)
 
     const store = state.store('loggedIn')
-    expect(publish).toHaveBeenCalledWith('jaxs-state:loggedIn', {
+    expect(publish).toHaveBeenCalledWith('state:loggedIn', {
       state,
       store,
     })
@@ -118,7 +118,7 @@ describe('JaxsState', () => {
     })
 
     expect(publish).toHaveBeenCalledTimes(1)
-    expect(publish.mock.calls[0][0]).toEqual('jaxs-state:currentUser')
+    expect(publish.mock.calls[0][0]).toEqual('state:currentUser')
   })
 
   describe('adding typed stores with updaters', () => {

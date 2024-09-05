@@ -1,7 +1,7 @@
 import { expect, it, describe, vi } from 'vitest'
-import { JaxsState } from '../../lib/jaxs-state'
-import { JaxsStore } from '../../lib/jaxs-state/jaxs-store'
-import { JaxsStoreUpdater } from '../../lib/jaxs-state/jaxs-store-updater'
+import { JaxsState } from '../../lib/state'
+import { JaxsStore } from '../../lib/state/store'
+import { JaxsStoreUpdater } from '../../lib/state/store-updater'
 
 describe('JaxsStore', () => {
   it("'value' attribute will return it's underlying value", () => {

@@ -4,7 +4,7 @@ import {
   areObjectsEqual,
   areArraysEqual,
   areEqual,
-} from '../../lib/jaxs-state/equality'
+} from '../../lib/state/equality'
 
 describe('Equality tester functions', () => {
   describe('areElementsEqual', () => {

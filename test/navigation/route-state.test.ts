@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { createState } from '../../lib/jaxs-state'
+import { createState } from '../../lib/state'
 import { createRouteState } from '../../lib/navigation/route-state'
 
 describe('createRouteState', () => {

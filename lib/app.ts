@@ -4,8 +4,8 @@ import type {
   Subscribe,
   JaxsPublishFunction,
 } from './types'
-import { createState, type JaxsState } from './jaxs-state'
-import { createBus, type JaxsBus } from './jaxs-bus'
+import { createState, type JaxsState } from './state'
+import { createBus, type JaxsBus } from './bus'
 import { render, Root } from './rendering/templates/root'
 import { startNavigation } from './navigation'
 

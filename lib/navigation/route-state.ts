@@ -1,4 +1,4 @@
-import { JaxsState } from '../jaxs-state'
+import { JaxsState } from '../state'
 
 export type RouteState = {
   host: string

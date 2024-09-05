@@ -1,7 +1,7 @@
 import { vi, Mocked } from 'vitest'
 import { setupDom } from './test-dom'
-import { createState } from '../../lib/jaxs-state'
-import { createBus, type JaxsBus } from '../../lib/jaxs-bus'
+import { createState } from '../../lib/state'
+import { createBus, type JaxsBus } from '../../lib/bus'
 import {
   JaxsPublishFunction,
   JaxsBusEventMatcher,

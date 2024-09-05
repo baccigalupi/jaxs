@@ -5,7 +5,7 @@ import {
   isString,
   isArray,
   isObject,
-} from '../../lib/jaxs-state/is'
+} from '../../lib/state/is'
 
 describe('Utilities for testing types', () => {
   it('correctly determines whether a thing is a boolean or not', () => {

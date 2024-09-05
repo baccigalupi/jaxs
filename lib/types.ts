@@ -1,4 +1,4 @@
-import { JaxsState } from './jaxs-state'
+import { JaxsState } from './state'
 
 // DOM & Jax & Jsx
 export type TextValue = string | number

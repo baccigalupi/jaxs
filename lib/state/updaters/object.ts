@@ -1,4 +1,4 @@
-import { JaxsStoreUpdater } from '../jaxs-store-updater'
+import { JaxsStoreUpdater } from '../store-updater'
 
 export class ObjectUpdater<T> extends JaxsStoreUpdater<T> {
   updateAttribute(name: keyof T, value: T[keyof T]) {
