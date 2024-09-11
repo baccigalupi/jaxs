@@ -8,7 +8,7 @@ type CreateAppBuilderArguments = {
   document?: Document
 }
 
-export class AppBuilder {
+class AppBuilder {
   window: Window
   document: Document
   publish: JaxsPublishFunction<any>
@@ -81,9 +81,11 @@ export class AppBuilder {
   }
 }
 
-export const createApp = (domEnvironment: CreateAppBuilderArguments = {}) => {
+const createApp = (domEnvironment: CreateAppBuilderArguments = {}) => {
   const builder = new AppBuilder(domEnvironment)
   const app = builder.setup()
   app.startNavigation()
   return app
 }
+
+export { App, AppBuilder, createApp }

@@ -1,27 +1,20 @@
-import { locationChangeEvent, linkNavigationEvent } from './events'
-import { createRouteState } from './route-state'
+import * as events from './events'
+import { extractQueryParams } from './extract-query-params'
+import { findHref } from './find-href'
+import { navigate } from './navigate'
 import { onLinkClick } from './on-link-click'
 import { onLocationChange } from './on-location-change'
-import type { App } from '../app'
+import { createRouteState } from './route-state'
+import * as start from './start'
+export type { RouteState } from './route-state'
 
-export const subscribeToNavigation = (app: App) => {
-  const { subscribe } = app
-  subscribe(linkNavigationEvent, onLinkClick)
-}
-
-export const subscribeToHistoryChange = (app: App) => {
-  const { publish, subscribe, state, window } = app
-  createRouteState(state)
-  window.addEventListener('popstate', () => publish(locationChangeEvent, null))
-  subscribe(locationChangeEvent, onLocationChange)
-}
-
-export const publishLocation = (app: App) => {
-  setTimeout(() => app.publish(locationChangeEvent, null), 0)
-}
-
-export const startNavigation = (app: App) => {
-  subscribeToHistoryChange(app)
-  subscribeToNavigation(app)
-  publishLocation(app)
+export {
+  events,
+  extractQueryParams,
+  findHref,
+  navigate,
+  onLinkClick,
+  onLocationChange,
+  createRouteState,
+  start,
 }

@@ -9,7 +9,7 @@ import {
 import { ExactSubscriptions } from './exact-subscriptions'
 import { FuzzySubscriptions } from './fuzzy-subscriptions'
 
-export class JaxsBus {
+class JaxsBus {
   options?: AppAdditionListenerOptions
   exactSubscriptions: ExactSubscriptions
   fuzzySubscriptions: FuzzySubscriptions
@@ -64,7 +64,7 @@ export class JaxsBus {
   }
 }
 
-export const createBus = () => {
+const createBus = () => {
   const bus = new JaxsBus()
 
   const publish = (event: string, payload: any) => bus.publish(event, payload)
@@ -80,3 +80,5 @@ export const createBus = () => {
     subscribe,
   }
 }
+
+export { createBus, JaxsBus, ExactSubscriptions, FuzzySubscriptions }
