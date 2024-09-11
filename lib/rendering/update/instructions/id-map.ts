@@ -1,4 +1,4 @@
-import type { JaxsNode, JsxChangeId } from '../../../types'
+import type { JaxsNode, JaxsNodes, JsxChangeId } from '../../../types'
 
 const nullMatch = { index: -1 } as JsxChangeId
 

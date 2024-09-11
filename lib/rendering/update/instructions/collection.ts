@@ -1,10 +1,9 @@
-import type { ChangeInstructions, JaxsElement, JaxsNode } from '../../../types'
+import type { ChangeInstructions, JaxsElement, JaxsNode, JaxsNodes } from '../../../types'
 import {
   insertNode,
   removeNode,
   replaceNode,
   instructionsSorter,
-  JaxsNodes,
 } from './instructions'
 import { createIdMap } from './id-map'
 import { compileForNode } from './node'

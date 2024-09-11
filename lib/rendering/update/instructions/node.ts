@@ -1,4 +1,4 @@
-import type { JaxsElement, JaxsNode, ChangeInstructions } from '../../../types'
+import type { JaxsElement, JaxsNode, JaxsNodes, ChangeInstructions } from '../../../types'
 import { compileForElement } from './nodes/element'
 import { compileForSvg } from './nodes/svg'
 import { compileForText } from './nodes/text'
