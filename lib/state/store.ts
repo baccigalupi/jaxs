@@ -7,6 +7,7 @@ import type {
   JaxsStoreUpdaterFunction,
   JaxsStoreUpdateValue,
   JaxStoreUpdatersCollection,
+  StoreUpdater,
 } from '../types'
 import { areEqual } from './equality'
 import { JaxsStoreUpdater } from './store-updater'
@@ -15,7 +16,7 @@ import { ListUpdater } from './updaters/list'
 export class JaxsStore<T> {
   parent: JaxsState
   name: JaxsStoreName
-  updater: JaxsStoreUpdater<T>
+  updater: StoreUpdater<T>
   _value: T
   initialState: T
 
@@ -55,11 +56,11 @@ export class JaxsStore<T> {
     return updater(this.value)
   }
 
-  addUpdaters(updaters: JaxStoreUpdatersCollection<T>) {
+  addUpdaters(updaters: JaxStoreUpdatersCollection<any>) {
     this.updater.addUpdaterFunctions(updaters)
   }
 
-  addUpdater(name: string, updater: JaxsStoreUpdaterFunction<T>) {
+  addUpdater(name: string, updater: JaxsStoreUpdaterFunction<any>) {
     this.updater.addUpdaterFunction(name, updater)
   }
 

@@ -25,9 +25,10 @@ declare module "state/store-updater" {
     }
 }
 declare module "state/updaters/list" {
-    import { JaxsStoreListSorter } from "types";
+    import { JaxsStoreListSorter, JaxsStoreUpdaterFunction } from "types";
     import { JaxsStoreUpdater } from "state/store-updater";
     export class ListUpdater<T> extends JaxsStoreUpdater<T[]> {
+        addUpdaterFunction(name: string, updater: JaxsStoreUpdaterFunction<T[]>): void;
         push(element: T): void;
         pop(): T;
         unshift(element: T): void;
@@ -38,12 +39,11 @@ declare module "state/updaters/list" {
     }
 }
 declare module "state/store" {
-    import type { JaxsState, JaxsStoreDataUpdater, JaxsStoreInitializationOptions, JaxsStoreListSorter, JaxsStoreName, JaxsStoreUpdaterFunction, JaxsStoreUpdateValue, JaxStoreUpdatersCollection } from "types";
-    import { JaxsStoreUpdater } from "state/store-updater";
+    import type { JaxsState, JaxsStoreDataUpdater, JaxsStoreInitializationOptions, JaxsStoreListSorter, JaxsStoreName, JaxsStoreUpdaterFunction, JaxsStoreUpdateValue, JaxStoreUpdatersCollection, StoreUpdater } from "types";
     export class JaxsStore<T> {
         parent: JaxsState;
         name: JaxsStoreName;
-        updater: JaxsStoreUpdater<T>;
+        updater: StoreUpdater<T>;
         _value: T;
         initialState: T;
         constructor(options: JaxsStoreInitializationOptions<T>);
@@ -52,22 +52,26 @@ declare module "state/store" {
         update(updater: JaxsStoreUpdateValue<T>): void;
         updateValue(newValue: T): void;
         getUpdatedValue(updater: JaxsStoreDataUpdater<T>): T;
-        addUpdaters(updaters: JaxStoreUpdatersCollection<T>): void;
-        addUpdater(name: string, updater: JaxsStoreUpdaterFunction<T>): void;
+        addUpdaters(updaters: JaxStoreUpdatersCollection<any>): void;
+        addUpdater(name: string, updater: JaxsStoreUpdaterFunction<any>): void;
         addSorter(name: string, sorter: JaxsStoreListSorter<T>): void;
     }
 }
 declare module "state/updaters/boolean" {
+    import { JaxsStoreUpdaterFunction } from "types";
     import { JaxsStoreUpdater } from "state/store-updater";
     export class BooleanUpdater extends JaxsStoreUpdater<boolean> {
         toggle(): void;
         setTrue(): void;
         setFalse(): void;
+        addUpdaterFunction(name: string, updater: JaxsStoreUpdaterFunction<boolean>): void;
     }
 }
 declare module "state/updaters/object" {
+    import { JaxsStoreUpdaterFunction } from "types";
     import { JaxsStoreUpdater } from "state/store-updater";
     export class ObjectUpdater<T> extends JaxsStoreUpdater<T> {
+        addUpdaterFunction(name: string, updater: JaxsStoreUpdaterFunction<T>): void;
         updateAttribute(name: keyof T, value: T[keyof T]): void;
     }
 }
@@ -105,7 +109,12 @@ declare module "state/index" {
 declare module "types" {
     import type { JaxsState } from "state/index";
     import type { JaxsStore } from "state/store";
-    export { JaxsState, JaxsStore };
+    import type { JaxsStoreUpdater } from "state/store-updater";
+    import type { BooleanUpdater } from "state/updaters/boolean";
+    import type { ListUpdater } from "state/updaters/list";
+    import type { ObjectUpdater } from "state/updaters/object";
+    export { JaxsState, JaxsStore, JaxsStoreUpdater, BooleanUpdater, ListUpdater, ObjectUpdater, };
+    export type StoreUpdater<T> = JaxsStoreUpdater<T> | ObjectUpdater<T> | BooleanUpdater | ListUpdater<T>;
     export type TextValue = string | number;
     export interface JsxIded {
         __jsx?: string;
@@ -276,8 +285,9 @@ declare module "types" {
         value: T;
     };
     export type JaxsStoreDataUpdater<T> = (originalValue: T) => T;
-    export type JaxsStoreUpdateValue<T> = T | JaxsStoreDataUpdater<T>;
-    export type JaxsStoreUpdaterFunction<T> = (value: T, ...args: any[]) => T;
+    export type UpdaterValue<T> = boolean | T | T[];
+    export type JaxsStoreUpdateValue<T> = UpdaterValue<T> | JaxsStoreDataUpdater<T>;
+    export type JaxsStoreUpdaterFunction<T> = (value: UpdaterValue<T>, ...args: any[]) => T;
     export type JaxStoreUpdatersCollection<T> = Record<string, JaxsStoreUpdaterFunction<T>>;
     export type JaxsStoreListSorter<T> = (left: T, right: T) => number;
 }

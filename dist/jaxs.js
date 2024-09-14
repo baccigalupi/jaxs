@@ -143,10 +143,10 @@ class At {
     return this.renderKit.document.querySelector(this.selector);
   }
 }
-const St = (e, t, s) => {
+const wt = (e, t, s) => {
   const n = new At(e, t, s);
   return n.renderAndAttach(s), n;
-}, $ = "go-to-href", m = "navigation:location-change", M = "navigation:route-change", _t = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+}, $ = "go-to-href", m = "navigation:location-change", M = "navigation:route-change", St = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   linkNavigationEvent: $,
   locationChangeEvent: m,
@@ -162,49 +162,49 @@ const St = (e, t, s) => {
   return t && t.getAttribute("href") || "";
 }, D = (e, { publish: t, window: s }) => {
   s.history.pushState(null, "", e), t(m, null);
-}, z = (e, t) => {
+}, U = (e, t) => {
   if (!e || !e.target) return;
   e.preventDefault();
   const s = T(e.target);
   D(s, t);
-}, L = (e) => e.replace(/^\?/, "").split("&").reduce((t, s) => {
+}, z = (e) => e.replace(/^\?/, "").split("&").reduce((t, s) => {
   if (!s) return t;
   const n = s.split("=");
   return t[n[0]] = n[1], t;
-}, {}), P = (e, t) => {
-  const { state: s, publish: n, window: r } = t, { host: o, pathname: a, search: h } = r.location, i = a, d = L(h), u = {
+}, {}), L = (e, t) => {
+  const { state: s, publish: n, window: r } = t, { host: o, pathname: a, search: h } = r.location, i = a, d = z(h), u = {
     host: o,
     path: i,
     query: d
   };
   s.store("route").update(u), n(M, u);
-}, U = (e) => {
+}, P = (e) => {
   const { subscribe: t } = e;
-  t($, z);
-}, B = (e) => {
-  const { publish: t, subscribe: s, state: n, window: r } = e;
-  F(n), r.addEventListener("popstate", () => t(m, null)), s(m, P);
-}, K = (e) => {
-  setTimeout(() => e.publish(m, null), 0);
+  t($, U);
 }, V = (e) => {
-  B(e), U(e), K(e);
-}, wt = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  const { publish: t, subscribe: s, state: n, window: r } = e;
+  F(n), r.addEventListener("popstate", () => t(m, null)), s(m, L);
+}, B = (e) => {
+  setTimeout(() => e.publish(m, null), 0);
+}, K = (e) => {
+  V(e), P(e), B(e);
+}, _t = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  publishLocation: K,
-  startNavigation: V,
-  subscribeToHistoryChange: B,
-  subscribeToNavigation: U
+  publishLocation: B,
+  startNavigation: K,
+  subscribeToHistoryChange: V,
+  subscribeToNavigation: P
 }, Symbol.toStringTag, { value: "Module" }));
 class R {
   constructor({ window: t, document: s, publish: n, subscribe: r, bus: o, state: a, renderKit: h }) {
     this.window = t, this.document = s, this.publish = n, this.subscribe = r, this.bus = o, this.state = a, this.renderKit = h, this.roots = [];
   }
   render(t, s) {
-    const n = St(t, s, this.renderKit);
+    const n = wt(t, s, this.renderKit);
     return this.roots.push(n), n;
   }
   startNavigation() {
-    V(this);
+    K(this);
   }
 }
 const pe = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
@@ -335,6 +335,12 @@ class f {
   }
 }
 class x extends f {
+  addUpdaterFunction(t, s) {
+    this.constructor.prototype[t] = (...n) => {
+      const r = s(this.value, ...n);
+      this.update(r);
+    };
+  }
   push(t) {
     const s = [...this.value, t];
     this.update(s);
@@ -409,8 +415,20 @@ class Q extends f {
   setFalse() {
     this.update(!1);
   }
+  addUpdaterFunction(t, s) {
+    this.constructor.prototype[t] = (...n) => {
+      const r = s(this.value, ...n);
+      this.update(r);
+    };
+  }
 }
 class W extends f {
+  addUpdaterFunction(t, s) {
+    this.constructor.prototype[t] = (...n) => {
+      const r = s(this.value, ...n);
+      this.update(r);
+    };
+  }
   updateAttribute(t, s) {
     const n = { ...this.value };
     n[t] = s, this.update(n);
@@ -558,27 +576,27 @@ const ve = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   target: t,
   data: s,
   type: c.addAttribute
-}), zt = (e, t, s) => ({
-  source: e,
-  target: t,
-  data: s,
-  type: c.updateAttribute
-}), Lt = (e, t, s) => ({
-  source: e,
-  target: t,
-  data: s,
-  type: c.removeEvent
-}), Pt = (e, t, s) => ({
-  source: e,
-  target: t,
-  data: s,
-  type: c.addEvent
 }), Ut = (e, t, s) => ({
   source: e,
   target: t,
   data: s,
+  type: c.updateAttribute
+}), zt = (e, t, s) => ({
+  source: e,
+  target: t,
+  data: s,
+  type: c.removeEvent
+}), Lt = (e, t, s) => ({
+  source: e,
+  target: t,
+  data: s,
+  type: c.addEvent
+}), Pt = (e, t, s) => ({
+  source: e,
+  target: t,
+  data: s,
   type: c.updateEvent
-}), S = (e) => ({
+}), w = (e) => ({
   source: e,
   target: e,
   // for type crap only
@@ -590,13 +608,13 @@ const ve = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   // for type crap only
   type: c.insertNode,
   data: t
-}), Bt = (e, t, s) => ({
+}), Vt = (e, t, s) => ({
   source: e,
   target: t,
   type: c.changeValue,
   data: s
-}), Kt = (e, t) => e.type > t.type ? 1 : e.type < t.type ? -1 : 0, _ = { index: -1 };
-class Vt {
+}), Bt = (e, t) => e.type > t.type ? 1 : e.type < t.type ? -1 : 0, S = { index: -1 };
+class Kt {
   constructor() {
     this.map = {};
   }
@@ -611,7 +629,7 @@ class Vt {
   }
   pullMatch(t) {
     const s = t && t.__jsx;
-    return !s || !(this.map[s] && this.map[s].length) ? _ : this.map[s].shift();
+    return !s || !(this.map[s] && this.map[s].length) ? S : this.map[s].shift();
   }
   clear(t) {
     const s = t && t.__jsx;
@@ -627,8 +645,8 @@ class Vt {
     return Object.values(this.map).flat();
   }
 }
-const w = (e) => {
-  const t = new Vt();
+const _ = (e) => {
+  const t = new Kt();
   return t.populate(e), t;
 }, Y = (e, t, s = !1) => {
   const n = [], r = e.attributes, o = r.length, a = t.attributes, h = a.length;
@@ -645,7 +663,7 @@ const w = (e) => {
         }
       }
       u ? l.value !== u.value && n.push(
-        zt(e, t, {
+        Ut(e, t, {
           name: l.name,
           value: u.value,
           isSvg: s
@@ -681,13 +699,13 @@ const w = (e) => {
   return o.forEach((h) => {
     const i = n[h], d = r[h];
     d ? d.busEvent !== i.busEvent && s.push(
-      Ut(e, t, {
+      Pt(e, t, {
         name: h,
         targetValue: d.listener,
         sourceValue: i.listener
       })
     ) : s.push(
-      Lt(e, t, {
+      zt(e, t, {
         name: i.domEvent,
         value: i.listener
       })
@@ -695,7 +713,7 @@ const w = (e) => {
   }), a.forEach((h) => {
     const i = n[h], d = r[h];
     i || s.push(
-      Pt(e, t, {
+      Lt(e, t, {
         name: d.domEvent,
         value: d.listener
       })
@@ -705,7 +723,7 @@ const w = (e) => {
   if (Jt(e) || qt(e, t))
     return [];
   const s = e, n = t;
-  return [Bt(s, n, { name: "value", value: n.value })];
+  return [Vt(s, n, { name: "value", value: n.value })];
 }, It = (e, t) => {
   const s = Y(e, t), n = Rt(e, t), r = Ht(e, t);
   return s.concat(n).concat(r);
@@ -728,7 +746,7 @@ const w = (e) => {
   } else e.nodeType === 3 && (n = Wt(e, t));
   return n;
 }, Z = (e, t, s) => {
-  const n = [], r = Xt(e, t), o = w(e), a = w(t), h = [];
+  const n = [], r = Xt(e, t), o = _(e), a = _(t), h = [];
   let i = 0;
   for (; i < r; i++) {
     const u = e[i], l = t[i];
@@ -749,10 +767,10 @@ const w = (e) => {
       )) : n.push(
         v(l, { parent: s, index: i })
       );
-    } else u && o.pullMatch(u).element && n.push(S(u));
+    } else u && o.pullMatch(u).element && n.push(w(u));
   }
   o.remaining().forEach(({ element: u }) => {
-    n.push(S(u));
+    n.push(w(u));
   });
   const d = h.reduce(
     (u, { source: l, target: p }) => u.concat(
@@ -760,7 +778,7 @@ const w = (e) => {
     ),
     []
   );
-  return n.concat(d).sort(Kt);
+  return n.concat(d).sort(Bt);
 }, Xt = (e, t) => {
   const s = e.length, n = t.length;
   return s > n ? s : n;
@@ -857,13 +875,13 @@ const de = (e) => e, ge = ({
 }) => (s = s || [], t = t || de, (n) => new le({ Template: e, viewModel: t, subscriptions: s, attributes: n })), ye = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   createRouteState: F,
-  events: _t,
-  extractQueryParams: L,
+  events: St,
+  extractQueryParams: z,
   findHref: T,
   navigate: D,
-  onLinkClick: z,
-  onLocationChange: P,
-  start: wt
+  onLinkClick: U,
+  onLocationChange: L,
+  start: _t
 }, Symbol.toStringTag, { value: "Module" }));
 export {
   ve as JaxsTypes,

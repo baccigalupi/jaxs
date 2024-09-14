@@ -3,6 +3,7 @@ import type {
   JaxsStoreUpdateValue,
   JaxsStoreUpdaterFunction,
   JaxStoreUpdatersCollection,
+  UpdaterValue,
 } from '../types'
 export class JaxsStoreUpdater<T> {
   store: JaxsStore<T>
@@ -26,7 +27,7 @@ export class JaxsStoreUpdater<T> {
   addUpdaterFunction(name: string, updater: JaxsStoreUpdaterFunction<T>) {
     this.constructor.prototype[name] = (...args: any[]) => {
       const newValue = updater(this.value, ...args)
-      this.update(newValue)
+      this.update(newValue as UpdaterValue<T>)
     }
   }
 

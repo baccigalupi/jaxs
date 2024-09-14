@@ -1,3 +1,4 @@
+import { JaxsStoreUpdaterFunction } from '../../types'
 import { JaxsStoreUpdater } from '../store-updater'
 
 export class BooleanUpdater extends JaxsStoreUpdater<boolean> {
@@ -12,5 +13,12 @@ export class BooleanUpdater extends JaxsStoreUpdater<boolean> {
 
   setFalse() {
     this.update(false)
+  }
+
+  addUpdaterFunction(name: string, updater: JaxsStoreUpdaterFunction<boolean>) {
+    this.constructor.prototype[name] = (...args: any[]) => {
+      const newValue = updater(this.value, ...args)
+      this.update(newValue)
+    }
   }
 }

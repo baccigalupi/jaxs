@@ -1,6 +1,22 @@
 import type { JaxsState } from './state'
 import type { JaxsStore } from './state/store'
-export { JaxsState, JaxsStore }
+import type { JaxsStoreUpdater } from './state/store-updater'
+import type { BooleanUpdater } from './state/updaters/boolean'
+import type { ListUpdater } from './state/updaters/list'
+import type { ObjectUpdater } from './state/updaters/object'
+export {
+  JaxsState,
+  JaxsStore,
+  JaxsStoreUpdater,
+  BooleanUpdater,
+  ListUpdater,
+  ObjectUpdater,
+}
+export type StoreUpdater<T> =
+  | JaxsStoreUpdater<T>
+  | ObjectUpdater<T>
+  | BooleanUpdater
+  | ListUpdater<T>
 // DOM & Jax & Jsx
 export type TextValue = string | number
 export interface JsxIded {
@@ -245,8 +261,12 @@ export type JaxsStoreInitializationOptions<T> = {
 }
 
 export type JaxsStoreDataUpdater<T> = (originalValue: T) => T
-export type JaxsStoreUpdateValue<T> = T | JaxsStoreDataUpdater<T>
-export type JaxsStoreUpdaterFunction<T> = (value: T, ...args: any[]) => T
+export type UpdaterValue<T> = boolean | T | T[]
+export type JaxsStoreUpdateValue<T> = UpdaterValue<T> | JaxsStoreDataUpdater<T>
+export type JaxsStoreUpdaterFunction<T> = (
+  value: UpdaterValue<T>,
+  ...args: any[]
+) => T
 export type JaxStoreUpdatersCollection<T> = Record<
   string,
   JaxsStoreUpdaterFunction<T>

@@ -47,13 +47,13 @@ export class JaxsState {
 
   createRecord<T>(name: JaxsStoreName, initialState: T) {
     const store = this.create(name, initialState)
-    store.updater = new ObjectUpdater(store)
+    store.updater = new ObjectUpdater<T>(store)
     return store
   }
 
   createList<T>(name: JaxsStoreName, initialState: T[]) {
     const store = this.create(name, initialState)
-    store.updater = new ListUpdater(store)
+    store.updater = new ListUpdater<T>(store)
     return store
   }
 
