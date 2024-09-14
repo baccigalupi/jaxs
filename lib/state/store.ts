@@ -1,21 +1,16 @@
-import type { JaxsState, JaxsStoreName } from '.'
+import type {
+  JaxsState,
+  JaxsStoreDataUpdater,
+  JaxsStoreInitializationOptions,
+  JaxsStoreListSorter,
+  JaxsStoreName,
+  JaxsStoreUpdaterFunction,
+  JaxsStoreUpdateValue,
+  JaxStoreUpdatersCollection,
+} from '../types'
 import { areEqual } from './equality'
 import { JaxsStoreUpdater } from './store-updater'
-import { ListUpdater, JaxsStoreListSorter } from './updaters/list'
-
-type JaxsStoreInitializationOptions<T> = {
-  name: JaxsStoreName
-  parent: JaxsState
-  value: T
-}
-
-type JaxsStoreDataUpdater<T> = (originalValue: T) => T
-export type JaxsStoreUpdateValue<T> = T | JaxsStoreDataUpdater<T>
-export type JaxsStoreUpdaterFunction<T> = (value: T, ...args: any[]) => T
-export type JaxStoreUpdatersCollection<T> = Record<
-  string,
-  JaxsStoreUpdaterFunction<T>
->
+import { ListUpdater } from './updaters/list'
 
 export class JaxsStore<T> {
   parent: JaxsState

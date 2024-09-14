@@ -2,16 +2,13 @@ import { JaxsStore } from './store'
 import { BooleanUpdater } from './updaters/boolean'
 import { ListUpdater } from './updaters/list'
 import { ObjectUpdater } from './updaters/object'
-import type { StoreValue } from '../types'
-export { JaxsStoreUpdater } from './store-updater'
-
-export type JaxsStatePublisher = (event: string, payload: any) => void
-export type JaxsStateTransactionUpdater = (
-  collection: JaxsStoresCollection,
-) => void
-export type JaxsStoreName = string
-
-type JaxsStoresCollection = Record<string, JaxsStore<any>>
+import type {
+  JaxsStatePublisher,
+  JaxsStateTransactionUpdater,
+  JaxsStoreName,
+  JaxsStoresCollection,
+  StoreValue,
+} from '../types'
 
 export const eventName = 'state'
 

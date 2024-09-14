@@ -1,4 +1,10 @@
-import type { JaxsElement, JaxsNode, JaxsNodes, ChangeInstructions } from '../../../types'
+import type {
+  JaxsElement,
+  JaxsNode,
+  JaxsNodes,
+  ChangeInstructions,
+  CompileChildren,
+} from '../../../types'
 import { compileForElement } from './nodes/element'
 import { compileForSvg } from './nodes/svg'
 import { compileForText } from './nodes/text'
@@ -8,12 +14,6 @@ enum NodeTypes {
   ElementNode = 1,
   TextNode = 3,
 }
-
-type CompileChildren = (
-  sourceList: JaxsNodes,
-  targetList: JaxsNodes,
-  parent: JaxsElement,
-) => ChangeInstructions
 
 export const compileForNode = (
   source: JaxsNode,

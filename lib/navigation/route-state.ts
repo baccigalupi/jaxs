@@ -1,10 +1,6 @@
 import { JaxsState } from '../state'
+import type { RouteState } from '../types'
 
-export type RouteState = {
-  host: string
-  path: string
-  query: Record<string, string>
-}
 export const createRouteState = (state: JaxsState) => {
   state.createRecord<RouteState>('route', {
     host: '',

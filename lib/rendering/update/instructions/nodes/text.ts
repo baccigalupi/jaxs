@@ -1,4 +1,4 @@
-import type { ChangeInstructions } from "../../../../types"
+import type { ChangeInstructions } from '../../../../types'
 import { changeText } from '../instructions'
 
 export const compileForText = (source: Text, target: Text) => {

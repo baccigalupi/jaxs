@@ -1,13 +1,12 @@
 import { App } from '.'
 import { JaxsBus, createBus } from '../bus'
 import { JaxsState, createState } from '../state'
-import { JaxsPublishFunction, Subscribe, RenderKit } from '../types'
-
-type CreateAppBuilderArguments = {
-  window?: Window
-  document?: Document
-}
-
+import {
+  JaxsPublishFunction,
+  Subscribe,
+  RenderKit,
+  CreateAppBuilderArguments,
+} from '../types'
 class AppBuilder {
   window: Window
   document: Document

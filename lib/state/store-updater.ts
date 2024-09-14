@@ -3,7 +3,7 @@ import type {
   JaxsStoreUpdateValue,
   JaxsStoreUpdaterFunction,
   JaxStoreUpdatersCollection,
-} from './store'
+} from '../types'
 export class JaxsStoreUpdater<T> {
   store: JaxsStore<T>
 

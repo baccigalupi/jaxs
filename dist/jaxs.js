@@ -303,14 +303,14 @@ const I = () => {
   FuzzySubscriptions: q,
   JaxsBus: H,
   createBus: I
-}, Symbol.toStringTag, { value: "Module" })), f = (e) => Array.isArray(e), g = (e) => e !== null && !f(e) && typeof e == "object", Nt = (e, t) => e === t, jt = (e, t) => Object.keys(e).length === Object.keys(t).length, kt = (e, t) => !(g(e) && g(t)) || !jt(e, t) ? !1 : Object.keys(e).every((s) => {
+}, Symbol.toStringTag, { value: "Module" })), b = (e) => Array.isArray(e), g = (e) => e !== null && !b(e) && typeof e == "object", Nt = (e, t) => e === t, jt = (e, t) => Object.keys(e).length === Object.keys(t).length, kt = (e, t) => !(g(e) && g(t)) || !jt(e, t) ? !1 : Object.keys(e).every((s) => {
   const n = e[s], r = t[s];
   return E(n, r);
-}), Ot = (e, t) => !(f(e) && f(t)) || e.length !== t.length ? !1 : e.every((s, n) => {
+}), Ot = (e, t) => !(b(e) && b(t)) || e.length !== t.length ? !1 : e.every((s, n) => {
   const r = t[n];
   return E(s, r);
-}), E = (e, t) => g(e) ? kt(e, t) : f(e) ? Ot(e, t) : Nt(e, t);
-class b {
+}), E = (e, t) => g(e) ? kt(e, t) : b(e) ? Ot(e, t) : Nt(e, t);
+class f {
   constructor(t) {
     this.store = t;
   }
@@ -334,7 +334,7 @@ class b {
       this.addUpdaterFunction(s, t[s]);
   }
 }
-class x extends b {
+class x extends f {
   push(t) {
     const s = [...this.value, t];
     this.update(s);
@@ -367,7 +367,7 @@ class x extends b {
 }
 class y {
   constructor(t) {
-    this.name = t.name, this.parent = t.parent, this._value = t.value, this.initialState = structuredClone(t.value), this.updater = new b(this);
+    this.name = t.name, this.parent = t.parent, this._value = t.value, this.initialState = structuredClone(t.value), this.updater = new f(this);
   }
   get value() {
     return this._value;
@@ -398,7 +398,7 @@ class y {
     this.updater instanceof x && this.updater.addSorter(t, s);
   }
 }
-class Q extends b {
+class Q extends f {
   toggle() {
     const t = !this.value;
     this.update(t);
@@ -410,7 +410,7 @@ class Q extends b {
     this.update(!1);
   }
 }
-class W extends b {
+class W extends f {
   updateAttribute(t, s) {
     const n = { ...this.value };
     n[t] = s, this.update(n);
@@ -483,7 +483,6 @@ const X = (e) => new G(e), be = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Ob
   BooleanUpdater: Q,
   JaxsState: G,
   JaxsStore: y,
-  JaxsStoreUpdater: b,
   ListUpdater: x,
   ObjectUpdater: W,
   createState: X,

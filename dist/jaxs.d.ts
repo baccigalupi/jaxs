@@ -13,7 +13,7 @@ declare module "state/equality" {
     export const areEqual: (oldValue: any, newValue: any) => any;
 }
 declare module "state/store-updater" {
-    import type { JaxsStore, JaxsStoreUpdateValue, JaxsStoreUpdaterFunction, JaxStoreUpdatersCollection } from "state/store";
+    import type { JaxsStore, JaxsStoreUpdateValue, JaxsStoreUpdaterFunction, JaxStoreUpdatersCollection } from "types";
     export class JaxsStoreUpdater<T> {
         store: JaxsStore<T>;
         constructor(store: JaxsStore<T>);
@@ -25,8 +25,8 @@ declare module "state/store-updater" {
     }
 }
 declare module "state/updaters/list" {
+    import { JaxsStoreListSorter } from "types";
     import { JaxsStoreUpdater } from "state/store-updater";
-    export type JaxsStoreListSorter<T> = (left: T, right: T) => number;
     export class ListUpdater<T> extends JaxsStoreUpdater<T[]> {
         push(element: T): void;
         pop(): T;
@@ -38,18 +38,8 @@ declare module "state/updaters/list" {
     }
 }
 declare module "state/store" {
-    import type { JaxsState, JaxsStoreName } from "state/index";
+    import type { JaxsState, JaxsStoreDataUpdater, JaxsStoreInitializationOptions, JaxsStoreListSorter, JaxsStoreName, JaxsStoreUpdaterFunction, JaxsStoreUpdateValue, JaxStoreUpdatersCollection } from "types";
     import { JaxsStoreUpdater } from "state/store-updater";
-    import { JaxsStoreListSorter } from "state/updaters/list";
-    type JaxsStoreInitializationOptions<T> = {
-        name: JaxsStoreName;
-        parent: JaxsState;
-        value: T;
-    };
-    type JaxsStoreDataUpdater<T> = (originalValue: T) => T;
-    export type JaxsStoreUpdateValue<T> = T | JaxsStoreDataUpdater<T>;
-    export type JaxsStoreUpdaterFunction<T> = (value: T, ...args: any[]) => T;
-    export type JaxStoreUpdatersCollection<T> = Record<string, JaxsStoreUpdaterFunction<T>>;
     export class JaxsStore<T> {
         parent: JaxsState;
         name: JaxsStoreName;
@@ -86,12 +76,7 @@ declare module "state/index" {
     import { BooleanUpdater } from "state/updaters/boolean";
     import { ListUpdater } from "state/updaters/list";
     import { ObjectUpdater } from "state/updaters/object";
-    import type { StoreValue } from "types";
-    export { JaxsStoreUpdater } from "state/store-updater";
-    export type JaxsStatePublisher = (event: string, payload: any) => void;
-    export type JaxsStateTransactionUpdater = (collection: JaxsStoresCollection) => void;
-    export type JaxsStoreName = string;
-    type JaxsStoresCollection = Record<string, JaxsStore<any>>;
+    import type { JaxsStatePublisher, JaxsStateTransactionUpdater, JaxsStoreName, JaxsStoresCollection, StoreValue } from "types";
     export const eventName = "state";
     export class JaxsState {
         publisher: JaxsStatePublisher;
@@ -118,7 +103,9 @@ declare module "state/index" {
     export { JaxsStore, BooleanUpdater, ListUpdater, ObjectUpdater };
 }
 declare module "types" {
-    import { JaxsState } from "state/index";
+    import type { JaxsState } from "state/index";
+    import type { JaxsStore } from "state/store";
+    export { JaxsState, JaxsStore };
     export type TextValue = string | number;
     export interface JsxIded {
         __jsx?: string;
@@ -262,6 +249,37 @@ declare module "types" {
         matcher: RegExp;
     };
     export type Unsubscribe = () => void;
+    export type CreateAppBuilderArguments = {
+        window?: Window;
+        document?: Document;
+    };
+    export type RouteState = {
+        host: string;
+        path: string;
+        query: Record<string, string>;
+    };
+    export type AttributesWithChildren<T> = Props<T> & {
+        children?: JsxCollection;
+    };
+    export type DiffPair = {
+        source: JaxsNode;
+        target: JaxsNode;
+    };
+    export type CompileChildren = (sourceList: JaxsNodes, targetList: JaxsNodes, parent: JaxsElement) => ChangeInstructions;
+    export type JaxsStatePublisher = (event: string, payload: any) => void;
+    export type JaxsStateTransactionUpdater = (collection: JaxsStoresCollection) => void;
+    export type JaxsStoreName = string;
+    export type JaxsStoresCollection = Record<string, JaxsStore<any>>;
+    export type JaxsStoreInitializationOptions<T> = {
+        name: JaxsStoreName;
+        parent: JaxsState;
+        value: T;
+    };
+    export type JaxsStoreDataUpdater<T> = (originalValue: T) => T;
+    export type JaxsStoreUpdateValue<T> = T | JaxsStoreDataUpdater<T>;
+    export type JaxsStoreUpdaterFunction<T> = (value: T, ...args: any[]) => T;
+    export type JaxStoreUpdatersCollection<T> = Record<string, JaxsStoreUpdaterFunction<T>>;
+    export type JaxsStoreListSorter<T> = (left: T, right: T) => number;
 }
 declare module "rendering/dom/tag" {
     import type { JaxsElement, TagAttributes, TagEventAttributes, DomPublish, RenderKit } from "types";
@@ -301,12 +319,9 @@ declare module "rendering/templates/children/svg" {
     export const withSvgFlag: (isSvg: boolean) => (template: Renderable) => Renderable;
 }
 declare module "rendering/templates/children/normalize" {
-    import { JsxCollection, Renderable, Props } from "types";
+    import { JsxCollection, Renderable, AttributesWithChildren } from "types";
     export const normalizeJsxChildren: (jsxChildren: JsxCollection, isSvg: boolean) => Renderable[];
     export const normalizeToArray: <T>(children: T | T[]) => T[];
-    type AttributesWithChildren<T> = Props<T> & {
-        children?: JsxCollection;
-    };
     export const ensureJsxChildrenArray: <T>(maybeChildren?: JsxCollection, attributes?: AttributesWithChildren<T>) => JsxCollection;
 }
 declare module "rendering/templates/tag/attributes-and-events" {
@@ -434,11 +449,6 @@ declare module "navigation/events" {
 }
 declare module "navigation/route-state" {
     import { JaxsState } from "state/index";
-    export type RouteState = {
-        host: string;
-        path: string;
-        query: Record<string, string>;
-    };
     export const createRouteState: (state: JaxsState) => void;
 }
 declare module "navigation/find-href" {
@@ -497,11 +507,7 @@ declare module "app/builder" {
     import { App } from "app/index";
     import { JaxsBus } from "bus/index";
     import { JaxsState } from "state/index";
-    import { JaxsPublishFunction, Subscribe, RenderKit } from "types";
-    type CreateAppBuilderArguments = {
-        window?: Window;
-        document?: Document;
-    };
+    import { JaxsPublishFunction, Subscribe, RenderKit, CreateAppBuilderArguments } from "types";
     class AppBuilder {
         window: Window;
         document: Document;
@@ -574,8 +580,7 @@ declare module "rendering/update/instructions/nodes/text" {
     export const compileForText: (source: Text, target: Text) => ChangeInstructions;
 }
 declare module "rendering/update/instructions/node" {
-    import type { JaxsElement, JaxsNode, JaxsNodes, ChangeInstructions } from "types";
-    type CompileChildren = (sourceList: JaxsNodes, targetList: JaxsNodes, parent: JaxsElement) => ChangeInstructions;
+    import type { JaxsNode, ChangeInstructions, CompileChildren } from "types";
     export const compileForNode: (source: JaxsNode, target: JaxsNode, compileChildren: CompileChildren) => ChangeInstructions;
 }
 declare module "rendering/update/instructions/collection" {
@@ -619,7 +624,6 @@ declare module "navigation/index" {
     import { onLocationChange } from "navigation/on-location-change";
     import { createRouteState } from "navigation/route-state";
     import * as start from "navigation/start";
-    export type { RouteState } from "navigation/route-state";
     export { events, extractQueryParams, findHref, navigate, onLinkClick, onLocationChange, createRouteState, start, };
 }
 declare module "jaxs" {

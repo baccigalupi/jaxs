@@ -1,4 +1,8 @@
-import { JsxCollection, Renderable, Props } from '../../../types'
+import {
+  JsxCollection,
+  Renderable,
+  AttributesWithChildren,
+} from '../../../types'
 import { replaceTextNodes } from './text'
 import { withSvgFlag } from './svg'
 
@@ -24,7 +28,6 @@ export const normalizeToArray = <T>(children: T | T[]): T[] => {
   return [children]
 }
 
-type AttributesWithChildren<T> = Props<T> & { children?: JsxCollection }
 export const ensureJsxChildrenArray = <T>(
   maybeChildren?: JsxCollection,
   attributes = {} as AttributesWithChildren<T>,

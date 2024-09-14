@@ -1,5 +1,5 @@
+import { JaxsStoreListSorter } from '../../types'
 import { JaxsStoreUpdater } from '../store-updater'
-export type JaxsStoreListSorter<T> = (left: T, right: T) => number
 
 export class ListUpdater<T> extends JaxsStoreUpdater<T[]> {
   push(element: T) {

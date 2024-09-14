@@ -1,4 +1,10 @@
-import type { ChangeInstructions, JaxsElement, JaxsNode, JaxsNodes } from '../../../types'
+import type {
+  ChangeInstructions,
+  JaxsElement,
+  JaxsNode,
+  JaxsNodes,
+  DiffPair,
+} from '../../../types'
 import {
   insertNode,
   removeNode,
@@ -7,11 +13,6 @@ import {
 } from './instructions'
 import { createIdMap } from './id-map'
 import { compileForNode } from './node'
-
-type DiffPair = {
-  source: JaxsNode
-  target: JaxsNode
-}
 
 export const compileCollection = (
   sourceList: JaxsNodes,

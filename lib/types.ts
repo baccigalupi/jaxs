@@ -1,5 +1,6 @@
-import { JaxsState } from './state'
-
+import type { JaxsState } from './state'
+import type { JaxsStore } from './state/store'
+export { JaxsState, JaxsStore }
 // DOM & Jax & Jsx
 export type TextValue = string | number
 export interface JsxIded {
@@ -204,3 +205,50 @@ export type FuzzySubscriptionData<T> = {
 }
 
 export type Unsubscribe = () => void
+
+export type CreateAppBuilderArguments = {
+  window?: Window
+  document?: Document
+}
+
+export type RouteState = {
+  host: string
+  path: string
+  query: Record<string, string>
+}
+
+export type AttributesWithChildren<T> = Props<T> & { children?: JsxCollection }
+
+export type DiffPair = {
+  source: JaxsNode
+  target: JaxsNode
+}
+
+export type CompileChildren = (
+  sourceList: JaxsNodes,
+  targetList: JaxsNodes,
+  parent: JaxsElement,
+) => ChangeInstructions
+
+export type JaxsStatePublisher = (event: string, payload: any) => void
+export type JaxsStateTransactionUpdater = (
+  collection: JaxsStoresCollection,
+) => void
+export type JaxsStoreName = string
+
+export type JaxsStoresCollection = Record<string, JaxsStore<any>>
+
+export type JaxsStoreInitializationOptions<T> = {
+  name: JaxsStoreName
+  parent: JaxsState
+  value: T
+}
+
+export type JaxsStoreDataUpdater<T> = (originalValue: T) => T
+export type JaxsStoreUpdateValue<T> = T | JaxsStoreDataUpdater<T>
+export type JaxsStoreUpdaterFunction<T> = (value: T, ...args: any[]) => T
+export type JaxStoreUpdatersCollection<T> = Record<
+  string,
+  JaxsStoreUpdaterFunction<T>
+>
+export type JaxsStoreListSorter<T> = (left: T, right: T) => number
