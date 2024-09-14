@@ -1,12 +1,12 @@
-import type { JaxsState } from './state'
-import type { JaxsStore } from './state/store'
+import type { State } from './state'
+import type { Store } from './state/store'
 import type { JaxsStoreUpdater } from './state/store-updater'
 import type { BooleanUpdater } from './state/updaters/boolean'
 import type { ListUpdater } from './state/updaters/list'
 import type { ObjectUpdater } from './state/updaters/object'
 export {
-  JaxsState,
-  JaxsStore,
+  State,
+  Store,
   JaxsStoreUpdater,
   BooleanUpdater,
   ListUpdater,
@@ -82,7 +82,7 @@ export type RenderKit = {
   window: Window
   publish: DomPublish
   subscribe: Subscribe
-  state: JaxsState
+  state: State
   parent?: JaxsNode | null
 }
 
@@ -190,7 +190,7 @@ export type BindParams<T, U> = {
 
 // BUS
 export type AppAdditionListenerOptions = {
-  state: JaxsState
+  state: State
   document: Document
   window: Window
 }
@@ -252,11 +252,11 @@ export type JaxsStateTransactionUpdater = (
 ) => void
 export type JaxsStoreName = string
 
-export type JaxsStoresCollection = Record<string, JaxsStore<any>>
+export type JaxsStoresCollection = Record<string, Store<any>>
 
 export type JaxsStoreInitializationOptions<T> = {
   name: JaxsStoreName
-  parent: JaxsState
+  parent: State
   value: T
 }
 

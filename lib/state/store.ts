@@ -1,5 +1,5 @@
 import type {
-  JaxsState,
+  State,
   JaxsStoreDataUpdater,
   JaxsStoreInitializationOptions,
   JaxsStoreListSorter,
@@ -13,8 +13,8 @@ import { areEqual } from './equality'
 import { JaxsStoreUpdater } from './store-updater'
 import { ListUpdater } from './updaters/list'
 
-export class JaxsStore<T> {
-  parent: JaxsState
+export class Store<T> {
+  parent: State
   name: JaxsStoreName
   updater: StoreUpdater<T>
   _value: T

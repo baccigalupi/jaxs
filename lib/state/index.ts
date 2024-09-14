@@ -1,4 +1,4 @@
-import { JaxsStore } from './store'
+import { Store } from './store'
 import { BooleanUpdater } from './updaters/boolean'
 import { ListUpdater } from './updaters/list'
 import { ObjectUpdater } from './updaters/object'
@@ -12,7 +12,7 @@ import type {
 
 export const eventName = 'state'
 
-export class JaxsState {
+export class State {
   publisher: JaxsStatePublisher
   stores: JaxsStoresCollection
   eventNamePrefix: string
@@ -28,7 +28,7 @@ export class JaxsState {
   }
 
   create<T>(name: JaxsStoreName, initialState: T) {
-    const store = new JaxsStore<T>({
+    const store = new Store<T>({
       name,
       parent: this,
       value: initialState,
@@ -57,10 +57,10 @@ export class JaxsState {
     return store
   }
 
-  store(name: JaxsStoreName): JaxsStore<any> {
+  store(name: JaxsStoreName): Store<any> {
     return (
       this.stores[name] ||
-      new JaxsStore({
+      new Store({
         name,
         parent: this,
         value: undefined,
@@ -118,7 +118,7 @@ export class JaxsState {
 }
 
 export const createState = (publisher: JaxsStatePublisher) => {
-  return new JaxsState(publisher)
+  return new State(publisher)
 }
 
-export { JaxsStore, BooleanUpdater, ListUpdater, ObjectUpdater }
+export { Store, BooleanUpdater, ListUpdater, ObjectUpdater }

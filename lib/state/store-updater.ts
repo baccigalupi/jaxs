@@ -1,14 +1,14 @@
 import type {
-  JaxsStore,
+  Store,
   JaxsStoreUpdateValue,
   JaxsStoreUpdaterFunction,
   JaxStoreUpdatersCollection,
   UpdaterValue,
 } from '../types'
 export class JaxsStoreUpdater<T> {
-  store: JaxsStore<T>
+  store: Store<T>
 
-  constructor(store: JaxsStore<T>) {
+  constructor(store: Store<T>) {
     this.store = store
   }
 

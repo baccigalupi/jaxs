@@ -1,14 +1,14 @@
 import { expect, it, describe, vi } from 'vitest'
-import { JaxsStore } from '../../lib/state/store'
-import { JaxsState } from '../../lib/state'
+import { Store } from '../../lib/state/store'
+import { State } from '../../lib/state'
 import { BooleanUpdater } from '../../lib/state/updaters/boolean'
 import { ObjectUpdater } from '../../lib/state/updaters/object'
 import { ListUpdater } from '../../lib/state/updaters/list'
 
-describe('JaxsState', () => {
+describe('State', () => {
   it('allows the creation and reading of stores', () => {
     const publish = vi.fn()
-    const state = new JaxsState(publish)
+    const state = new State(publish)
 
     state.create('loggedIn', false)
     state.create('users', [
@@ -18,15 +18,15 @@ describe('JaxsState', () => {
     state.create('signinForm', { username: 'Ahmed', password: 'secret' })
     state.create('loginAttempts', 0)
 
-    expect(state.store('loggedIn')).toBeInstanceOf(JaxsStore)
-    expect(state.store('users')).toBeInstanceOf(JaxsStore)
-    expect(state.store('signinForm')).toBeInstanceOf(JaxsStore)
-    expect(state.store('loginAttempts')).toBeInstanceOf(JaxsStore)
+    expect(state.store('loggedIn')).toBeInstanceOf(Store)
+    expect(state.store('users')).toBeInstanceOf(Store)
+    expect(state.store('signinForm')).toBeInstanceOf(Store)
+    expect(state.store('loginAttempts')).toBeInstanceOf(Store)
   })
 
   it('makes available via `get` the underlying object state of each store', () => {
     const publish = vi.fn()
-    const state = new JaxsState(publish)
+    const state = new State(publish)
 
     state.create('loggedIn', true)
     state.create('users', [
@@ -50,15 +50,15 @@ describe('JaxsState', () => {
 
   it("getting a store that doesn't yet exist returns an empty store", () => {
     const publish = vi.fn()
-    const state = new JaxsState(publish)
+    const state = new State(publish)
 
-    expect(state.store('foo')).toBeInstanceOf(JaxsStore)
+    expect(state.store('foo')).toBeInstanceOf(Store)
     expect(state.get('foo')).toEqual(undefined)
   })
 
   it("updating with a storename and value, will change it's value", () => {
     const publish = vi.fn()
-    const state = new JaxsState(publish)
+    const state = new State(publish)
 
     state.create('loggedIn', true)
     state.update('loggedIn', false)
@@ -68,7 +68,7 @@ describe('JaxsState', () => {
 
   it('updating with a store name and function will change the store', () => {
     const publish = vi.fn()
-    const state = new JaxsState(publish)
+    const state = new State(publish)
 
     state.create('users', [
       { id: 1, name: 'Jasper', loggedIn: false },
@@ -92,7 +92,7 @@ describe('JaxsState', () => {
 
   it('when updating a store, it publishes the right event', () => {
     const publish = vi.fn()
-    const state = new JaxsState(publish)
+    const state = new State(publish)
 
     state.create('loggedIn', false)
     state.update('loggedIn', true)
@@ -106,7 +106,7 @@ describe('JaxsState', () => {
 
   it('when changing multiple stores or attributes, you can delay publishing with a transaction', () => {
     const publish = vi.fn()
-    const state = new JaxsState(publish)
+    const state = new State(publish)
 
     state.create('currentUser', { username: 'Ahmed', password: 'secret' })
 
@@ -123,7 +123,7 @@ describe('JaxsState', () => {
 
   describe('adding typed stores with updaters', () => {
     it('boolean stores come with `toggle`, `setFalse` and `setTrue`', () => {
-      const state = new JaxsState(vi.fn())
+      const state = new State(vi.fn())
       const store = state.createBoolean('loggedIn', false)
       const updater = store.updater as BooleanUpdater
 
@@ -145,7 +145,7 @@ describe('JaxsState', () => {
         name: string
         loggedIn: boolean
       }
-      const state = new JaxsState(vi.fn())
+      const state = new State(vi.fn())
       const store = state.createRecord('currentUser', {
         name: 'Guest',
         loggedIn: false,
@@ -157,7 +157,7 @@ describe('JaxsState', () => {
     })
 
     it('list stores come with `shift`, `unshift`, `push` and `pop`', () => {
-      const state = new JaxsState(vi.fn())
+      const state = new State(vi.fn())
       const store = state.createList('actions', [])
       const updater = store.updater as ListUpdater<string>
 
@@ -194,7 +194,7 @@ describe('JaxsState', () => {
       type User = {
         id: number
       }
-      const state = new JaxsState(vi.fn())
+      const state = new State(vi.fn())
       const store = state.createList('users', [])
       store.addSorter('sortById', (left: User, right: User) => {
         if (left.id === right.id) return 0

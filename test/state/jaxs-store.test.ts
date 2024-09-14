@@ -1,12 +1,12 @@
 import { expect, it, describe, vi } from 'vitest'
-import { JaxsState } from '../../lib/state'
-import { JaxsStore } from '../../lib/state/store'
+import { State } from '../../lib/state'
+import { Store } from '../../lib/state/store'
 import { JaxsStoreUpdater } from '../../lib/state/store-updater'
 
-describe('JaxsStore', () => {
+describe('Store', () => {
   it("'value' attribute will return it's underlying value", () => {
-    const parent = new JaxsState(vi.fn())
-    const store = new JaxsStore({
+    const parent = new State(vi.fn())
+    const store = new Store({
       name: 'myToggle',
       parent,
       value: false,
@@ -16,8 +16,8 @@ describe('JaxsStore', () => {
   })
 
   it("can be updated via the 'update' method", () => {
-    const parent = new JaxsState(vi.fn())
-    const store = new JaxsStore({
+    const parent = new State(vi.fn())
+    const store = new Store({
       name: 'myToggle',
       parent,
       value: false,
@@ -28,9 +28,9 @@ describe('JaxsStore', () => {
   })
 
   it('notifies the parent about a change if the value actually changes', () => {
-    const parent = new JaxsState(vi.fn())
+    const parent = new State(vi.fn())
     vi.spyOn(parent, 'notify')
-    const store = new JaxsStore({
+    const store = new Store({
       name: 'myToggle',
       parent,
       value: false,
@@ -41,8 +41,8 @@ describe('JaxsStore', () => {
   })
 
   it("direct attempts to change the value don't work", () => {
-    const parent = new JaxsState(vi.fn())
-    const store = new JaxsStore({
+    const parent = new State(vi.fn())
+    const store = new Store({
       name: 'myToggle',
       parent,
       value: false,
@@ -53,8 +53,8 @@ describe('JaxsStore', () => {
   })
 
   it('has an empty updater by default', () => {
-    const parent = new JaxsState(vi.fn())
-    const store = new JaxsStore({
+    const parent = new State(vi.fn())
+    const store = new Store({
       name: 'myToggle',
       parent,
       value: false,
@@ -64,8 +64,8 @@ describe('JaxsStore', () => {
   })
 
   it('can add an updater function to the updater', () => {
-    const parent = new JaxsState(vi.fn())
-    const store = new JaxsStore({
+    const parent = new State(vi.fn())
+    const store = new Store({
       name: 'myToggle',
       parent,
       value: false,
@@ -87,8 +87,8 @@ describe('JaxsStore', () => {
       loggedIn: false,
     }
 
-    const parent = new JaxsState(vi.fn())
-    const store = new JaxsStore({
+    const parent = new State(vi.fn())
+    const store = new Store({
       name: 'currentUser',
       parent,
       value: currentUser,
@@ -115,8 +115,8 @@ describe('JaxsStore', () => {
   })
 
   it('all stores updaters have a `reset` method to set to original state', () => {
-    const parent = new JaxsState(vi.fn())
-    const store = new JaxsStore({
+    const parent = new State(vi.fn())
+    const store = new Store({
       name: 'currentUser',
       parent,
       value: {

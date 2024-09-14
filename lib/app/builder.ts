@@ -1,6 +1,6 @@
 import { App } from '.'
 import { JaxsBus, createBus } from '../bus'
-import { JaxsState, createState } from '../state'
+import { State, createState } from '../state'
 import {
   JaxsPublishFunction,
   Subscribe,
@@ -13,7 +13,7 @@ class AppBuilder {
   publish: JaxsPublishFunction<any>
   subscribe: Subscribe
   bus: JaxsBus
-  state: JaxsState
+  state: State
   renderKit: RenderKit
 
   constructor(domEnvironment: CreateAppBuilderArguments) {

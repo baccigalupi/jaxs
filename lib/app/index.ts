@@ -4,7 +4,7 @@ import type {
   Subscribe,
   JaxsPublishFunction,
 } from '../types'
-import type { JaxsState } from '../state'
+import type { State } from '../state'
 import type { JaxsBus } from '../bus'
 import { render, Root } from '../rendering/templates/root'
 import { startNavigation } from '../navigation/start'
@@ -15,7 +15,7 @@ export class App {
   publish: JaxsPublishFunction<any>
   subscribe: Subscribe
   bus: JaxsBus
-  state: JaxsState
+  state: State
   renderKit: RenderKit
   roots: Root[]
 
