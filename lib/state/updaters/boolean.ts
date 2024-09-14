@@ -1,7 +1,7 @@
 import { JaxsStoreUpdaterFunction } from '../../types'
-import { JaxsStoreUpdater } from '../store-updater'
+import { StoreUpdaterBase } from '../store-updater'
 
-export class BooleanUpdater extends JaxsStoreUpdater<boolean> {
+export class StoreUpdaterBoolean extends StoreUpdaterBase<boolean> {
   toggle() {
     const newValue = !this.value
     this.update(newValue)

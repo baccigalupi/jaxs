@@ -10,8 +10,8 @@ import type {
   StoreUpdater,
 } from '../types'
 import { areEqual } from './equality'
-import { JaxsStoreUpdater } from './store-updater'
-import { ListUpdater } from './updaters/list'
+import { StoreUpdaterBase } from './store-updater'
+import { StoreUpdaterList } from './updaters/list'
 
 export class Store<T> {
   parent: State
@@ -25,7 +25,7 @@ export class Store<T> {
     this.parent = options.parent
     this._value = options.value
     this.initialState = structuredClone(options.value)
-    this.updater = new JaxsStoreUpdater<typeof options.value>(this)
+    this.updater = new StoreUpdaterBase<typeof options.value>(this)
   }
 
   get ['value']() {
@@ -65,7 +65,7 @@ export class Store<T> {
   }
 
   addSorter(name: string, sorter: JaxsStoreListSorter<T>) {
-    if (!(this.updater instanceof ListUpdater)) return
+    if (!(this.updater instanceof StoreUpdaterList)) return
 
     this.updater.addSorter(name, sorter)
   }

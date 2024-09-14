@@ -1,7 +1,7 @@
 import { Store } from './store'
-import { BooleanUpdater } from './updaters/boolean'
-import { ListUpdater } from './updaters/list'
-import { ObjectUpdater } from './updaters/object'
+import { StoreUpdaterBoolean } from './updaters/boolean'
+import { StoreUpdaterList } from './updaters/list'
+import { StoreUpdaterObject } from './updaters/object'
 import type {
   JaxsStatePublisher,
   JaxsStateTransactionUpdater,
@@ -41,19 +41,19 @@ export class State {
 
   createBoolean(name: JaxsStoreName, initialState: boolean) {
     const store = this.create(name, initialState)
-    store.updater = new BooleanUpdater(store)
+    store.updater = new StoreUpdaterBoolean(store)
     return store
   }
 
   createRecord<T>(name: JaxsStoreName, initialState: T) {
     const store = this.create(name, initialState)
-    store.updater = new ObjectUpdater<T>(store)
+    store.updater = new StoreUpdaterObject<T>(store)
     return store
   }
 
   createList<T>(name: JaxsStoreName, initialState: T[]) {
     const store = this.create(name, initialState)
-    store.updater = new ListUpdater<T>(store)
+    store.updater = new StoreUpdaterList<T>(store)
     return store
   }
 
@@ -121,4 +121,4 @@ export const createState = (publisher: JaxsStatePublisher) => {
   return new State(publisher)
 }
 
-export { Store, BooleanUpdater, ListUpdater, ObjectUpdater }
+export { Store, StoreUpdaterBoolean, StoreUpdaterList, StoreUpdaterObject }

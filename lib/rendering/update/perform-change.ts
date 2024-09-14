@@ -4,7 +4,7 @@ import type {
   InsertNodeData,
   RemoveInstructionData,
   UpdateEventInstructionData,
-  Updater,
+  InstructionsUpdater,
   ChangeInstruction,
   JaxsNode,
   JaxsElement,
@@ -32,19 +32,19 @@ const performInstruction = (instruction: ChangeInstruction) => {
   performer(instruction)
 }
 
-const noop: Updater = (_instruction: ChangeInstruction) => {}
+const noop: InstructionsUpdater = (_instruction: ChangeInstruction) => {}
 
-const changeText: Updater = (instruction: ChangeInstruction) => {
+const changeText: InstructionsUpdater = (instruction: ChangeInstruction) => {
   const { source, target } = instruction
   source.nodeValue = target.textContent
 }
 
-const removeNode: Updater = (instruction: ChangeInstruction) => {
+const removeNode: InstructionsUpdater = (instruction: ChangeInstruction) => {
   const { source } = instruction
   source.remove()
 }
 
-const insertNode: Updater = (instruction: ChangeInstruction) => {
+const insertNode: InstructionsUpdater = (instruction: ChangeInstruction) => {
   const { target, data } = instruction
   const { parent, index } = data as InsertNodeData
   const sibling = parent.childNodes[index]
@@ -56,12 +56,14 @@ const insertNode: Updater = (instruction: ChangeInstruction) => {
   // else case, sibling is target and so it is moving to the same place: no-op.
 }
 
-const replaceNode: Updater = (instruction: ChangeInstruction) => {
+const replaceNode: InstructionsUpdater = (instruction: ChangeInstruction) => {
   const { source, target } = instruction
   source.replaceWith(target)
 }
 
-const removeAttribute: Updater = (instruction: ChangeInstruction) => {
+const removeAttribute: InstructionsUpdater = (
+  instruction: ChangeInstruction,
+) => {
   const { source, data } = instruction
   const { name, isSvg } = data as RemoveInstructionData
 
@@ -72,7 +74,7 @@ const removeAttribute: Updater = (instruction: ChangeInstruction) => {
   }
 }
 
-const addAttribute: Updater = (instruction: ChangeInstruction) => {
+const addAttribute: InstructionsUpdater = (instruction: ChangeInstruction) => {
   const { source, data } = instruction
   const { name, value, isSvg } = data as AttributeInstructionData
 
@@ -83,25 +85,27 @@ const addAttribute: Updater = (instruction: ChangeInstruction) => {
   }
 }
 
-const updateAttribute: Updater = (instruction: ChangeInstruction) => {
+const updateAttribute: InstructionsUpdater = (
+  instruction: ChangeInstruction,
+) => {
   addAttribute(instruction)
 }
 
-const removeEvent: Updater = (instruction: ChangeInstruction) => {
+const removeEvent: InstructionsUpdater = (instruction: ChangeInstruction) => {
   const data = instruction.data as EventInstructionData
   const source = instruction.source as JaxsElement
   const { name, value } = data
   source.removeEventListener(name, value)
 }
 
-const addEvent: Updater = (instruction: ChangeInstruction) => {
+const addEvent: InstructionsUpdater = (instruction: ChangeInstruction) => {
   const data = instruction.data as EventInstructionData
   const source = instruction.source as JaxsElement
   const { name, value } = data
   source.addEventListener(name, value)
 }
 
-const updateEvent: Updater = (instruction: ChangeInstruction) => {
+const updateEvent: InstructionsUpdater = (instruction: ChangeInstruction) => {
   const data = instruction.data as UpdateEventInstructionData
   const source = instruction.source as JaxsElement
 
@@ -111,7 +115,7 @@ const updateEvent: Updater = (instruction: ChangeInstruction) => {
   source.addEventListener(name, targetValue)
 }
 
-const changeValue: Updater = (instruction: ChangeInstruction) => {
+const changeValue: InstructionsUpdater = (instruction: ChangeInstruction) => {
   const data = instruction.data as AttributeInstructionData
   const source = instruction.source as JaxsInput
 

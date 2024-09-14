@@ -1,7 +1,7 @@
 import { JaxsStoreListSorter, JaxsStoreUpdaterFunction } from '../../types'
-import { JaxsStoreUpdater } from '../store-updater'
+import { StoreUpdaterBase } from '../store-updater'
 
-export class ListUpdater<T> extends JaxsStoreUpdater<T[]> {
+export class StoreUpdaterList<T> extends StoreUpdaterBase<T[]> {
   addUpdaterFunction(name: string, updater: JaxsStoreUpdaterFunction<T[]>) {
     this.constructor.prototype[name] = (...args: any[]) => {
       const newValue = updater(this.value, ...args)

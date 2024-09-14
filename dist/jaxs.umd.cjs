@@ -605,11 +605,11 @@
       Object.defineProperty(
         {
           __proto__: null,
-          BooleanUpdater: Q,
+          StoreUpdaterBoolean: Q,
           State: G,
           Store: S,
-          ListUpdater: A,
-          ObjectUpdater: W,
+          StoreUpdaterList: A,
+          StoreUpdaterObject: W,
           createState: X,
           eventName: w,
         },

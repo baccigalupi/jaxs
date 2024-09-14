@@ -19,7 +19,7 @@ declare module 'state/store-updater' {
     JaxsStoreUpdaterFunction,
     JaxStoreUpdatersCollection,
   } from 'types'
-  export class JaxsStoreUpdater<T> {
+  export class StoreUpdaterBase<T> {
     store: Store<T>
     constructor(store: Store<T>)
     update(updater: JaxsStoreUpdateValue<T>): void
@@ -31,8 +31,8 @@ declare module 'state/store-updater' {
 }
 declare module 'state/updaters/list' {
   import { JaxsStoreListSorter, JaxsStoreUpdaterFunction } from 'types'
-  import { JaxsStoreUpdater } from 'state/store-updater'
-  export class ListUpdater<T> extends JaxsStoreUpdater<T[]> {
+  import { StoreUpdaterBase } from 'state/store-updater'
+  export class StoreUpdaterList<T> extends StoreUpdaterBase<T[]> {
     addUpdaterFunction(
       name: string,
       updater: JaxsStoreUpdaterFunction<T[]>,
@@ -77,8 +77,8 @@ declare module 'state/store' {
 }
 declare module 'state/updaters/boolean' {
   import { JaxsStoreUpdaterFunction } from 'types'
-  import { JaxsStoreUpdater } from 'state/store-updater'
-  export class BooleanUpdater extends JaxsStoreUpdater<boolean> {
+  import { StoreUpdaterBase } from 'state/store-updater'
+  export class StoreUpdaterBoolean extends StoreUpdaterBase<boolean> {
     toggle(): void
     setTrue(): void
     setFalse(): void
@@ -90,17 +90,17 @@ declare module 'state/updaters/boolean' {
 }
 declare module 'state/updaters/object' {
   import { JaxsStoreUpdaterFunction } from 'types'
-  import { JaxsStoreUpdater } from 'state/store-updater'
-  export class ObjectUpdater<T> extends JaxsStoreUpdater<T> {
+  import { StoreUpdaterBase } from 'state/store-updater'
+  export class StoreUpdaterObject<T> extends StoreUpdaterBase<T> {
     addUpdaterFunction(name: string, updater: JaxsStoreUpdaterFunction<T>): void
     updateAttribute(name: keyof T, value: T[keyof T]): void
   }
 }
 declare module 'state/index' {
   import { Store } from 'state/store'
-  import { BooleanUpdater } from 'state/updaters/boolean'
-  import { ListUpdater } from 'state/updaters/list'
-  import { ObjectUpdater } from 'state/updaters/object'
+  import { StoreUpdaterBoolean } from 'state/updaters/boolean'
+  import { StoreUpdaterList } from 'state/updaters/list'
+  import { StoreUpdaterObject } from 'state/updaters/object'
   import type {
     JaxsStatePublisher,
     JaxsStateTransactionUpdater,
@@ -131,28 +131,28 @@ declare module 'state/index' {
     event(name: JaxsStoreName): string
   }
   export const createState: (publisher: JaxsStatePublisher) => State
-  export { Store, BooleanUpdater, ListUpdater, ObjectUpdater }
+  export { Store, StoreUpdaterBoolean, StoreUpdaterList, StoreUpdaterObject }
 }
 declare module 'types' {
   import type { State } from 'state/index'
   import type { Store } from 'state/store'
-  import type { JaxsStoreUpdater } from 'state/store-updater'
-  import type { BooleanUpdater } from 'state/updaters/boolean'
-  import type { ListUpdater } from 'state/updaters/list'
-  import type { ObjectUpdater } from 'state/updaters/object'
+  import type { StoreUpdaterBase } from 'state/store-updater'
+  import type { StoreUpdaterBoolean } from 'state/updaters/boolean'
+  import type { StoreUpdaterList } from 'state/updaters/list'
+  import type { StoreUpdaterObject } from 'state/updaters/object'
   export {
     State,
     Store,
-    JaxsStoreUpdater,
-    BooleanUpdater,
-    ListUpdater,
-    ObjectUpdater,
+    StoreUpdaterBase,
+    StoreUpdaterBoolean,
+    StoreUpdaterList,
+    StoreUpdaterObject,
   }
   export type StoreUpdater<T> =
-    | JaxsStoreUpdater<T>
-    | ObjectUpdater<T>
-    | BooleanUpdater
-    | ListUpdater<T>
+    | StoreUpdaterBase<T>
+    | StoreUpdaterObject<T>
+    | StoreUpdaterBoolean
+    | StoreUpdaterList<T>
   export type TextValue = string | number
   export interface JsxIded {
     __jsx?: string
@@ -273,7 +273,7 @@ declare module 'types' {
     data: InstructionData
   }
   export type ChangeInstructions = Array<ChangeInstruction>
-  export type Updater = (instruction: ChangeInstruction) => void
+  export type InstructionsUpdater = (instruction: ChangeInstruction) => void
   export type StoreValue =
     | string
     | number

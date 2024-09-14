@@ -5,7 +5,7 @@ import type {
   JaxStoreUpdatersCollection,
   UpdaterValue,
 } from '../types'
-export class JaxsStoreUpdater<T> {
+export class StoreUpdaterBase<T> {
   store: Store<T>
 
   constructor(store: Store<T>) {

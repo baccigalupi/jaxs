@@ -1,7 +1,7 @@
 import { expect, it, describe, vi } from 'vitest'
 import { State } from '../../lib/state'
 import { Store } from '../../lib/state/store'
-import { JaxsStoreUpdater } from '../../lib/state/store-updater'
+import { StoreUpdaterBase } from '../../lib/state/store-updater'
 
 describe('Store', () => {
   it("'value' attribute will return it's underlying value", () => {
@@ -60,7 +60,7 @@ describe('Store', () => {
       value: false,
     })
 
-    expect(store.updater).toBeInstanceOf(JaxsStoreUpdater)
+    expect(store.updater).toBeInstanceOf(StoreUpdaterBase)
   })
 
   it('can add an updater function to the updater', () => {

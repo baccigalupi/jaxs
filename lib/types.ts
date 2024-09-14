@@ -1,22 +1,22 @@
 import type { State } from './state'
 import type { Store } from './state/store'
-import type { JaxsStoreUpdater } from './state/store-updater'
-import type { BooleanUpdater } from './state/updaters/boolean'
-import type { ListUpdater } from './state/updaters/list'
-import type { ObjectUpdater } from './state/updaters/object'
+import type { StoreUpdaterBase } from './state/store-updater'
+import type { StoreUpdaterBoolean } from './state/updaters/boolean'
+import type { StoreUpdaterList } from './state/updaters/list'
+import type { StoreUpdaterObject } from './state/updaters/object'
 export {
   State,
   Store,
-  JaxsStoreUpdater,
-  BooleanUpdater,
-  ListUpdater,
-  ObjectUpdater,
+  StoreUpdaterBase,
+  StoreUpdaterBoolean,
+  StoreUpdaterList,
+  StoreUpdaterObject,
 }
 export type StoreUpdater<T> =
-  | JaxsStoreUpdater<T>
-  | ObjectUpdater<T>
-  | BooleanUpdater
-  | ListUpdater<T>
+  | StoreUpdaterBase<T>
+  | StoreUpdaterObject<T>
+  | StoreUpdaterBoolean
+  | StoreUpdaterList<T>
 // DOM & Jax & Jsx
 export type TextValue = string | number
 export interface JsxIded {
@@ -156,7 +156,7 @@ export type ChangeInstruction = {
 
 export type ChangeInstructions = Array<ChangeInstruction>
 
-export type Updater = (instruction: ChangeInstruction) => void
+export type InstructionsUpdater = (instruction: ChangeInstruction) => void
 
 // --- BIND
 export type StoreValue =

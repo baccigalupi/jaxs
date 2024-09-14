@@ -1,9 +1,9 @@
 import { expect, it, describe, vi } from 'vitest'
 import { Store } from '../../lib/state/store'
 import { State } from '../../lib/state'
-import { BooleanUpdater } from '../../lib/state/updaters/boolean'
-import { ObjectUpdater } from '../../lib/state/updaters/object'
-import { ListUpdater } from '../../lib/state/updaters/list'
+import { StoreUpdaterBoolean } from '../../lib/state/updaters/boolean'
+import { StoreUpdaterObject } from '../../lib/state/updaters/object'
+import { StoreUpdaterList } from '../../lib/state/updaters/list'
 
 describe('State', () => {
   it('allows the creation and reading of stores', () => {
@@ -125,7 +125,7 @@ describe('State', () => {
     it('boolean stores come with `toggle`, `setFalse` and `setTrue`', () => {
       const state = new State(vi.fn())
       const store = state.createBoolean('loggedIn', false)
-      const updater = store.updater as BooleanUpdater
+      const updater = store.updater as StoreUpdaterBoolean
 
       updater.toggle()
       expect(store.value).toEqual(true)
@@ -150,7 +150,7 @@ describe('State', () => {
         name: 'Guest',
         loggedIn: false,
       })
-      const updater = store.updater as ObjectUpdater<CurrentUser>
+      const updater = store.updater as StoreUpdaterObject<CurrentUser>
 
       updater.updateAttribute('loggedIn', true)
       expect(store.value.loggedIn).toEqual(true)
@@ -159,7 +159,7 @@ describe('State', () => {
     it('list stores come with `shift`, `unshift`, `push` and `pop`', () => {
       const state = new State(vi.fn())
       const store = state.createList('actions', [])
-      const updater = store.updater as ListUpdater<string>
+      const updater = store.updater as StoreUpdaterList<string>
 
       updater.push('pushed first')
       updater.push('pushed second')
@@ -200,7 +200,7 @@ describe('State', () => {
         if (left.id === right.id) return 0
         return left.id < right.id ? -1 : 1
       })
-      const updater = store.updater as ListUpdater<User>
+      const updater = store.updater as StoreUpdaterList<User>
 
       updater.push({ id: 23 })
       updater.push({ id: 1 })
