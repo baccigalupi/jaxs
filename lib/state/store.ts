@@ -1,12 +1,12 @@
 import type {
   State,
-  JaxsStoreDataUpdater,
-  JaxsStoreInitializationOptions,
-  JaxsStoreListSorter,
-  JaxsStoreName,
-  JaxsStoreUpdaterFunction,
-  JaxsStoreUpdateValue,
-  JaxStoreUpdatersCollection,
+  StoreDataUpdater,
+  StoreInitializationOptions,
+  StoreListSorterFunction,
+  string,
+  StoreUpdaterFunction,
+  StoreUpdaterOrValue,
+  StoreUpdatersCollection,
   StoreUpdater,
 } from '../types'
 import { areEqual } from './equality'
@@ -15,12 +15,12 @@ import { StoreUpdaterList } from './updaters/list'
 
 export class Store<T> {
   parent: State
-  name: JaxsStoreName
+  name: string
   updater: StoreUpdater<T>
   _value: T
   initialState: T
 
-  constructor(options: JaxsStoreInitializationOptions<T>) {
+  constructor(options: StoreInitializationOptions<T>) {
     this.name = options.name
     this.parent = options.parent
     this._value = options.value
@@ -36,9 +36,9 @@ export class Store<T> {
     throw new Error('Cannot set value directly. Use an updater!')
   }
 
-  update(updater: JaxsStoreUpdateValue<T>) {
+  update(updater: StoreUpdaterOrValue<T>) {
     if (typeof updater === 'function') {
-      const newValue = this.getUpdatedValue(updater as JaxsStoreDataUpdater<T>)
+      const newValue = this.getUpdatedValue(updater as StoreDataUpdater<T>)
       this.updateValue(newValue)
     } else {
       this.updateValue(updater as T)
@@ -52,19 +52,19 @@ export class Store<T> {
     this.parent.notify(this.name)
   }
 
-  getUpdatedValue(updater: JaxsStoreDataUpdater<T>) {
+  getUpdatedValue(updater: StoreDataUpdater<T>) {
     return updater(this.value)
   }
 
-  addUpdaters(updaters: JaxStoreUpdatersCollection<any>) {
+  addUpdaters(updaters: StoreUpdatersCollection<any>) {
     this.updater.addUpdaterFunctions(updaters)
   }
 
-  addUpdater(name: string, updater: JaxsStoreUpdaterFunction<any>) {
+  addUpdater(name: string, updater: StoreUpdaterFunction<any>) {
     this.updater.addUpdaterFunction(name, updater)
   }
 
-  addSorter(name: string, sorter: JaxsStoreListSorter<T>) {
+  addSorter(name: string, sorter: StoreListSorterFunction<T>) {
     if (!(this.updater instanceof StoreUpdaterList)) return
 
     this.updater.addSorter(name, sorter)

@@ -1,9 +1,9 @@
 import {
-  JaxsBusEventMatcher,
-  JaxsBusListener,
+  BusEventMatcher,
+  BusListener,
   Unsubscribe,
   AppAdditionListenerOptions,
-  JaxsBusOptions,
+  BusOptions,
 } from '../types'
 
 import { ExactSubscriptions } from './exact-subscriptions'
@@ -21,7 +21,7 @@ class JaxsBus {
     this.currentIndex = 0
   }
 
-  subscribe<T>(matcher: JaxsBusEventMatcher, listener: JaxsBusListener<T>) {
+  subscribe<T>(matcher: BusEventMatcher, listener: BusListener<T>) {
     let unsubscribe: Unsubscribe
     if (typeof matcher === 'string') {
       unsubscribe = this.exactSubscriptions.add(
@@ -60,7 +60,7 @@ class JaxsBus {
       eventName: event,
       ...this.options,
       publish: this.publish.bind(this),
-    } as JaxsBusOptions
+    } as BusOptions
   }
 }
 
@@ -69,10 +69,8 @@ const createBus = () => {
 
   const publish = (event: string, payload: any) => bus.publish(event, payload)
 
-  const subscribe = (
-    matcher: JaxsBusEventMatcher,
-    listener: JaxsBusListener<any>,
-  ) => bus.subscribe(matcher, listener)
+  const subscribe = (matcher: BusEventMatcher, listener: BusListener<any>) =>
+    bus.subscribe(matcher, listener)
 
   return {
     bus,

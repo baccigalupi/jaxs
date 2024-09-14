@@ -1,8 +1,8 @@
-import { JaxsStoreUpdaterFunction } from '../../types'
+import { StoreUpdaterFunction } from '../../types'
 import { StoreUpdaterBase } from '../store-updater'
 
 export class StoreUpdaterObject<T> extends StoreUpdaterBase<T> {
-  addUpdaterFunction(name: string, updater: JaxsStoreUpdaterFunction<T>) {
+  addUpdaterFunction(name: string, updater: StoreUpdaterFunction<T>) {
     this.constructor.prototype[name] = (...args: any[]) => {
       const newValue = updater(this.value, ...args)
       this.update(newValue)

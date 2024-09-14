@@ -3,23 +3,23 @@ import { StoreUpdaterBoolean } from './updaters/boolean'
 import { StoreUpdaterList } from './updaters/list'
 import { StoreUpdaterObject } from './updaters/object'
 import type {
-  JaxsStatePublisher,
-  JaxsStateTransactionUpdater,
-  JaxsStoreName,
-  JaxsStoresCollection,
+  StatePublisher,
+  StateTransactionUpdater,
+  string,
+  StoresCollection,
   StoreValue,
 } from '../types'
 
 export const eventName = 'state'
 
 export class State {
-  publisher: JaxsStatePublisher
-  stores: JaxsStoresCollection
+  publisher: StatePublisher
+  stores: StoresCollection
   eventNamePrefix: string
-  notifications: Set<JaxsStoreName>
+  notifications: Set<string>
   inTransaction: boolean
 
-  constructor(publisher: JaxsStatePublisher) {
+  constructor(publisher: StatePublisher) {
     this.publisher = publisher
     this.stores = {}
     this.eventNamePrefix = eventName
@@ -27,7 +27,7 @@ export class State {
     this.inTransaction = false
   }
 
-  create<T>(name: JaxsStoreName, initialState: T) {
+  create<T>(name: string, initialState: T) {
     const store = new Store<T>({
       name,
       parent: this,
@@ -39,25 +39,25 @@ export class State {
     return store
   }
 
-  createBoolean(name: JaxsStoreName, initialState: boolean) {
+  createBoolean(name: string, initialState: boolean) {
     const store = this.create(name, initialState)
     store.updater = new StoreUpdaterBoolean(store)
     return store
   }
 
-  createRecord<T>(name: JaxsStoreName, initialState: T) {
+  createRecord<T>(name: string, initialState: T) {
     const store = this.create(name, initialState)
     store.updater = new StoreUpdaterObject<T>(store)
     return store
   }
 
-  createList<T>(name: JaxsStoreName, initialState: T[]) {
+  createList<T>(name: string, initialState: T[]) {
     const store = this.create(name, initialState)
     store.updater = new StoreUpdaterList<T>(store)
     return store
   }
 
-  store(name: JaxsStoreName): Store<any> {
+  store(name: string): Store<any> {
     return (
       this.stores[name] ||
       new Store({
@@ -68,18 +68,18 @@ export class State {
     )
   }
 
-  get(name: JaxsStoreName): StoreValue {
+  get(name: string): StoreValue {
     return this.store(name).value
   }
 
-  getAll(names: JaxsStoreName[]) {
+  getAll(names: string[]) {
     return names.reduce((collection, name) => {
       collection[name] = this.get(name)
       return collection
     }, {})
   }
 
-  notify(name: JaxsStoreName) {
+  notify(name: string) {
     if (this.inTransaction) {
       this.notifications.add(name)
     } else {
@@ -87,11 +87,11 @@ export class State {
     }
   }
 
-  update(name: JaxsStoreName, newValue: any) {
+  update(name: string, newValue: any) {
     this.store(name).update(newValue)
   }
 
-  transaction(updater: JaxsStateTransactionUpdater) {
+  transaction(updater: StateTransactionUpdater) {
     this.inTransaction = true
     updater(this.stores)
     this.inTransaction = false
@@ -99,25 +99,25 @@ export class State {
   }
 
   publishAll() {
-    this.notifications.forEach((name: JaxsStoreName) => {
+    this.notifications.forEach((name: string) => {
       this.publish(name)
     })
     this.notifications.clear()
   }
 
-  publish(name: JaxsStoreName) {
+  publish(name: string) {
     this.publisher(this.event(name), {
       state: this,
       store: this.store(name),
     })
   }
 
-  event(name: JaxsStoreName) {
+  event(name: string) {
     return `${this.eventNamePrefix}:${name}`
   }
 }
 
-export const createState = (publisher: JaxsStatePublisher) => {
+export const createState = (publisher: StatePublisher) => {
   return new State(publisher)
 }
 

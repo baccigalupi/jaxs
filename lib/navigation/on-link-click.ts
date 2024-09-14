@@ -1,8 +1,8 @@
 import { findHref } from './find-href'
-import { JaxsBusOptions } from '../types'
+import { BusOptions } from '../types'
 import { navigate } from './navigate'
 
-export const onLinkClick = (domEvent: MouseEvent, options: JaxsBusOptions) => {
+export const onLinkClick = (domEvent: MouseEvent, options: BusOptions) => {
   if (!domEvent || !domEvent.target) return
   domEvent.preventDefault()
 

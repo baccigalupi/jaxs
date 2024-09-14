@@ -4,17 +4,17 @@ import {
   JaxsElement,
   JaxsNodes,
   Props,
-  JaxsTemplate,
+  Template,
   RenderKit,
-  JaxsViewModel,
+  ViewModel,
   BindParams,
   BindSubscriptionList,
   StoreMap,
 } from '../../types'
 
 export class Bound<ATTRIBUTES, STATE_MAP> {
-  Template: JaxsTemplate<ATTRIBUTES>
-  viewModel: JaxsViewModel<ATTRIBUTES, STATE_MAP>
+  Template: Template<ATTRIBUTES>
+  viewModel: ViewModel<ATTRIBUTES, STATE_MAP>
   attributes: Partial<Props<ATTRIBUTES>>
   subscriptions: BindSubscriptionList
   dom: JaxsNodes
@@ -79,7 +79,7 @@ export class Bound<ATTRIBUTES, STATE_MAP> {
   }
 }
 
-const passthroughViewModel: JaxsViewModel<StoreMap, StoreMap> = (
+const passthroughViewModel: ViewModel<StoreMap, StoreMap> = (
   storeMap: StoreMap,
 ) => storeMap
 
@@ -89,7 +89,7 @@ export const bind = <ATTRIBUTES, STATE_MAP>({
   subscriptions,
 }: BindParams<ATTRIBUTES, STATE_MAP>) => {
   subscriptions = (subscriptions || []) as BindSubscriptionList
-  viewModel = (viewModel || passthroughViewModel) as JaxsViewModel<
+  viewModel = (viewModel || passthroughViewModel) as ViewModel<
     ATTRIBUTES,
     STATE_MAP
   >

@@ -2,7 +2,7 @@ import type {
   Renderable,
   RenderKit,
   Subscribe,
-  JaxsPublishFunction,
+  PublishFunction,
 } from '../types'
 import type { State } from '../state'
 import type { JaxsBus } from '../bus'
@@ -12,7 +12,7 @@ import { startNavigation } from '../navigation/start'
 export class App {
   window: Window
   document: Document
-  publish: JaxsPublishFunction<any>
+  publish: PublishFunction<any>
   subscribe: Subscribe
   bus: JaxsBus
   state: State

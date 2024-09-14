@@ -1,8 +1,8 @@
 import type {
   Store,
-  JaxsStoreUpdateValue,
-  JaxsStoreUpdaterFunction,
-  JaxStoreUpdatersCollection,
+  StoreUpdaterOrValue,
+  StoreUpdaterFunction,
+  StoreUpdatersCollection,
   UpdaterValue,
 } from '../types'
 export class StoreUpdaterBase<T> {
@@ -12,7 +12,7 @@ export class StoreUpdaterBase<T> {
     this.store = store
   }
 
-  update(updater: JaxsStoreUpdateValue<T>) {
+  update(updater: StoreUpdaterOrValue<T>) {
     this.store.update(updater)
   }
 
@@ -24,14 +24,14 @@ export class StoreUpdaterBase<T> {
     return this.store.value
   }
 
-  addUpdaterFunction(name: string, updater: JaxsStoreUpdaterFunction<T>) {
+  addUpdaterFunction(name: string, updater: StoreUpdaterFunction<T>) {
     this.constructor.prototype[name] = (...args: any[]) => {
       const newValue = updater(this.value, ...args)
       this.update(newValue as UpdaterValue<T>)
     }
   }
 
-  addUpdaterFunctions(updaters: JaxStoreUpdatersCollection<T>) {
+  addUpdaterFunctions(updaters: StoreUpdatersCollection<T>) {
     for (const key in updaters) {
       this.addUpdaterFunction(key, updaters[key])
     }

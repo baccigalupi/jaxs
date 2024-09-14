@@ -1,4 +1,4 @@
-import { FuzzySubscriptionData, JaxsBusListener, Unsubscribe } from '../types'
+import { FuzzySubscriptionData, BusListener, Unsubscribe } from '../types'
 
 export class FuzzySubscriptions {
   lookup: FuzzySubscriptionData<any>[]
@@ -9,7 +9,7 @@ export class FuzzySubscriptions {
 
   add<T>(
     matcher: RegExp,
-    listener: JaxsBusListener<T>,
+    listener: BusListener<T>,
     index: number,
   ): Unsubscribe {
     const subscription = {

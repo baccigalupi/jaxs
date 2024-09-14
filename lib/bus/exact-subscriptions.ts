@@ -1,7 +1,7 @@
 import {
   ExactSubscriptionData,
-  JaxsBusEventMatcher,
-  JaxsBusListener,
+  BusEventMatcher,
+  BusListener,
   Unsubscribe,
 } from '../types'
 
@@ -14,7 +14,7 @@ export class ExactSubscriptions {
 
   add<T>(
     matcher: string,
-    listener: JaxsBusListener<T>,
+    listener: BusListener<T>,
     index: number,
   ): Unsubscribe {
     this.ensureArrayFor(matcher as string)

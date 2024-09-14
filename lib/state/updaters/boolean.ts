@@ -1,4 +1,4 @@
-import { JaxsStoreUpdaterFunction } from '../../types'
+import { StoreUpdaterFunction } from '../../types'
 import { StoreUpdaterBase } from '../store-updater'
 
 export class StoreUpdaterBoolean extends StoreUpdaterBase<boolean> {
@@ -15,7 +15,7 @@ export class StoreUpdaterBoolean extends StoreUpdaterBase<boolean> {
     this.update(false)
   }
 
-  addUpdaterFunction(name: string, updater: JaxsStoreUpdaterFunction<boolean>) {
+  addUpdaterFunction(name: string, updater: StoreUpdaterFunction<boolean>) {
     this.constructor.prototype[name] = (...args: any[]) => {
       const newValue = updater(this.value, ...args)
       this.update(newValue)

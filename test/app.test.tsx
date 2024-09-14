@@ -5,7 +5,7 @@ import { jsx } from '../lib/jaxs'
 import { describe, expect, it, vi, beforeEach, Mocked } from 'vitest'
 import { createApp } from '../lib/app/builder'
 import { createTestDom, setupDom, domToString } from './support/test-dom'
-import type { StaticTemplate, JaxsBusOptions } from '../lib/types'
+import type { StaticTemplate, BusOptions } from '../lib/types'
 
 describe('App', () => {
   const globalWindow = {
@@ -50,7 +50,7 @@ describe('App', () => {
     it('connects the bus to the state and adds listener options', () => {
       const app = createApp()
 
-      const listenerOptions = app.bus.options as unknown as JaxsBusOptions
+      const listenerOptions = app.bus.options as unknown as BusOptions
 
       expect(listenerOptions.state).toEqual(app.state)
       expect(listenerOptions.document).toEqual(globalDocument)

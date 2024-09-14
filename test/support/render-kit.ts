@@ -2,22 +2,15 @@ import { vi, Mocked } from 'vitest'
 import { setupDom } from './test-dom'
 import { createState } from '../../lib/state'
 import { createBus, type JaxsBus } from '../../lib/bus'
-import {
-  JaxsPublishFunction,
-  JaxsBusEventMatcher,
-  JaxsBusListener,
-} from '../../lib/types'
+import { PublishFunction, BusEventMatcher, BusListener } from '../../lib/types'
 
-type Subscribe<T> = (
-  matcher: JaxsBusEventMatcher,
-  listener: JaxsBusListener<T>,
-) => void
+type Subscribe<T> = (matcher: BusEventMatcher, listener: BusListener<T>) => void
 
 export const createRenderKit = <T>(messageBus = {} as Partial<JaxsBus>) => {
   const dom = setupDom()
 
   const busOptions = {
-    publish: messageBus.publish || (vi.fn() as Mocked<JaxsPublishFunction<T>>),
+    publish: messageBus.publish || (vi.fn() as Mocked<PublishFunction<T>>),
     subscribe: messageBus.subscribe || (vi.fn() as Subscribe<T>),
   }
   const state = createState(busOptions.publish)

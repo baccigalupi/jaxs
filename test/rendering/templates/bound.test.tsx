@@ -8,7 +8,7 @@ import { domToString } from '../../support/test-dom'
 import { createRenderKitWithBus } from '../../support/render-kit'
 
 import { bind } from '../../../lib/rendering/templates/bound'
-import { JaxsTemplate, JaxsViewModel } from '../../../lib/types'
+import { Template, ViewModel } from '../../../lib/types'
 import { State } from '../../../lib/state'
 
 describe('Bound templates', () => {
@@ -32,7 +32,7 @@ describe('Bound templates', () => {
       greeting: string
       name: string
     }
-    const Greetings: JaxsTemplate<GreetingProps> = ({ greeting, name }) => (
+    const Greetings: Template<GreetingProps> = ({ greeting, name }) => (
       <h1>
         {greeting} {name}
       </h1>

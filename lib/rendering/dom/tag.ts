@@ -2,7 +2,7 @@ import type {
   JaxsElement,
   TagAttributes,
   TagEventAttributes,
-  TagEventMaps,
+  EventMaps,
   DomPublish,
   RenderKit,
 } from '../../types'
@@ -31,7 +31,7 @@ export const setEventsOnElement = (
   events: TagEventAttributes,
   publish: DomPublish,
 ) => {
-  const eventMaps = {} as TagEventMaps
+  const eventMaps = {} as EventMaps
 
   for (const domEvent in events) {
     const eventName = events[domEvent]

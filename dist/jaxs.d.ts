@@ -15,68 +15,65 @@ declare module 'state/equality' {
 declare module 'state/store-updater' {
   import type {
     Store,
-    JaxsStoreUpdateValue,
-    JaxsStoreUpdaterFunction,
-    JaxStoreUpdatersCollection,
+    StoreUpdaterOrValue,
+    StoreUpdaterFunction,
+    StoreUpdatersCollection,
   } from 'types'
   export class StoreUpdaterBase<T> {
     store: Store<T>
     constructor(store: Store<T>)
-    update(updater: JaxsStoreUpdateValue<T>): void
+    update(updater: StoreUpdaterOrValue<T>): void
     reset(): void
     get value(): T
-    addUpdaterFunction(name: string, updater: JaxsStoreUpdaterFunction<T>): void
-    addUpdaterFunctions(updaters: JaxStoreUpdatersCollection<T>): void
+    addUpdaterFunction(name: string, updater: StoreUpdaterFunction<T>): void
+    addUpdaterFunctions(updaters: StoreUpdatersCollection<T>): void
   }
 }
 declare module 'state/updaters/list' {
-  import { JaxsStoreListSorter, JaxsStoreUpdaterFunction } from 'types'
+  import { StoreListSorterFunction, StoreUpdaterFunction } from 'types'
   import { StoreUpdaterBase } from 'state/store-updater'
   export class StoreUpdaterList<T> extends StoreUpdaterBase<T[]> {
-    addUpdaterFunction(
-      name: string,
-      updater: JaxsStoreUpdaterFunction<T[]>,
-    ): void
+    addUpdaterFunction(name: string, updater: StoreUpdaterFunction<T[]>): void
     push(element: T): void
     pop(): T
     unshift(element: T): void
     shift(): T
-    addSorter(name: string, sorter: JaxsStoreListSorter<T>): void
-    sortBy(sorter: JaxsStoreListSorter<T>): void
+    addSorter(name: string, sorter: StoreListSorterFunction<T>): void
+    sortBy(sorter: StoreListSorterFunction<T>): void
     insertAt(index: number, item: T): void
   }
 }
 declare module 'state/store' {
   import type {
     State,
-    JaxsStoreDataUpdater,
-    JaxsStoreInitializationOptions,
-    JaxsStoreListSorter,
-    JaxsStoreName,
-    JaxsStoreUpdaterFunction,
-    JaxsStoreUpdateValue,
-    JaxStoreUpdatersCollection,
+    StoreDataUpdater,
+    StoreInitializationOptions,
+    StoreListSorterFunction,
+    string,
+    StoreUpdaterFunction,
+    StoreUpdaterOrValue,
+    StoreUpdatersCollection,
     StoreUpdater,
   } from 'types'
   export class Store<T> {
     parent: State
-    name: JaxsStoreName
+    name: string
     updater: StoreUpdater<T>
     _value: T
     initialState: T
-    constructor(options: JaxsStoreInitializationOptions<T>)
+    constructor(options: StoreInitializationOptions<T>)
     get ['value'](): T
     set ['value'](value: T)
-    update(updater: JaxsStoreUpdateValue<T>): void
+    update(updater: StoreUpdaterOrValue<T>): void
     updateValue(newValue: T): void
-    getUpdatedValue(updater: JaxsStoreDataUpdater<T>): T
-    addUpdaters(updaters: JaxStoreUpdatersCollection<any>): void
-    addUpdater(name: string, updater: JaxsStoreUpdaterFunction<any>): void
-    addSorter(name: string, sorter: JaxsStoreListSorter<T>): void
+    getUpdatedValue(updater: StoreDataUpdater<T>): T
+    addUpdaters(updaters: StoreUpdatersCollection<any>): void
+    addUpdater(name: string, updater: StoreUpdaterFunction<any>): void
+    addSorter(name: string, sorter: StoreListSorterFunction<T>): void
   }
 }
 declare module 'state/updaters/boolean' {
-  import { JaxsStoreUpdaterFunction } from 'types'
+  import { StoreUpdaterFunction } from 'types'
   import { StoreUpdaterBase } from 'state/store-updater'
   export class StoreUpdaterBoolean extends StoreUpdaterBase<boolean> {
     toggle(): void
@@ -84,15 +81,15 @@ declare module 'state/updaters/boolean' {
     setFalse(): void
     addUpdaterFunction(
       name: string,
-      updater: JaxsStoreUpdaterFunction<boolean>,
+      updater: StoreUpdaterFunction<boolean>,
     ): void
   }
 }
 declare module 'state/updaters/object' {
-  import { JaxsStoreUpdaterFunction } from 'types'
+  import { StoreUpdaterFunction } from 'types'
   import { StoreUpdaterBase } from 'state/store-updater'
   export class StoreUpdaterObject<T> extends StoreUpdaterBase<T> {
-    addUpdaterFunction(name: string, updater: JaxsStoreUpdaterFunction<T>): void
+    addUpdaterFunction(name: string, updater: StoreUpdaterFunction<T>): void
     updateAttribute(name: keyof T, value: T[keyof T]): void
   }
 }
@@ -102,35 +99,35 @@ declare module 'state/index' {
   import { StoreUpdaterList } from 'state/updaters/list'
   import { StoreUpdaterObject } from 'state/updaters/object'
   import type {
-    JaxsStatePublisher,
-    JaxsStateTransactionUpdater,
-    JaxsStoreName,
-    JaxsStoresCollection,
+    StatePublisher,
+    StateTransactionUpdater,
+    string,
+    StoresCollection,
     StoreValue,
   } from 'types'
   export const eventName = 'state'
   export class State {
-    publisher: JaxsStatePublisher
-    stores: JaxsStoresCollection
+    publisher: StatePublisher
+    stores: StoresCollection
     eventNamePrefix: string
-    notifications: Set<JaxsStoreName>
+    notifications: Set<string>
     inTransaction: boolean
-    constructor(publisher: JaxsStatePublisher)
-    create<T>(name: JaxsStoreName, initialState: T): Store<T>
-    createBoolean(name: JaxsStoreName, initialState: boolean): Store<boolean>
-    createRecord<T>(name: JaxsStoreName, initialState: T): Store<T>
-    createList<T>(name: JaxsStoreName, initialState: T[]): Store<T[]>
-    store(name: JaxsStoreName): Store<any>
-    get(name: JaxsStoreName): StoreValue
-    getAll(names: JaxsStoreName[]): {}
-    notify(name: JaxsStoreName): void
-    update(name: JaxsStoreName, newValue: any): void
-    transaction(updater: JaxsStateTransactionUpdater): void
+    constructor(publisher: StatePublisher)
+    create<T>(name: string, initialState: T): Store<T>
+    createBoolean(name: string, initialState: boolean): Store<boolean>
+    createRecord<T>(name: string, initialState: T): Store<T>
+    createList<T>(name: string, initialState: T[]): Store<T[]>
+    store(name: string): Store<any>
+    get(name: string): StoreValue
+    getAll(names: string[]): {}
+    notify(name: string): void
+    update(name: string, newValue: any): void
+    transaction(updater: StateTransactionUpdater): void
     publishAll(): void
-    publish(name: JaxsStoreName): void
-    event(name: JaxsStoreName): string
+    publish(name: string): void
+    event(name: string): string
   }
-  export const createState: (publisher: JaxsStatePublisher) => State
+  export const createState: (publisher: StatePublisher) => State
   export { Store, StoreUpdaterBoolean, StoreUpdaterList, StoreUpdaterObject }
 }
 declare module 'types' {
@@ -166,9 +163,9 @@ declare module 'types' {
     busEvent: string
     listener: EventListener
   }
-  export type TagEventMaps = Record<string, EventMap>
+  export type EventMaps = Record<string, EventMap>
   interface JsxEventMapped {
-    eventMaps: TagEventMaps
+    eventMaps: EventMaps
   }
   export type JaxsElement = Element & JsxIded & JsxEventMapped
   export type JaxsText = Text & JsxIded
@@ -204,8 +201,8 @@ declare module 'types' {
   }
   export type DomPublish = (eventName: string, domEvent: Event) => void
   export type Subscribe = (
-    matcher: JaxsBusEventMatcher,
-    listener: JaxsBusListener<any>,
+    matcher: BusEventMatcher,
+    listener: BusListener<any>,
   ) => void
   export type RenderKit = {
     document: Document
@@ -221,7 +218,7 @@ declare module 'types' {
   }
   export type StaticTemplate = () => Renderable
   export type TypedTemplate<T> = (props: Props<T>) => Renderable
-  export type JaxsTemplate<T> = StaticTemplate | TypedTemplate<T>
+  export type Template<T> = StaticTemplate | TypedTemplate<T>
   export type JsxCollection = (Renderable | TextValue)[]
   export enum ChangeInstructionTypes {
     removeNode = 0,
@@ -258,14 +255,14 @@ declare module 'types' {
     parent: JaxsElement
     index: number
   }
-  type NullData = Record<string, never>
+  type NullInstructionData = Record<string, never>
   export type InstructionData =
     | RemoveInstructionData
     | AttributeInstructionData
     | EventInstructionData
     | UpdateEventInstructionData
     | InsertNodeData
-    | NullData
+    | NullInstructionData
   export type ChangeInstruction = {
     source: JaxsNode
     target: JaxsNode
@@ -286,13 +283,13 @@ declare module 'types' {
   export type StoreMap = {
     [key: string]: StoreValue
   }
-  export type JaxsViewModel<ATTRIBUTES, STORE_MAP> = (
+  export type ViewModel<ATTRIBUTES, STORE_MAP> = (
     storeMap: STORE_MAP,
   ) => Partial<ATTRIBUTES>
   export type BindSubscriptionList = string[]
   export type BindParams<T, U> = {
-    Template: JaxsTemplate<T>
-    viewModel?: JaxsViewModel<T, U>
+    Template: Template<T>
+    viewModel?: ViewModel<T, U>
     subscriptions?: BindSubscriptionList
   }
   export type AppAdditionListenerOptions = {
@@ -301,24 +298,21 @@ declare module 'types' {
     window: Window
   }
   export type DefaultBusListenerOptions<T> = {
-    publish: JaxsPublishFunction<T>
+    publish: PublishFunction<T>
     eventName: string
   }
-  export type JaxsBusOptions = AppAdditionListenerOptions &
+  export type BusOptions = AppAdditionListenerOptions &
     DefaultBusListenerOptions<any>
-  export type JaxsPublishFunction<T> = (event: string, payload: T) => void
-  export type JaxsBusListener<T> = (
-    payload: T,
-    listenerKit: JaxsBusOptions,
-  ) => void
-  export type JaxsBusEventMatcher = string | RegExp
+  export type PublishFunction<T> = (event: string, payload: T) => void
+  export type BusListener<T> = (payload: T, listenerKit: BusOptions) => void
+  export type BusEventMatcher = string | RegExp
   export type ExactSubscriptionData<T> = {
-    listener: JaxsBusListener<T>
+    listener: BusListener<T>
     index: number
     matcher: string
   }
   export type FuzzySubscriptionData<T> = {
-    listener: JaxsBusListener<T>
+    listener: BusListener<T>
     index: number
     matcher: RegExp
   }
@@ -344,31 +338,27 @@ declare module 'types' {
     targetList: JaxsNodes,
     parent: JaxsElement,
   ) => ChangeInstructions
-  export type JaxsStatePublisher = (event: string, payload: any) => void
-  export type JaxsStateTransactionUpdater = (
-    collection: JaxsStoresCollection,
-  ) => void
-  export type JaxsStoreName = string
-  export type JaxsStoresCollection = Record<string, Store<any>>
-  export type JaxsStoreInitializationOptions<T> = {
-    name: JaxsStoreName
+  export type StatePublisher = (event: string, payload: any) => void
+  export type StateTransactionUpdater = (collection: StoresCollection) => void
+  export type string = string
+  export type StoresCollection = Record<string, Store<any>>
+  export type StoreInitializationOptions<T> = {
+    name: string
     parent: State
     value: T
   }
-  export type JaxsStoreDataUpdater<T> = (originalValue: T) => T
+  export type StoreDataUpdater<T> = (originalValue: T) => T
   export type UpdaterValue<T> = boolean | T | T[]
-  export type JaxsStoreUpdateValue<T> =
-    | UpdaterValue<T>
-    | JaxsStoreDataUpdater<T>
-  export type JaxsStoreUpdaterFunction<T> = (
+  export type StoreUpdaterOrValue<T> = UpdaterValue<T> | StoreDataUpdater<T>
+  export type StoreUpdaterFunction<T> = (
     value: UpdaterValue<T>,
     ...args: any[]
   ) => T
-  export type JaxStoreUpdatersCollection<T> = Record<
+  export type StoreUpdatersCollection<T> = Record<
     string,
-    JaxsStoreUpdaterFunction<T>
+    StoreUpdaterFunction<T>
   >
-  export type JaxsStoreListSorter<T> = (left: T, right: T) => number
+  export type StoreListSorterFunction<T> = (left: T, right: T) => number
 }
 declare module 'rendering/dom/tag' {
   import type {
@@ -531,11 +521,11 @@ declare module 'rendering/templates/tag' {
   }
 }
 declare module 'rendering/jsx' {
-  import type { JsxCollection, Props, JaxsTemplate, Renderable } from 'types'
+  import type { JsxCollection, Props, Template, Renderable } from 'types'
   import { Children } from 'rendering/templates/children'
   const jsx: {
     <T>(
-      type: string | JaxsTemplate<T>,
+      type: string | Template<T>,
       attributes: Props<T>,
       ...children: JsxCollection
     ): Renderable
@@ -544,13 +534,13 @@ declare module 'rendering/jsx' {
   export { jsx }
 }
 declare module 'bus/exact-subscriptions' {
-  import { ExactSubscriptionData, JaxsBusListener, Unsubscribe } from 'types'
+  import { ExactSubscriptionData, BusListener, Unsubscribe } from 'types'
   export class ExactSubscriptions {
     lookup: Record<string, ExactSubscriptionData<any>[]>
     constructor()
     add<T>(
       matcher: string,
-      listener: JaxsBusListener<T>,
+      listener: BusListener<T>,
       index: number,
     ): Unsubscribe
     remove<T>(subscription: ExactSubscriptionData<T>): void
@@ -559,13 +549,13 @@ declare module 'bus/exact-subscriptions' {
   }
 }
 declare module 'bus/fuzzy-subscriptions' {
-  import { FuzzySubscriptionData, JaxsBusListener, Unsubscribe } from 'types'
+  import { FuzzySubscriptionData, BusListener, Unsubscribe } from 'types'
   export class FuzzySubscriptions {
     lookup: FuzzySubscriptionData<any>[]
     constructor()
     add<T>(
       matcher: RegExp,
-      listener: JaxsBusListener<T>,
+      listener: BusListener<T>,
       index: number,
     ): Unsubscribe
     remove<T>(subscription: FuzzySubscriptionData<T>): void
@@ -574,11 +564,11 @@ declare module 'bus/fuzzy-subscriptions' {
 }
 declare module 'bus/index' {
   import {
-    JaxsBusEventMatcher,
-    JaxsBusListener,
+    BusEventMatcher,
+    BusListener,
     Unsubscribe,
     AppAdditionListenerOptions,
-    JaxsBusOptions,
+    BusOptions,
   } from 'types'
   import { ExactSubscriptions } from 'bus/exact-subscriptions'
   import { FuzzySubscriptions } from 'bus/fuzzy-subscriptions'
@@ -589,19 +579,19 @@ declare module 'bus/index' {
     currentIndex: number
     constructor()
     subscribe<T>(
-      matcher: JaxsBusEventMatcher,
-      listener: JaxsBusListener<T>,
+      matcher: BusEventMatcher,
+      listener: BusListener<T>,
     ): Unsubscribe
     publish<T>(event: string, payload: T): void
     addListenerOptions(options: AppAdditionListenerOptions): void
-    listenerOptions(event: string): JaxsBusOptions
+    listenerOptions(event: string): BusOptions
   }
   const createBus: () => {
     bus: JaxsBus
     publish: (event: string, payload: any) => void
     subscribe: (
-      matcher: JaxsBusEventMatcher,
-      listener: JaxsBusListener<any>,
+      matcher: BusEventMatcher,
+      listener: BusListener<any>,
     ) => Unsubscribe
   }
   export { createBus, JaxsBus, ExactSubscriptions, FuzzySubscriptions }
@@ -645,28 +635,19 @@ declare module 'navigation/find-href' {
   export const findHref: (node: HTMLElement) => string
 }
 declare module 'navigation/navigate' {
-  import { JaxsBusOptions } from 'types'
-  export const navigate: (
-    path: string,
-    { publish, window }: JaxsBusOptions,
-  ) => void
+  import { BusOptions } from 'types'
+  export const navigate: (path: string, { publish, window }: BusOptions) => void
 }
 declare module 'navigation/on-link-click' {
-  import { JaxsBusOptions } from 'types'
-  export const onLinkClick: (
-    domEvent: MouseEvent,
-    options: JaxsBusOptions,
-  ) => void
+  import { BusOptions } from 'types'
+  export const onLinkClick: (domEvent: MouseEvent, options: BusOptions) => void
 }
 declare module 'navigation/extract-query-params' {
   export const extractQueryParams: (queryString: string) => {}
 }
 declare module 'navigation/on-location-change' {
-  import { JaxsBusOptions } from 'types'
-  export const onLocationChange: (
-    _: null,
-    listenerOptions: JaxsBusOptions,
-  ) => void
+  import { BusOptions } from 'types'
+  export const onLocationChange: (_: null, listenerOptions: BusOptions) => void
 }
 declare module 'navigation/start' {
   import type { App } from 'app/index'
@@ -676,19 +657,14 @@ declare module 'navigation/start' {
   export const startNavigation: (app: App) => void
 }
 declare module 'app/index' {
-  import type {
-    Renderable,
-    RenderKit,
-    Subscribe,
-    JaxsPublishFunction,
-  } from 'types'
+  import type { Renderable, RenderKit, Subscribe, PublishFunction } from 'types'
   import type { State } from 'state/index'
   import type { JaxsBus } from 'bus/index'
   import { Root } from 'rendering/templates/root'
   export class App {
     window: Window
     document: Document
-    publish: JaxsPublishFunction<any>
+    publish: PublishFunction<any>
     subscribe: Subscribe
     bus: JaxsBus
     state: State
@@ -720,7 +696,7 @@ declare module 'app/builder' {
   import { JaxsBus } from 'bus/index'
   import { State } from 'state/index'
   import {
-    JaxsPublishFunction,
+    PublishFunction,
     Subscribe,
     RenderKit,
     CreateAppBuilderArguments,
@@ -728,7 +704,7 @@ declare module 'app/builder' {
   class AppBuilder {
     window: Window
     document: Document
-    publish: JaxsPublishFunction<any>
+    publish: PublishFunction<any>
     subscribe: Subscribe
     bus: JaxsBus
     state: State
@@ -890,15 +866,15 @@ declare module 'rendering/templates/bound' {
     JaxsElement,
     JaxsNodes,
     Props,
-    JaxsTemplate,
+    Template,
     RenderKit,
-    JaxsViewModel,
+    ViewModel,
     BindParams,
     BindSubscriptionList,
   } from 'types'
   export class Bound<ATTRIBUTES, STATE_MAP> {
-    Template: JaxsTemplate<ATTRIBUTES>
-    viewModel: JaxsViewModel<ATTRIBUTES, STATE_MAP>
+    Template: Template<ATTRIBUTES>
+    viewModel: ViewModel<ATTRIBUTES, STATE_MAP>
     attributes: Partial<Props<ATTRIBUTES>>
     subscriptions: BindSubscriptionList
     dom: JaxsNodes

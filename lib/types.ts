@@ -17,6 +17,7 @@ export type StoreUpdater<T> =
   | StoreUpdaterObject<T>
   | StoreUpdaterBoolean
   | StoreUpdaterList<T>
+
 // DOM & Jax & Jsx
 export type TextValue = string | number
 export interface JsxIded {
@@ -31,9 +32,9 @@ export type EventMap = {
   busEvent: string
   listener: EventListener
 }
-export type TagEventMaps = Record<string, EventMap>
+export type EventMaps = Record<string, EventMap>
 interface JsxEventMapped {
-  eventMaps: TagEventMaps
+  eventMaps: EventMaps
 }
 export type JaxsElement = Element & JsxIded & JsxEventMapped
 export type JaxsText = Text & JsxIded
@@ -72,8 +73,8 @@ export type TagAttributesAndEvents = {
 // Message bus types
 export type DomPublish = (eventName: string, domEvent: Event) => void
 export type Subscribe = (
-  matcher: JaxsBusEventMatcher,
-  listener: JaxsBusListener<any>,
+  matcher: BusEventMatcher,
+  listener: BusListener<any>,
 ) => void
 
 // jsx and rendering
@@ -92,7 +93,7 @@ export interface Renderable {
 }
 export type StaticTemplate = () => Renderable
 export type TypedTemplate<T> = (props: Props<T>) => Renderable
-export type JaxsTemplate<T> = StaticTemplate | TypedTemplate<T>
+export type Template<T> = StaticTemplate | TypedTemplate<T>
 export type JsxCollection = (Renderable | TextValue)[]
 
 // Change instructions and change compilation
@@ -137,7 +138,7 @@ export type InsertNodeData = {
   index: number
 }
 
-type NullData = Record<string, never>
+type NullInstructionData = Record<string, never>
 
 export type InstructionData =
   | RemoveInstructionData
@@ -145,7 +146,7 @@ export type InstructionData =
   | EventInstructionData
   | UpdateEventInstructionData
   | InsertNodeData
-  | NullData
+  | NullInstructionData
 
 export type ChangeInstruction = {
   source: JaxsNode
@@ -170,21 +171,18 @@ export type StoreValue =
 // TODO: figure out how to tie the
 // subscriptions to the store keys, and the view model to the store keys
 
-// type StoreMap<SUBSCRIPTIONS> = {
-//   [key in keyof SUBSCRIPTIONS]: StoreValue
-// }
 export type StoreMap = {
   [key: string]: StoreValue
 }
 
-export type JaxsViewModel<ATTRIBUTES, STORE_MAP> = (
+export type ViewModel<ATTRIBUTES, STORE_MAP> = (
   storeMap: STORE_MAP,
 ) => Partial<ATTRIBUTES>
 export type BindSubscriptionList = string[]
 
 export type BindParams<T, U> = {
-  Template: JaxsTemplate<T>
-  viewModel?: JaxsViewModel<T, U>
+  Template: Template<T>
+  viewModel?: ViewModel<T, U>
   subscriptions?: BindSubscriptionList
 }
 
@@ -195,27 +193,24 @@ export type AppAdditionListenerOptions = {
   window: Window
 }
 export type DefaultBusListenerOptions<T> = {
-  publish: JaxsPublishFunction<T>
+  publish: PublishFunction<T>
   eventName: string
 }
-export type JaxsBusOptions = AppAdditionListenerOptions &
+export type BusOptions = AppAdditionListenerOptions &
   DefaultBusListenerOptions<any>
 
-export type JaxsPublishFunction<T> = (event: string, payload: T) => void
-export type JaxsBusListener<T> = (
-  payload: T,
-  listenerKit: JaxsBusOptions,
-) => void
-export type JaxsBusEventMatcher = string | RegExp
+export type PublishFunction<T> = (event: string, payload: T) => void
+export type BusListener<T> = (payload: T, listenerKit: BusOptions) => void
+export type BusEventMatcher = string | RegExp
 
 export type ExactSubscriptionData<T> = {
-  listener: JaxsBusListener<T>
+  listener: BusListener<T>
   index: number
   matcher: string
 }
 
 export type FuzzySubscriptionData<T> = {
-  listener: JaxsBusListener<T>
+  listener: BusListener<T>
   index: number
   matcher: RegExp
 }
@@ -246,29 +241,23 @@ export type CompileChildren = (
   parent: JaxsElement,
 ) => ChangeInstructions
 
-export type JaxsStatePublisher = (event: string, payload: any) => void
-export type JaxsStateTransactionUpdater = (
-  collection: JaxsStoresCollection,
-) => void
-export type JaxsStoreName = string
+export type StatePublisher = (event: string, payload: any) => void
+export type StateTransactionUpdater = (collection: StoresCollection) => void
 
-export type JaxsStoresCollection = Record<string, Store<any>>
+export type StoresCollection = Record<string, Store<any>>
 
-export type JaxsStoreInitializationOptions<T> = {
-  name: JaxsStoreName
+export type StoreInitializationOptions<T> = {
+  name: string
   parent: State
   value: T
 }
 
-export type JaxsStoreDataUpdater<T> = (originalValue: T) => T
+export type StoreDataUpdater<T> = (originalValue: T) => T
 export type UpdaterValue<T> = boolean | T | T[]
-export type JaxsStoreUpdateValue<T> = UpdaterValue<T> | JaxsStoreDataUpdater<T>
-export type JaxsStoreUpdaterFunction<T> = (
+export type StoreUpdaterOrValue<T> = UpdaterValue<T> | StoreDataUpdater<T>
+export type StoreUpdaterFunction<T> = (
   value: UpdaterValue<T>,
   ...args: any[]
 ) => T
-export type JaxStoreUpdatersCollection<T> = Record<
-  string,
-  JaxsStoreUpdaterFunction<T>
->
-export type JaxsStoreListSorter<T> = (left: T, right: T) => number
+export type StoreUpdatersCollection<T> = Record<string, StoreUpdaterFunction<T>>
+export type StoreListSorterFunction<T> = (left: T, right: T) => number
