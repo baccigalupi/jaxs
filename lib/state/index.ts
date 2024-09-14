@@ -5,7 +5,6 @@ import { StoreUpdaterObject } from './updaters/object'
 import type {
   StatePublisher,
   StateTransactionUpdater,
-  string,
   StoresCollection,
   StoreValue,
 } from '../types'

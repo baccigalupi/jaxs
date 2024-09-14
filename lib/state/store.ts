@@ -3,7 +3,6 @@ import type {
   StoreDataUpdater,
   StoreInitializationOptions,
   StoreListSorterFunction,
-  string,
   StoreUpdaterFunction,
   StoreUpdaterOrValue,
   StoreUpdatersCollection,
