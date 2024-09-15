@@ -106,6 +106,126 @@ declare module "state/index" {
     export const createState: (publisher: StatePublisher) => State;
     export { Store, StoreUpdaterBoolean, StoreUpdaterList, StoreUpdaterObject };
 }
+declare module "bus/exact-subscriptions" {
+    import { ExactSubscriptionData, BusListener, Unsubscribe } from "types";
+    export class ExactSubscriptions {
+        lookup: Record<string, ExactSubscriptionData<any>[]>;
+        constructor();
+        add<T>(matcher: string, listener: BusListener<T>, index: number): Unsubscribe;
+        remove<T>(subscription: ExactSubscriptionData<T>): void;
+        matches(event: string): ExactSubscriptionData<any>[];
+        ensureArrayFor(matcher: string): void;
+    }
+}
+declare module "bus/fuzzy-subscriptions" {
+    import { FuzzySubscriptionData, BusListener, Unsubscribe } from "types";
+    export class FuzzySubscriptions {
+        lookup: FuzzySubscriptionData<any>[];
+        constructor();
+        add<T>(matcher: RegExp, listener: BusListener<T>, index: number): Unsubscribe;
+        remove<T>(subscription: FuzzySubscriptionData<T>): void;
+        matches(event: string): FuzzySubscriptionData<any>[];
+    }
+}
+declare module "bus/index" {
+    import { BusEventMatcher, BusListener, Unsubscribe, AppAdditionListenerOptions, BusOptions } from "types";
+    import { ExactSubscriptions } from "bus/exact-subscriptions";
+    import { FuzzySubscriptions } from "bus/fuzzy-subscriptions";
+    class JaxsBus {
+        options?: AppAdditionListenerOptions;
+        exactSubscriptions: ExactSubscriptions;
+        fuzzySubscriptions: FuzzySubscriptions;
+        currentIndex: number;
+        constructor();
+        subscribe<T>(matcher: BusEventMatcher, listener: BusListener<T>): Unsubscribe;
+        publish<T>(event: string, payload: T): void;
+        addListenerOptions(options: AppAdditionListenerOptions): void;
+        listenerOptions(event: string): BusOptions;
+    }
+    const createBus: () => {
+        bus: JaxsBus;
+        publish: (event: string, payload: any) => void;
+        subscribe: (matcher: BusEventMatcher, listener: BusListener<any>) => Unsubscribe;
+    };
+    export { createBus, JaxsBus, ExactSubscriptions, FuzzySubscriptions };
+}
+declare module "rendering/templates/root" {
+    import type { JaxsElement, JaxsNodes, RenderKit, Renderable, JaxsNode } from "types";
+    export class Root {
+        template: Renderable;
+        selector: string;
+        renderKit: RenderKit;
+        dom: JaxsNodes;
+        parentElement?: JaxsElement | null;
+        constructor(template: Renderable, selector: string, renderKit: RenderKit);
+        renderAndAttach(renderKit: RenderKit): void;
+        render(renderKit: RenderKit): JaxsNode[];
+        attach(): void;
+        getParentElement(): Element;
+    }
+    export const render: (template: Renderable, selector: string, renderKit: RenderKit) => Root;
+}
+declare module "navigation/events" {
+    export const linkNavigationEvent = "go-to-href";
+    export const locationChangeEvent = "navigation:location-change";
+    export const routeChangeEvent = "navigation:route-change";
+}
+declare module "navigation/route-state" {
+    import { State } from "state/index";
+    export const createRouteState: (state: State) => void;
+}
+declare module "navigation/find-href" {
+    export const findHref: (node: HTMLElement) => string;
+}
+declare module "navigation/navigate" {
+    import { BusOptions } from "types";
+    export const navigate: (path: string, { publish, window }: BusOptions) => void;
+}
+declare module "navigation/on-link-click" {
+    import { BusOptions } from "types";
+    export const onLinkClick: (domEvent: MouseEvent, options: BusOptions) => void;
+}
+declare module "navigation/extract-query-params" {
+    export const extractQueryParams: (queryString: string) => {};
+}
+declare module "navigation/on-location-change" {
+    import { BusOptions } from "types";
+    export const onLocationChange: (_: null, listenerOptions: BusOptions) => void;
+}
+declare module "navigation/start" {
+    import type { App } from "app/index";
+    export const subscribeToNavigation: (app: App) => void;
+    export const subscribeToHistoryChange: (app: App) => void;
+    export const publishLocation: (app: App) => void;
+    export const startNavigation: (app: App) => void;
+}
+declare module "app/index" {
+    import type { Renderable, RenderKit, Subscribe, PublishFunction } from "types";
+    import type { State } from "state/index";
+    import type { JaxsBus } from "bus/index";
+    import { Root } from "rendering/templates/root";
+    export class App {
+        window: Window;
+        document: Document;
+        publish: PublishFunction<any>;
+        subscribe: Subscribe;
+        bus: JaxsBus;
+        state: State;
+        renderKit: RenderKit;
+        roots: Root[];
+        constructor({ window, document, publish, subscribe, bus, state, renderKit }: {
+            window: any;
+            document: any;
+            publish: any;
+            subscribe: any;
+            bus: any;
+            state: any;
+            renderKit: any;
+        });
+        render(template: Renderable, selector: string): Root;
+        startNavigation(): void;
+    }
+}
 declare module "types" {
     import type { State } from "state/index";
     import type { Store } from "state/store";
@@ -113,6 +233,7 @@ declare module "types" {
     import type { StoreUpdaterBoolean } from "state/updaters/boolean";
     import type { StoreUpdaterList } from "state/updaters/list";
     import type { StoreUpdaterObject } from "state/updaters/object";
+    export type { App } from "app/index";
     export { State, Store, StoreUpdaterBase, StoreUpdaterBoolean, StoreUpdaterList, StoreUpdaterObject, };
     export type StoreUpdater<T> = StoreUpdaterBase<T> | StoreUpdaterObject<T> | StoreUpdaterBoolean | StoreUpdaterList<T>;
     export type TextValue = string | number;
@@ -391,126 +512,6 @@ declare module "rendering/jsx" {
         fragment<T>(attributes: Props<T>, maybeChildren: JsxCollection): Children;
     };
     export { jsx };
-}
-declare module "bus/exact-subscriptions" {
-    import { ExactSubscriptionData, BusListener, Unsubscribe } from "types";
-    export class ExactSubscriptions {
-        lookup: Record<string, ExactSubscriptionData<any>[]>;
-        constructor();
-        add<T>(matcher: string, listener: BusListener<T>, index: number): Unsubscribe;
-        remove<T>(subscription: ExactSubscriptionData<T>): void;
-        matches(event: string): ExactSubscriptionData<any>[];
-        ensureArrayFor(matcher: string): void;
-    }
-}
-declare module "bus/fuzzy-subscriptions" {
-    import { FuzzySubscriptionData, BusListener, Unsubscribe } from "types";
-    export class FuzzySubscriptions {
-        lookup: FuzzySubscriptionData<any>[];
-        constructor();
-        add<T>(matcher: RegExp, listener: BusListener<T>, index: number): Unsubscribe;
-        remove<T>(subscription: FuzzySubscriptionData<T>): void;
-        matches(event: string): FuzzySubscriptionData<any>[];
-    }
-}
-declare module "bus/index" {
-    import { BusEventMatcher, BusListener, Unsubscribe, AppAdditionListenerOptions, BusOptions } from "types";
-    import { ExactSubscriptions } from "bus/exact-subscriptions";
-    import { FuzzySubscriptions } from "bus/fuzzy-subscriptions";
-    class JaxsBus {
-        options?: AppAdditionListenerOptions;
-        exactSubscriptions: ExactSubscriptions;
-        fuzzySubscriptions: FuzzySubscriptions;
-        currentIndex: number;
-        constructor();
-        subscribe<T>(matcher: BusEventMatcher, listener: BusListener<T>): Unsubscribe;
-        publish<T>(event: string, payload: T): void;
-        addListenerOptions(options: AppAdditionListenerOptions): void;
-        listenerOptions(event: string): BusOptions;
-    }
-    const createBus: () => {
-        bus: JaxsBus;
-        publish: (event: string, payload: any) => void;
-        subscribe: (matcher: BusEventMatcher, listener: BusListener<any>) => Unsubscribe;
-    };
-    export { createBus, JaxsBus, ExactSubscriptions, FuzzySubscriptions };
-}
-declare module "rendering/templates/root" {
-    import type { JaxsElement, JaxsNodes, RenderKit, Renderable, JaxsNode } from "types";
-    export class Root {
-        template: Renderable;
-        selector: string;
-        renderKit: RenderKit;
-        dom: JaxsNodes;
-        parentElement?: JaxsElement | null;
-        constructor(template: Renderable, selector: string, renderKit: RenderKit);
-        renderAndAttach(renderKit: RenderKit): void;
-        render(renderKit: RenderKit): JaxsNode[];
-        attach(): void;
-        getParentElement(): Element;
-    }
-    export const render: (template: Renderable, selector: string, renderKit: RenderKit) => Root;
-}
-declare module "navigation/events" {
-    export const linkNavigationEvent = "go-to-href";
-    export const locationChangeEvent = "navigation:location-change";
-    export const routeChangeEvent = "navigation:route-change";
-}
-declare module "navigation/route-state" {
-    import { State } from "state/index";
-    export const createRouteState: (state: State) => void;
-}
-declare module "navigation/find-href" {
-    export const findHref: (node: HTMLElement) => string;
-}
-declare module "navigation/navigate" {
-    import { BusOptions } from "types";
-    export const navigate: (path: string, { publish, window }: BusOptions) => void;
-}
-declare module "navigation/on-link-click" {
-    import { BusOptions } from "types";
-    export const onLinkClick: (domEvent: MouseEvent, options: BusOptions) => void;
-}
-declare module "navigation/extract-query-params" {
-    export const extractQueryParams: (queryString: string) => {};
-}
-declare module "navigation/on-location-change" {
-    import { BusOptions } from "types";
-    export const onLocationChange: (_: null, listenerOptions: BusOptions) => void;
-}
-declare module "navigation/start" {
-    import type { App } from "app/index";
-    export const subscribeToNavigation: (app: App) => void;
-    export const subscribeToHistoryChange: (app: App) => void;
-    export const publishLocation: (app: App) => void;
-    export const startNavigation: (app: App) => void;
-}
-declare module "app/index" {
-    import type { Renderable, RenderKit, Subscribe, PublishFunction } from "types";
-    import type { State } from "state/index";
-    import type { JaxsBus } from "bus/index";
-    import { Root } from "rendering/templates/root";
-    export class App {
-        window: Window;
-        document: Document;
-        publish: PublishFunction<any>;
-        subscribe: Subscribe;
-        bus: JaxsBus;
-        state: State;
-        renderKit: RenderKit;
-        roots: Root[];
-        constructor({ window, document, publish, subscribe, bus, state, renderKit }: {
-            window: any;
-            document: any;
-            publish: any;
-            subscribe: any;
-            bus: any;
-            state: any;
-            renderKit: any;
-        });
-        render(template: Renderable, selector: string): Root;
-        startNavigation(): void;
-    }
 }
 declare module "app/builder" {
     import { App } from "app/index";

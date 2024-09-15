@@ -4,6 +4,7 @@ import type { StoreUpdaterBase } from './state/store-updater'
 import type { StoreUpdaterBoolean } from './state/updaters/boolean'
 import type { StoreUpdaterList } from './state/updaters/list'
 import type { StoreUpdaterObject } from './state/updaters/object'
+export type { App } from './app/index'
 export {
   State,
   Store,
