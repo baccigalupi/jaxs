@@ -11,11 +11,9 @@ import { recursiveRender } from './children/render'
 export class Children implements Renderable {
   collection: Renderable[]
   parentElement?: JaxsElement
-  isSvg: boolean
 
-  constructor(jsxChildren: JsxCollection, isSvg = false) {
-    this.collection = normalizeJsxChildren(jsxChildren, isSvg)
-    this.isSvg = isSvg
+  constructor(jsxChildren: JsxCollection) {
+    this.collection = normalizeJsxChildren(jsxChildren)
   }
 
   render(renderKit: RenderKit, parentElement: JaxsElement | undefined) {

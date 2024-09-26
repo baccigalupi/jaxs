@@ -3,11 +3,9 @@ import { createTextNode } from '../dom/text'
 
 export class TextTemplate implements Renderable {
   value: string
-  isSvg: boolean
 
   constructor(content: TextValue) {
     this.value = content.toString()
-    this.isSvg = false
   }
 
   render(renderKit: RenderKit) {

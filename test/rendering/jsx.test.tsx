@@ -207,14 +207,10 @@ describe('Rendering static jsx', () => {
     const Circle = () => {
       return (
         <svg height="100" width="100" xmlns="http://www.w3.org/2000/svg">
-          <circle
-            r="45"
-            cx="50"
-            cy="50"
-            stroke="green"
-            stroke-width="3"
-            fill="red"
-          />
+          <g stroke="green" stroke-width="3">
+            <circle r="45" cx="50" cy="50" fill="red" />
+            <circle r="20" cx="30" cy="30" fill="blue" />
+          </g>
         </svg>
       )
     }
@@ -222,9 +218,9 @@ describe('Rendering static jsx', () => {
     const template = <Circle />
     const [node] = template.render(renderKit)
 
-    expect(renderKit.document.createElementNS).toHaveBeenCalledTimes(2)
+    expect(renderKit.document.createElementNS).toHaveBeenCalledTimes(4)
     expect(domToString(node)).toContain(
-      '<circle r="45" cx="50" cy="50" stroke="green" stroke-width="3" fill="red">',
+      '<circle r="45" cx="50" cy="50" fill="red">',
     )
   })
 })

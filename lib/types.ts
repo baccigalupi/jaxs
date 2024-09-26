@@ -90,7 +90,6 @@ export type RenderKit = {
 
 export interface Renderable {
   render: (renderKit: RenderKit, parentElement?: JaxsElement) => JaxsNode[]
-  isSvg: boolean
 }
 export type StaticTemplate = () => Renderable
 export type TypedTemplate<T> = (props: Props<T>) => Renderable

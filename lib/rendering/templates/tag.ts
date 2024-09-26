@@ -26,7 +26,6 @@ export class Tag<T> implements Renderable {
     tagType: string,
     props: Props<T>,
     children = [] as JsxCollection,
-    isSvg = false,
   ) {
     this.type = tagType
 
@@ -34,8 +33,8 @@ export class Tag<T> implements Renderable {
     this.events = events
     this.attributes = attributes
 
-    this.isSvg = isSvg || isSvgTag(this.type)
-    this.children = new Children(children, this.isSvg)
+    this.isSvg = isSvgTag(this.type, this.attributes['xmlns'])
+    this.children = new Children(children)
   }
 
   render(renderKit: RenderKit): JaxsNode[] {

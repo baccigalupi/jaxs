@@ -1,19 +1,8 @@
-import {
-  JsxCollection,
-  Renderable,
-  AttributesWithChildren,
-} from '../../../types'
+import { JsxCollection, AttributesWithChildren } from '../../../types'
 import { replaceTextNodes } from './text'
-import { withSvgFlag } from './svg'
 
-export const normalizeJsxChildren = (
-  jsxChildren: JsxCollection,
-  isSvg: boolean,
-) => {
-  return normalizeToArray(jsxChildren)
-    .map(replaceTextNodes)
-    .flat()
-    .map(withSvgFlag(isSvg)) as Renderable[]
+export const normalizeJsxChildren = (jsxChildren: JsxCollection) => {
+  return normalizeToArray(jsxChildren).map(replaceTextNodes).flat()
 }
 
 export const normalizeToArray = <T>(children: T | T[]): T[] => {
