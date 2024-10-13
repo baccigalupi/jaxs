@@ -121,7 +121,7 @@ describe('Rendering static jsx', () => {
     const nodes = template.render(renderKit)
 
     expect(domToString(nodes)).toEqual(
-      '<div><a href="/save-the-world"><button>Save!</button> Click here!</a><a href="/home">Home <img src="/my-image.jpg"></a><p>Here is some stuff</p></div>',
+      '<a href="/save-the-world"><button>Save!</button> Click here!</a><a href="/home">Home <img src="/my-image.jpg"></a><p>Here is some stuff</p>',
     )
   })
 

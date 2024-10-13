@@ -13,7 +13,7 @@ const defaultContent = "<div id='app'></div>"
 
 export const domToString = (element) => {
   if (element.outerHTML) return element.outerHTML
-  if (Array.isArray(element)) return wrapElements(element).outerHTML
+  if (Array.isArray(element)) return wrapElements(element).innerHTML
 
   return element.body.outerHTML
 }
