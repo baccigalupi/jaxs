@@ -2,14 +2,14 @@
 /** @jsxFrag jsx.fragment */
 import { jsx } from '../../../lib/jaxs'
 
-import { describe, expect, test } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { createTestDom, domToString } from '../../support/test-dom'
 import { createRenderKit } from '../../support/render-kit'
 
 import { performChange } from '../../../lib/rendering/update/perform-change'
 
 describe('rendering change', () => {
-  test('replace top level text element with a tag', () => {
+  it('replace top level text element with a tag', () => {
     const sourceTemplate = <>Hello</>
     const targetTemplate = (
       <>
@@ -30,7 +30,7 @@ describe('rendering change', () => {
     expect(parent.childNodes[0].nodeName).toEqual('H1')
   })
 
-  test('replace node of different tag types', () => {
+  it('replace node of different tag types', () => {
     const sourceTemplate = <h1>Hello</h1>
     const targetTemplate = <div>Hello</div>
 
@@ -47,7 +47,7 @@ describe('rendering change', () => {
     expect(parent.childNodes[0].nodeName).toEqual('DIV')
   })
 
-  test('does nothing for identical tags', () => {
+  it('does nothing for identical tags', () => {
     const sourceTemplate = <h1>Hello</h1>
     const targetTemplate = <h1>Hello</h1>
 
@@ -63,7 +63,7 @@ describe('rendering change', () => {
     expect(parent.childNodes[0]).toEqual(source[0])
   })
 
-  test('changes the text content of the text node in place', () => {
+  it('changes the text content of the text node in place', () => {
     const sourceTemplate = <>hello</>
     const targetTemplate = <>herro?</>
 
@@ -80,7 +80,7 @@ describe('rendering change', () => {
     expect(parent.childNodes[0].textContent).toEqual('herro?')
   })
 
-  test('changes the value of an input', () => {
+  it('changes the value of an input', () => {
     const sourceTemplate = <input />
     const targetTemplate = <input />
 
@@ -99,7 +99,7 @@ describe('rendering change', () => {
     expect(source[0].value).toEqual('hola')
   })
 
-  test('changes attributes in place when the same tag type', () => {
+  it('changes attributes in place when the same tag type', () => {
     const sourceTemplate = (
       <div toBeRemoved="remove-me" toBeUpdated="updateMe" dontUpdate="nope" />
     )
@@ -128,7 +128,7 @@ describe('rendering change', () => {
     )
   })
 
-  test('adds as event when an event exists only on the target', () => {
+  it('adds as event when an event exists only on the target', () => {
     const sourceTemplate = <a>Go</a>
     const targetTemplate = <a onClick="go-somewhere">Go</a>
 
@@ -153,7 +153,7 @@ describe('rendering change', () => {
     ])
   })
 
-  test('updates an event when a new bus event value is provided', () => {
+  it('updates an event when a new bus event value is provided', () => {
     const sourceTemplate = <a onClick="go-somewhere">Go</a>
     const targetTemplate = <a onClick="go-somewhere-else">Go</a>
 
@@ -179,7 +179,7 @@ describe('rendering change', () => {
     ])
   })
 
-  test('removes an event handler when the target removes the event', () => {
+  it('removes an event handler when the target removes the event', () => {
     const sourceTemplate = <a onClick="go-somewhere">Go</a>
     const targetTemplate = <a>Go</a>
 
@@ -202,7 +202,7 @@ describe('rendering change', () => {
     expect(renderKit.publish).not.toHaveBeenCalled()
   })
 
-  test('changes dom in parent and child', () => {
+  it('changes dom in parent and child', () => {
     const sourceTemplate = <p class="invisible">I am invisible</p>
     const targetTemplate = <p class="visible">I am visible</p>
 
@@ -218,7 +218,7 @@ describe('rendering change', () => {
     expect(domToString(parent)).toContain('<p class="visible">I am visible</p>')
   })
 
-  test('updates the dom in deeply nested recursiion', () => {
+  it('updates the dom in deeply nested recursiion', () => {
     const sourceTemplate = (
       <div class="page">
         <a onClick="open">Open</a>
@@ -249,7 +249,7 @@ describe('rendering change', () => {
     )
   })
 
-  test('adds a element in the right place', () => {
+  it('adds a element in the right place', () => {
     const sourceTemplate = (
       <ol>
         <li>one</li>
@@ -270,7 +270,7 @@ describe('rendering change', () => {
     const target = targetTemplate.render(renderKit)
     parent.appendChild(source[0])
 
-    performChange(source, target, parent)
+    const instructions = performChange(source, target, parent)
 
     expect(domToString(source[0])).toContain(
       '<li>one</li><li>two</li><li>... more</li>',

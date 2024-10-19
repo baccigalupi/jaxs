@@ -25,6 +25,8 @@ export const performChange = (
   instructions.forEach((instruction) => {
     performInstruction(instruction)
   })
+
+  return instructions
 }
 
 const performInstruction = (instruction: ChangeInstruction) => {
