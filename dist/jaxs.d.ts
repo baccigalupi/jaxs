@@ -602,10 +602,11 @@ declare module 'rendering/templates/tag/attributes-and-events' {
   ) => Props<T>
 }
 declare module 'rendering/templates/children/render' {
-  import { Renderable, RenderKit, JaxsNode } from 'types'
+  import { Renderable, RenderKit, JaxsNode, JaxsElement } from 'types'
   export const recursiveRender: (
     children: Renderable[],
     renderKit: RenderKit,
+    parentElement?: JaxsElement,
     rendered?: JaxsNode[],
   ) => JaxsNode[]
 }
@@ -622,10 +623,7 @@ declare module 'rendering/templates/children' {
     collection: Renderable[]
     parentElement?: JaxsElement
     constructor(jsxChildren: JsxCollection)
-    render(
-      renderKit: RenderKit,
-      parentElement: JaxsElement | undefined,
-    ): JaxsNode[]
+    render(renderKit: RenderKit, parentElement?: JaxsElement): JaxsNode[]
     generateDom(renderKit: RenderKit): JaxsNode[]
     attachToParent(dom: JaxsNodes): void
   }
@@ -843,30 +841,38 @@ declare module 'rendering/update/instructions/collection' {
   ) => import('types').ChangeInstruction[]
 }
 declare module 'rendering/update/perform-change' {
-  import type { JaxsElement, JaxsNodes } from 'types'
+  import type { ChangeInstruction, JaxsElement, JaxsNodes } from 'types'
   export const performChange: (
     source: JaxsNodes,
     target: JaxsNodes,
     parent: JaxsElement,
-  ) => void
+  ) => ChangeInstruction[]
+}
+declare module 'rendering/templates/bound/modify-dom-cache' {
+  import { ChangeInstructions, JaxsNode, JaxsElement } from 'types'
+  export const modifyDomCache: (
+    instructions: ChangeInstructions,
+    dom: JaxsNode[],
+    parentElement: JaxsElement,
+  ) => JaxsNode[]
 }
 declare module 'rendering/templates/bound' {
   import {
     JaxsElement,
-    JaxsNodes,
     Props,
     Template,
     RenderKit,
     ViewModel,
     BindParams,
     BindSubscriptionList,
+    JaxsNode,
   } from 'types'
   export class Bound<ATTRIBUTES, STATE_MAP> {
     Template: Template<ATTRIBUTES>
     viewModel: ViewModel<ATTRIBUTES, STATE_MAP>
     attributes: Partial<Props<ATTRIBUTES>>
     subscriptions: BindSubscriptionList
-    dom: JaxsNodes
+    dom: JaxsNode[]
     parentElement: JaxsElement | null
     renderKit?: RenderKit
     constructor({
@@ -880,8 +886,8 @@ declare module 'rendering/templates/bound' {
       attributes: any
       viewModel: any
     })
-    render(renderKit: RenderKit): import('types').JaxsNode[]
-    generateDom(renderKit: RenderKit): import('types').JaxsNode[]
+    render(renderKit: RenderKit): JaxsNode[]
+    generateDom(renderKit: RenderKit): JaxsNode[]
     rerender(): void
     subscribeForRerender(): void
     eventName(storeName: string): string
