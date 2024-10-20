@@ -1,19 +1,16 @@
 /** @jsx jsx */
 /** @jsxFrag jsx.fragment */
 
-import { jsx } from '../../../lib/jaxs'
+import { createApp, jsx } from '../../../lib/jaxs'
 
 import { describe, expect, it, vi } from 'vitest'
-import { domToString } from '../../support/test-dom'
+import { createTestDom, domToString } from '../../support/test-dom'
 import { createRenderKitWithBus } from '../../support/render-kit'
 
 import { bind } from '../../../lib/rendering/templates/bound'
-import { Template, ViewModel } from '../../../lib/types'
-import { State } from '../../../lib/state'
+import { RouteState, Template } from '../../../lib/types'
 
 describe('Bound templates', () => {
-  const setupState = (state: State) => {}
-
   it('renders correctly the first time', () => {
     const renderKit = createRenderKitWithBus()
     const { state } = renderKit
@@ -90,7 +87,7 @@ describe('Bound templates', () => {
 
     vi.spyOn(template, 'rerender')
 
-    const currentRoute = state.get('route')
+    const currentRoute: RouteState = state.get('route')
     state
       .store('route')
       .update({ ...currentRoute, path: '/important-content-here' })
@@ -168,5 +165,86 @@ describe('Bound templates', () => {
     const dom = template.render(renderKit)
 
     expect(dom.length).toEqual(0)
+  })
+
+  it('re-renders correctly when going back and forth betten different numbers of children', () => {
+    const document = createTestDom()
+    const app = createApp({ document })
+    const state = app.state
+    const store = state.createList('texts', ['one'])
+
+    const Template = ({ texts }: { texts: string[] }) => {
+      return (
+        <>
+          {texts.map((text) => (
+            <p>{text}</p>
+          ))}
+        </>
+      )
+    }
+    const BoundTemplate = bind({
+      subscriptions: ['texts'],
+      Template,
+    })
+
+    app.render(<BoundTemplate />, '#app')
+    const appDom = document.querySelector('#app')
+    expect(domToString(appDom)).toEqual('<div id="app"><p>one</p></div>')
+
+    store.update(['one', 'two'])
+    expect(domToString(appDom)).toEqual(
+      '<div id="app"><p>one</p><p>two</p></div>',
+    )
+
+    store.update([])
+    expect(domToString(appDom)).toEqual('<div id="app"></div>')
+
+    store.update(['one', 'two'])
+    expect(domToString(appDom)).toEqual(
+      '<div id="app"><p>one</p><p>two</p></div>',
+    )
+  })
+
+  it('re-renders correctly when there is div/parent confusions', () => {
+    const document = createTestDom()
+    const app = createApp({ document })
+    const state = app.state
+    const store = state.createList<string>('alerts', [])
+
+    const AlertsTemplate = ({ alerts }: { alerts: string[] }) => {
+      return (
+        <div class="alerts">
+          {alerts.map((alert) => (
+            <p>{alert}</p>
+          ))}
+        </div>
+      )
+    }
+    const Alerts = bind({ Template: AlertsTemplate, subscriptions: ['alerts'] })
+
+    const Page = () => {
+      return (
+        <div class="page">
+          <Alerts />
+          <p>Page content</p>
+        </div>
+      )
+    }
+
+    app.render(<Page />, '#app')
+    const dom = document.querySelector('.page')
+    expect(domToString(dom)).toEqual(
+      '<div class="page"><div class="alerts"></div><p>Page content</p></div>',
+    )
+
+    store.update(['Something went wrong'])
+    expect(domToString(dom)).toEqual(
+      '<div class="page"><div class="alerts"><p>Something went wrong</p></div><p>Page content</p></div>',
+    )
+
+    store.update([])
+    expect(domToString(dom)).toEqual(
+      '<div class="page"><div class="alerts"></div><p>Page content</p></div>',
+    )
   })
 })

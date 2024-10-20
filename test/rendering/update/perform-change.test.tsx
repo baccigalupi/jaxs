@@ -7,6 +7,8 @@ import { createTestDom, domToString } from '../../support/test-dom'
 import { createRenderKit } from '../../support/render-kit'
 
 import { performChange } from '../../../lib/rendering/update/perform-change'
+import { ChangeInstructionTypes, JaxsElement } from '../../../lib/types'
+import { debugInstruction, formatElement } from '../../support/debugging'
 
 describe('rendering change', () => {
   it('replace top level text element with a tag', () => {
@@ -18,7 +20,9 @@ describe('rendering change', () => {
     )
 
     const renderKit = createRenderKit()
-    const parent = renderKit.document.getElementById('app')
+    const parent = renderKit.document.getElementById(
+      'app',
+    ) as unknown as JaxsElement
     const source = sourceTemplate.render(renderKit)
     const target = targetTemplate.render(renderKit)
 
@@ -35,7 +39,9 @@ describe('rendering change', () => {
     const targetTemplate = <div>Hello</div>
 
     const renderKit = createRenderKit()
-    const parent = renderKit.document.getElementById('app')
+    const parent = renderKit.document.getElementById(
+      'app',
+    ) as unknown as JaxsElement
     const source = sourceTemplate.render(renderKit)
     const target = targetTemplate.render(renderKit)
 
@@ -52,7 +58,9 @@ describe('rendering change', () => {
     const targetTemplate = <h1>Hello</h1>
 
     const renderKit = createRenderKit()
-    const parent = renderKit.document.getElementById('app')
+    const parent = renderKit.document.getElementById(
+      'app',
+    ) as unknown as JaxsElement
     const source = sourceTemplate.render(renderKit)
     const target = targetTemplate.render(renderKit)
     parent.appendChild(source[0])
@@ -68,7 +76,9 @@ describe('rendering change', () => {
     const targetTemplate = <>herro?</>
 
     const renderKit = createRenderKit()
-    const parent = renderKit.document.getElementById('app')
+    const parent = renderKit.document.getElementById(
+      'app',
+    ) as unknown as JaxsElement
     const source = sourceTemplate.render(renderKit)
     const target = targetTemplate.render(renderKit)
     parent.appendChild(source[0])
@@ -85,7 +95,9 @@ describe('rendering change', () => {
     const targetTemplate = <input />
 
     const renderKit = createRenderKit()
-    const parent = renderKit.document.getElementById('app')
+    const parent = renderKit.document.getElementById(
+      'app',
+    ) as unknown as JaxsElement
     const source = sourceTemplate.render(renderKit)
     source[0].value = 'hello'
     const target = targetTemplate.render(renderKit)
@@ -108,7 +120,9 @@ describe('rendering change', () => {
     )
 
     const renderKit = createRenderKit()
-    const parent = renderKit.document.getElementById('app')
+    const parent = renderKit.document.getElementById(
+      'app',
+    ) as unknown as JaxsElement
     const source = sourceTemplate.render(renderKit)
     const target = targetTemplate.render(renderKit)
     parent.appendChild(source[0])
@@ -133,11 +147,13 @@ describe('rendering change', () => {
     const targetTemplate = <a onClick="go-somewhere">Go</a>
 
     const renderKit = createRenderKit()
-    const window = renderKit.document.defaultView
+    const window = renderKit.document.defaultView as Window
     const document = createTestDom()
     renderKit.document = document
 
-    const parent = renderKit.document.getElementById('app')
+    const parent = renderKit.document.getElementById(
+      'app',
+    ) as unknown as JaxsElement
     const source = sourceTemplate.render(renderKit)
     const target = targetTemplate.render(renderKit)
     parent.appendChild(source[0])
@@ -159,10 +175,12 @@ describe('rendering change', () => {
 
     const renderKit = createRenderKit()
     const document = createTestDom()
-    const window = document.defaultView
+    const window = document.defaultView as Window
     renderKit.document = document
 
-    const parent = renderKit.document.getElementById('app')
+    const parent = renderKit.document.getElementById(
+      'app',
+    ) as unknown as JaxsElement
     const source = sourceTemplate.render(renderKit)
     const target = targetTemplate.render(renderKit)
     parent.appendChild(source[0])
@@ -189,7 +207,9 @@ describe('rendering change', () => {
 
     renderKit.document = document
 
-    const parent = renderKit.document.getElementById('app')
+    const parent = renderKit.document.getElementById(
+      'app',
+    ) as unknown as JaxsElement
     const source = sourceTemplate.render(renderKit)
     const target = targetTemplate.render(renderKit)
     parent.appendChild(source[0])
@@ -208,7 +228,9 @@ describe('rendering change', () => {
 
     const renderKit = createRenderKit()
 
-    const parent = renderKit.document.getElementById('app')
+    const parent = renderKit.document.getElementById(
+      'app',
+    ) as unknown as JaxsElement
     const source = sourceTemplate.render(renderKit)
     const target = targetTemplate.render(renderKit)
     parent.appendChild(source[0])
@@ -237,7 +259,9 @@ describe('rendering change', () => {
     )
 
     const renderKit = createRenderKit()
-    const parent = renderKit.document.getElementById('app')
+    const parent = renderKit.document.getElementById(
+      'app',
+    ) as unknown as JaxsElement
     const source = sourceTemplate.render(renderKit)
     const target = targetTemplate.render(renderKit)
     parent.appendChild(source[0])
@@ -265,15 +289,50 @@ describe('rendering change', () => {
     )
 
     const renderKit = createRenderKit()
-    const parent = renderKit.document.getElementById('app')
+    const parent = renderKit.document.getElementById(
+      'app',
+    ) as unknown as JaxsElement
     const source = sourceTemplate.render(renderKit)
     const target = targetTemplate.render(renderKit)
     parent.appendChild(source[0])
 
-    const instructions = performChange(source, target, parent)
+    performChange(source, target, parent)
 
     expect(domToString(source[0])).toContain(
       '<li>one</li><li>two</li><li>... more</li>',
     )
+  })
+
+  it('returns all the instructions (for dom cache modification)', () => {
+    const sourceTemplate = (
+      <ol>
+        <li>one</li>
+        <li>... more</li>
+      </ol>
+    )
+    const targetTemplate = (
+      <ol>
+        <li>one</li>
+        <li>two</li>
+        <li>... more</li>
+      </ol>
+    )
+
+    const renderKit = createRenderKit()
+    const parent = renderKit.document.getElementById(
+      'app',
+    ) as unknown as JaxsElement
+    const source = sourceTemplate.render(renderKit)
+    const target = targetTemplate.render(renderKit)
+
+    parent.appendChild(source[0])
+
+    const instructions = performChange(source, target, parent)
+
+    expect(instructions.length).toEqual(2)
+    expect(instructions.map((instruction) => instruction.type)).toEqual([
+      ChangeInstructionTypes.insertNode,
+      ChangeInstructionTypes.changeText,
+    ])
   })
 })

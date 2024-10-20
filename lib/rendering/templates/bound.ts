@@ -2,7 +2,6 @@ import { eventName } from '../../state'
 import { performChange } from '../update/perform-change'
 import {
   JaxsElement,
-  JaxsNodes,
   Props,
   Template,
   RenderKit,
@@ -10,14 +9,16 @@ import {
   BindParams,
   BindSubscriptionList,
   StoreMap,
+  JaxsNode,
 } from '../../types'
+import { modifyDomCache } from './bound/modify-dom-cache'
 
 export class Bound<ATTRIBUTES, STATE_MAP> {
   Template: Template<ATTRIBUTES>
   viewModel: ViewModel<ATTRIBUTES, STATE_MAP>
   attributes: Partial<Props<ATTRIBUTES>>
   subscriptions: BindSubscriptionList
-  dom: JaxsNodes
+  dom: JaxsNode[]
   parentElement: JaxsElement | null
   renderKit?: RenderKit
 
@@ -59,11 +60,17 @@ export class Bound<ATTRIBUTES, STATE_MAP> {
     }
 
     const newDom = this.generateDom(this.renderKit as RenderKit)
-    performChange(this.dom, newDom, this.parentElement as JaxsElement)
+    const instructions = performChange(
+      this.dom,
+      newDom,
+      this.parentElement as JaxsElement,
+    )
 
-    if (this.parentElement) {
-      this.dom = Array.from(this.parentElement.childNodes) as JaxsNodes
-    }
+    this.dom = modifyDomCache(
+      instructions,
+      this.dom,
+      this.parentElement as JaxsElement,
+    )
   }
 
   subscribeForRerender() {

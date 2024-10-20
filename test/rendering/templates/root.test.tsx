@@ -145,10 +145,8 @@ describe('root templates', () => {
       if (membersOnly) return <MembersArea />
       return <GuestArea />
     }
-    const viewModel = (state) => state
     const Content = bind({
       Template: ContentTemplate,
-      viewModel,
       subscriptions: ['membersOnly'],
     })
 

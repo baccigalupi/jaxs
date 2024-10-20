@@ -6,7 +6,6 @@ import type {
   UpdateEventInstructionData,
   InstructionsUpdater,
   ChangeInstruction,
-  JaxsNode,
   JaxsElement,
   JaxsInput,
   JaxsSvgElement,
