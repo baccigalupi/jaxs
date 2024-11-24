@@ -262,7 +262,7 @@ declare module 'app/index' {
   export class App {
     window: Window
     document: Document
-    publish: PublishFunction<any>
+    publish: PublishFunction
     subscribe: Subscribe
     bus: JaxsBus
     state: State
@@ -456,13 +456,13 @@ declare module 'types' {
     document: Document
     window: Window
   }
-  export type DefaultBusListenerOptions<T> = {
-    publish: PublishFunction<T>
+  export type DefaultBusListenerOptions = {
+    publish: PublishFunction
     eventName: string
   }
   export type ListenerKit = AppAdditionListenerOptions &
-    DefaultBusListenerOptions<any>
-  export type PublishFunction<T> = (event: string, payload: T) => void
+    DefaultBusListenerOptions
+  export type PublishFunction = (event: string, payload: any) => void
   export type BusListener<T> = (payload: T, listenerKit: ListenerKit) => void
   export type BusEventMatcher = string | RegExp
   export type ExactSubscriptionData<T> = {
@@ -694,7 +694,7 @@ declare module 'app/builder' {
   class AppBuilder {
     window: Window
     document: Document
-    publish: PublishFunction<any>
+    publish: PublishFunction
     subscribe: Subscribe
     bus: JaxsBus
     state: State

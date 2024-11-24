@@ -12,7 +12,7 @@ import { startNavigation } from '../navigation/start'
 export class App {
   window: Window
   document: Document
-  publish: PublishFunction<any>
+  publish: PublishFunction
   subscribe: Subscribe
   bus: JaxsBus
   state: State
