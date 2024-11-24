@@ -1,8 +1,8 @@
 import { findHref } from './find-href'
-import { BusOptions } from '../types'
+import { ListenerKit } from '../types'
 import { navigate } from './navigate'
 
-export const onLinkClick = (domEvent: MouseEvent, options: BusOptions) => {
+export const onLinkClick = (domEvent: MouseEvent, options: ListenerKit) => {
   if (!domEvent || !domEvent.target) return
   domEvent.preventDefault()
 

@@ -1,18 +1,21 @@
-;(function (m, f) {
+;(function (f, m) {
   typeof exports == 'object' && typeof module < 'u'
-    ? f(exports)
+    ? m(exports)
     : typeof define == 'function' && define.amd
-      ? define(['exports'], f)
-      : ((m = typeof globalThis < 'u' ? globalThis : m || self),
-        f((m.jaxs = {})))
-})(this, function (m) {
+      ? define(['exports'], m)
+      : ((f = typeof globalThis < 'u' ? globalThis : f || self),
+        m((f.jaxs = {})))
+})(this, function (f) {
   'use strict'
-  const f = (e, t) => t.createElement(e),
+  const m = (e, t) => t.createElement(e),
     nt = (e, t) => {
       for (const s in t) {
         if (s === '__self') continue
         const n = t[s].toString()
-        s === 'value' ? (e.value = n) : e.setAttribute(s, n)
+        if (s === 'value') {
+          const r = e
+          r.value !== n && (r.value = n)
+        } else e.setAttribute(s, n)
       }
     },
     rt = (e, t, s) => {
@@ -26,7 +29,7 @@
       e.eventMaps = n
     },
     ot = (e, t, s, n) => {
-      const r = f(e, n.document)
+      const r = m(e, n.document)
       return nt(r, t), rt(r, s, n.publish), r
     },
     y = 'http://www.w3.org/2000/svg',
@@ -116,8 +119,8 @@
   }
   const dt = (e) => typeof e == 'string' || typeof e == 'number',
     pt = (e) => new lt(e),
-    mt = (e) => (dt(e) ? pt(e) : e),
-    ft = (e) => bt(e).map(mt).flat(),
+    ft = (e) => (dt(e) ? pt(e) : e),
+    mt = (e) => bt(e).map(ft).flat(),
     bt = (e) => (Array.isArray(e) ? e.flat() : e ? [e] : []),
     N = (e, t = {}) => e || t.children || [],
     vt = (e, t = '') => {
@@ -150,7 +153,7 @@
         : s
   class O {
     constructor(t) {
-      this.collection = ft(t)
+      this.collection = mt(t)
     }
     render(t, s) {
       this.parentElement = s
@@ -1012,13 +1015,13 @@
         { name: n, value: r } = t
       s.addEventListener(n, r)
     },
-    me = (e) => {
+    fe = (e) => {
       const t = e.data,
         s = e.source,
         { name: n, sourceValue: r, targetValue: o } = t
       s.removeEventListener(n, r), s.addEventListener(n, o)
     },
-    fe = (e) => {
+    me = (e) => {
       const t = e.data,
         s = e.source,
         { value: n } = t
@@ -1034,8 +1037,8 @@
       [i.updateAttribute]: le,
       [i.removeEvent]: de,
       [i.addEvent]: pe,
-      [i.updateEvent]: me,
-      [i.changeValue]: fe,
+      [i.updateEvent]: fe,
+      [i.changeValue]: me,
     },
     ve = (e, t, s) => {
       const n = [...t]
@@ -1141,13 +1144,13 @@
         { value: 'Module' },
       ),
     )
-  ;(m.JaxsTypes = Pt),
-    (m.appBuilding = jt),
-    (m.bind = _e),
-    (m.createApp = Lt),
-    (m.jsx = k),
-    (m.messageBus = Ot),
-    (m.navigation = Ne),
-    (m.state = Ft),
-    Object.defineProperty(m, Symbol.toStringTag, { value: 'Module' })
+  ;(f.JaxsTypes = Pt),
+    (f.appBuilding = jt),
+    (f.bind = _e),
+    (f.createApp = Lt),
+    (f.jsx = k),
+    (f.messageBus = Ot),
+    (f.navigation = Ne),
+    (f.state = Ft),
+    Object.defineProperty(f, Symbol.toStringTag, { value: 'Module' })
 })

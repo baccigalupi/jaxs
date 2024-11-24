@@ -3,7 +3,7 @@ import {
   BusListener,
   Unsubscribe,
   AppAdditionListenerOptions,
-  BusOptions,
+  ListenerKit,
 } from '../types'
 
 import { ExactSubscriptions } from './exact-subscriptions'
@@ -60,7 +60,7 @@ class JaxsBus {
       eventName: event,
       ...this.options,
       publish: this.publish.bind(this),
-    } as BusOptions
+    } as ListenerKit
   }
 }
 

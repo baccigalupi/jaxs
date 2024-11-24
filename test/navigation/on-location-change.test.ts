@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, Mocked } from 'vitest'
 import { createApp } from '../../lib/app/builder'
 import { onLocationChange } from '../../lib/navigation/on-location-change'
-import { BusOptions } from '../../lib/types'
+import { ListenerKit } from '../../lib/types'
 
 describe('onLocationChange', () => {
   it('gathers the route information from location and updates the store', () => {
@@ -21,7 +21,7 @@ describe('onLocationChange', () => {
       state: app.state,
       publish: app.publish,
       window,
-    } as unknown as BusOptions)
+    } as unknown as ListenerKit)
 
     expect(app.state.get('route')).toEqual({
       host: 'http://localhost:3456',
@@ -51,7 +51,7 @@ describe('onLocationChange', () => {
       state: app.state,
       publish: app.publish,
       window,
-    } as unknown as BusOptions)
+    } as unknown as ListenerKit)
 
     expect(navigationSubscriptionSpy).toHaveBeenCalledOnce()
     expect(navigationSubscriptionSpy.mock.calls[0][0]).toEqual({

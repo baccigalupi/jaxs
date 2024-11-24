@@ -3,7 +3,10 @@ const tt = (e, t) => t.createElement(e),
     for (const s in t) {
       if (s === '__self') continue
       const r = t[s].toString()
-      s === 'value' ? (e.value = r) : e.setAttribute(s, r)
+      if (s === 'value') {
+        const n = e
+        n.value !== r && (n.value = r)
+      } else e.setAttribute(s, r)
     }
   },
   st = (e, t, s) => {
