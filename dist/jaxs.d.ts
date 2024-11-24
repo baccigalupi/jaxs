@@ -163,7 +163,7 @@ declare module 'bus/index' {
     BusListener,
     Unsubscribe,
     AppAdditionListenerOptions,
-    BusOptions,
+    ListenerKit,
   } from 'types'
   import { ExactSubscriptions } from 'bus/exact-subscriptions'
   import { FuzzySubscriptions } from 'bus/fuzzy-subscriptions'
@@ -179,7 +179,7 @@ declare module 'bus/index' {
     ): Unsubscribe
     publish<T>(event: string, payload: T): void
     addListenerOptions(options: AppAdditionListenerOptions): void
-    listenerOptions(event: string): BusOptions
+    listenerOptions(event: string): ListenerKit
   }
   const createBus: () => {
     bus: JaxsBus
@@ -230,19 +230,22 @@ declare module 'navigation/find-href' {
   export const findHref: (node: HTMLElement) => string
 }
 declare module 'navigation/navigate' {
-  import { BusOptions } from 'types'
-  export const navigate: (path: string, { publish, window }: BusOptions) => void
+  import { ListenerKit } from 'types'
+  export const navigate: (
+    path: string,
+    { publish, window }: ListenerKit,
+  ) => void
 }
 declare module 'navigation/on-link-click' {
-  import { BusOptions } from 'types'
-  export const onLinkClick: (domEvent: MouseEvent, options: BusOptions) => void
+  import { ListenerKit } from 'types'
+  export const onLinkClick: (domEvent: MouseEvent, options: ListenerKit) => void
 }
 declare module 'navigation/extract-query-params' {
   export const extractQueryParams: (queryString: string) => {}
 }
 declare module 'navigation/on-location-change' {
-  import { BusOptions } from 'types'
-  export const onLocationChange: (_: null, listenerOptions: BusOptions) => void
+  import { ListenerKit } from 'types'
+  export const onLocationChange: (_: null, listenerOptions: ListenerKit) => void
 }
 declare module 'navigation/start' {
   import type { App } from 'app/index'
@@ -457,10 +460,10 @@ declare module 'types' {
     publish: PublishFunction<T>
     eventName: string
   }
-  export type BusOptions = AppAdditionListenerOptions &
+  export type ListenerKit = AppAdditionListenerOptions &
     DefaultBusListenerOptions<any>
   export type PublishFunction<T> = (event: string, payload: T) => void
-  export type BusListener<T> = (payload: T, listenerKit: BusOptions) => void
+  export type BusListener<T> = (payload: T, listenerKit: ListenerKit) => void
   export type BusEventMatcher = string | RegExp
   export type ExactSubscriptionData<T> = {
     listener: BusListener<T>
