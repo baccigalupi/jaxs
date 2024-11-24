@@ -17,11 +17,14 @@ export const setAttributesOnElement = (
 ) => {
   for (const key in attributes) {
     if (key === '__self') continue
-    const value = attributes[key].toString()
+    const attributeValue = attributes[key].toString()
     if (key === 'value') {
-      ;(element as HTMLInputElement).value = value
+      const input = element as HTMLInputElement
+      if (input.value !== attributeValue) {
+        input.value = attributeValue
+      }
     } else {
-      element.setAttribute(key, value)
+      element.setAttribute(key, attributeValue)
     }
   }
 }
