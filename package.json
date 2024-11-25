@@ -9,7 +9,7 @@
     "build:types": "tsc --declaration --emitDeclarationOnly lib/jaxs.ts --outfile dist/jaxs.d.ts",
     "test": "npm run lint; npm run test-s",
     "test-s": "vitest run",
-    "e2e:server": "vite dev --config: ./cypress/apps/vite.config.js",
+    "e2e:server": "vite dev --config ./cypress/apps/vite.config.js",
     "e2e": "cypress open",
     "e2e:ci": "cypress run",
     "lint": "prettier . --write"
