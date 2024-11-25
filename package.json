@@ -2,14 +2,14 @@
   "name": "jaxs",
   "description": "Modular J/TSX application framework",
   "private": false,
-  "version": "0.4.6",
+  "version": "0.5.0",
   "type": "module",
   "scripts": {
     "build": "vite build && npm run build:types",
     "build:types": "tsc --declaration --emitDeclarationOnly lib/jaxs.ts --outfile dist/jaxs.d.ts",
     "test": "npm run lint; npm run test-s",
     "test-s": "vitest run",
-    "e2e:server": "vite dev --config ./cypress/apps/vite.config.js",
+    "e2e:server": "vite dev --config: ./cypress/apps/vite.config.js",
     "e2e": "cypress open",
     "e2e:ci": "cypress run",
     "lint": "prettier . --write"
