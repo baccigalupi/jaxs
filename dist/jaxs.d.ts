@@ -517,6 +517,11 @@ declare module 'types' {
     StoreUpdaterFunction<T>
   >
   export type StoreListSorterFunction<T> = (left: T, right: T) => number
+  export type RouteMatcher = (routeState: RouteState) => boolean
+  export type RenderedRoute = {
+    Partial: StaticTemplate
+    match: RouteMatcher
+  }
 }
 declare module 'rendering/dom/tag' {
   import type {
@@ -923,6 +928,30 @@ declare module 'navigation/index' {
     start,
   }
 }
+declare module 'app/routing' {
+  import { RenderedRoute, RouteMatcher } from 'types'
+  export const exactPathMatch: (exactPath: string) => RouteMatcher
+  export const catchAll: RouteMatcher
+  export const buildRouter: (
+    pages: RenderedRoute[],
+  ) => ({ route }: { route: any }) => import('types').StaticTemplate
+}
+declare module 'rendering/null' {
+  import { RenderKit, JaxsElement, JaxsNode } from 'types'
+  export const NullTemplate: () => {
+    render: (renderKit: RenderKit, parentElement?: JaxsElement) => JaxsNode[]
+  }
+}
+declare module 'app/routed-view' {
+  import { RenderedRoute, RouteState } from 'types'
+  export const routedView: (routes: RenderedRoute[]) => (
+    attributes: Partial<
+      import('types').Props<{
+        route: RouteState
+      }>
+    >,
+  ) => import('rendering/templates/bound').Bound<unknown, unknown>
+}
 declare module 'jaxs' {
   export { jsx } from 'rendering/jsx'
   export { createApp } from 'app/builder'
@@ -932,4 +961,6 @@ declare module 'jaxs' {
   export * as appBuilding from 'app/index'
   export * as messageBus from 'bus/index'
   export * as state from 'state/index'
+  export * as routing from 'app/routing'
+  export { routedView } from 'app/routed-view'
 }

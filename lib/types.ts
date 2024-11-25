@@ -261,3 +261,9 @@ export type StoreUpdaterFunction<T> = (
 ) => T
 export type StoreUpdatersCollection<T> = Record<string, StoreUpdaterFunction<T>>
 export type StoreListSorterFunction<T> = (left: T, right: T) => number
+
+export type RouteMatcher = (routeState: RouteState) => boolean
+export type RenderedRoute = {
+  Partial: StaticTemplate
+  match: RouteMatcher
+}
