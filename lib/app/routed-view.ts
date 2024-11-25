@@ -1,7 +1,6 @@
-import { bind } from 'jaxs'
+import { bind } from '../rendering/templates/bound'
 import { buildRouter } from './routing'
-import { RenderedRoute } from '../types'
-import { RouteState } from 'types'
+import { RenderedRoute, RouteState } from '../types'
 import { NullTemplate } from '../rendering/null'
 
 export const routedView = (routes: RenderedRoute[]) => {
