@@ -28,7 +28,7 @@ export class Store<T> {
   }
 
   get ['value']() {
-    return this._value
+    return this._value as T
   }
 
   set ['value'](value: T) {

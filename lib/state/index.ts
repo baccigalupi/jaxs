@@ -6,7 +6,6 @@ import type {
   StatePublisher,
   StateTransactionUpdater,
   StoresCollection,
-  StoreValue,
 } from '../types'
 
 export const eventName = 'state'
@@ -56,7 +55,7 @@ export class State {
     return store
   }
 
-  store(name: string): Store<any> {
+  store<T>(name: string): Store<T> {
     return (
       this.stores[name] ||
       new Store({
@@ -67,8 +66,8 @@ export class State {
     )
   }
 
-  get(name: string): StoreValue {
-    return this.store(name).value
+  get<T>(name: string): T {
+    return this.store(name).value as T
   }
 
   getAll(names: string[]) {

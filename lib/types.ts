@@ -159,20 +159,8 @@ export type ChangeInstructions = Array<ChangeInstruction>
 
 export type InstructionsUpdater = (instruction: ChangeInstruction) => void
 
-// --- BIND
-export type StoreValue =
-  | string
-  | number
-  | boolean
-  | null
-  | StoreValue[]
-  | { [key: string]: StoreValue }
-
-// TODO: figure out how to tie the
-// subscriptions to the store keys, and the view model to the store keys
-
 export type StoreMap = {
-  [key: string]: StoreValue
+  [key: string]: any
 }
 
 export type ViewModel<ATTRIBUTES, STORE_MAP> = (
