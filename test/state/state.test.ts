@@ -70,6 +70,7 @@ describe('State', () => {
     const publish = vi.fn()
     const state = new State(publish)
 
+    type User = { id: number; name: string; loggedIn: boolean }
     state.create('users', [
       { id: 1, name: 'Jasper', loggedIn: false },
       { id: 42, name: 'Jesus', loggedIn: false },
@@ -83,7 +84,7 @@ describe('State', () => {
       return [originalValue[0], lastUser]
     })
 
-    expect(state.get('users')[1]).toEqual({
+    expect(state.get<User>('users')[1]).toEqual({
       id: 42,
       name: 'Jesus M.',
       loggedIn: true,
@@ -119,96 +120,5 @@ describe('State', () => {
 
     expect(publish).toHaveBeenCalledTimes(1)
     expect(publish.mock.calls[0][0]).toEqual('state:currentUser')
-  })
-
-  describe('adding typed stores with updaters', () => {
-    it('boolean stores come with `toggle`, `setFalse` and `setTrue`', () => {
-      const state = new State(vi.fn())
-      const store = state.createBoolean('loggedIn', false)
-      const updater = store.updater as StoreUpdaterBoolean
-
-      updater.toggle()
-      expect(store.value).toEqual(true)
-
-      updater.setFalse()
-      expect(store.value).toEqual(false)
-
-      updater.setTrue()
-      expect(store.value).toEqual(true)
-
-      updater.reset()
-      expect(store.value).toEqual(false)
-    })
-
-    it('record stores come with an `updateAttribute` method', () => {
-      type CurrentUser = {
-        name: string
-        loggedIn: boolean
-      }
-      const state = new State(vi.fn())
-      const store = state.createRecord('currentUser', {
-        name: 'Guest',
-        loggedIn: false,
-      })
-      const updater = store.updater as StoreUpdaterObject<CurrentUser>
-
-      updater.updateAttribute('loggedIn', true)
-      expect(store.value.loggedIn).toEqual(true)
-    })
-
-    it('list stores come with `shift`, `unshift`, `push` and `pop`', () => {
-      const state = new State(vi.fn())
-      const store = state.createList('actions', [])
-      const updater = store.updater as StoreUpdaterList<string>
-
-      updater.push('pushed first')
-      updater.push('pushed second')
-      expect(store.value).toEqual(['pushed first', 'pushed second'])
-
-      const poppedValue = updater.pop()
-      expect(poppedValue).toEqual('pushed second')
-      expect(store.value).toEqual(['pushed first'])
-
-      updater.unshift('unshifted first')
-      updater.unshift('unshifted second')
-      expect(store.value).toEqual([
-        'unshifted second',
-        'unshifted first',
-        'pushed first',
-      ])
-
-      const shiftedValue = updater.shift()
-      expect(shiftedValue).toEqual('unshifted second')
-      expect(store.value).toEqual(['unshifted first', 'pushed first'])
-
-      updater.insertAt(1, 'stuck in the middle with you')
-
-      expect(store.value).toEqual([
-        'unshifted first',
-        'stuck in the middle with you',
-        'pushed first',
-      ])
-    })
-
-    it('lists updater have methods for adding sorters', () => {
-      type User = {
-        id: number
-      }
-      const state = new State(vi.fn())
-      const store = state.createList('users', [])
-      store.addSorter('sortById', (left: User, right: User) => {
-        if (left.id === right.id) return 0
-        return left.id < right.id ? -1 : 1
-      })
-      const updater = store.updater as StoreUpdaterList<User>
-
-      updater.push({ id: 23 })
-      updater.push({ id: 1 })
-      updater.push({ id: 100 })
-
-      updater.sortById()
-
-      expect(store.value).toEqual([{ id: 1 }, { id: 23 }, { id: 100 }])
-    })
   })
 })

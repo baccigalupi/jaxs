@@ -1,4 +1,4 @@
-import { StoreUpdaterFunction } from '../../types'
+import { Store } from '../../types'
 import { StoreUpdaterBase } from '../store-updater'
 
 export class StoreUpdaterBoolean extends StoreUpdaterBase<boolean> {
@@ -14,11 +14,7 @@ export class StoreUpdaterBoolean extends StoreUpdaterBase<boolean> {
   setFalse() {
     this.update(false)
   }
-
-  addUpdaterFunction(name: string, updater: StoreUpdaterFunction<boolean>) {
-    this.constructor.prototype[name] = (...args: any[]) => {
-      const newValue = updater(this.value, ...args)
-      this.update(newValue)
-    }
-  }
 }
+
+export const booleanUpdater = (store: Store<boolean>) =>
+  new StoreUpdaterBoolean(store)

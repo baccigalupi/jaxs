@@ -243,11 +243,6 @@ export type StoreInitializationOptions<T> = {
 export type StoreDataUpdater<T> = (originalValue: T) => T
 export type UpdaterValue<T> = boolean | T | T[]
 export type StoreUpdaterOrValue<T> = UpdaterValue<T> | StoreDataUpdater<T>
-export type StoreUpdaterFunction<T> = (
-  value: UpdaterValue<T>,
-  ...args: any[]
-) => T
-export type StoreUpdatersCollection<T> = Record<string, StoreUpdaterFunction<T>>
 export type StoreListSorterFunction<T> = (left: T, right: T) => number
 
 export type RouteMatcher = (routeState: RouteState) => boolean

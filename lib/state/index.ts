@@ -7,6 +7,7 @@ import type {
   StateTransactionUpdater,
   StoresCollection,
 } from '../types'
+import { updaters } from './updaters'
 
 export const eventName = 'state'
 
@@ -119,4 +120,4 @@ export const createState = (publisher: StatePublisher) => {
   return new State(publisher)
 }
 
-export { Store, StoreUpdaterBoolean, StoreUpdaterList, StoreUpdaterObject }
+export { Store, updaters }

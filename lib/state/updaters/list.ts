@@ -1,14 +1,7 @@
-import { StoreListSorterFunction, StoreUpdaterFunction } from '../../types'
+import { StoreListSorterFunction, Store } from '../../types'
 import { StoreUpdaterBase } from '../store-updater'
 
 export class StoreUpdaterList<T> extends StoreUpdaterBase<T[]> {
-  addUpdaterFunction(name: string, updater: StoreUpdaterFunction<T[]>) {
-    this.constructor.prototype[name] = (...args: any[]) => {
-      const newValue = updater(this.value, ...args)
-      this.update(newValue)
-    }
-  }
-
   push(element: T) {
     const value = [...this.value, element]
     this.update(value)
@@ -50,4 +43,23 @@ export class StoreUpdaterList<T> extends StoreUpdaterBase<T[]> {
     list.splice(index, 0, item)
     this.update(list)
   }
+
+  remove(value: T) {
+    const list = this.value.reduce((collection: T[], item: T) => {
+      if (item !== value) collection.push(item)
+      return collection
+    }, [])
+    this.update(list)
+  }
+
+  removeBy(matcherFunction: (value: T) => boolean) {
+    const list = this.value.reduce((collection: T[], item: T) => {
+      if (!matcherFunction(item)) collection.push(item)
+      return collection
+    }, [])
+    this.update(list)
+  }
 }
+
+export const listUpdater = <T>(store: Store<T[]>) =>
+  new StoreUpdaterList<T>(store)
