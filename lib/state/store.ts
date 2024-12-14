@@ -35,21 +35,21 @@ export class Store<T> {
 
   update(updater: StoreUpdaterOrValue<T>) {
     if (typeof updater === 'function') {
-      const newValue = this.#getUpdatedValue(updater as StoreDataUpdater<T>)
-      this.#updateValue(newValue)
+      const newValue = this.getUpdatedValue(updater as StoreDataUpdater<T>)
+      this.updateValue(newValue)
     } else {
-      this.#updateValue(updater as T)
+      this.updateValue(updater as T)
     }
   }
 
-  #updateValue(newValue: T) {
+  private updateValue(newValue: T) {
     if (areEqual(this._value, newValue)) return
 
     this._value = newValue
     this.parent.notify(this.name)
   }
 
-  #getUpdatedValue(updater: StoreDataUpdater<T>) {
+  private getUpdatedValue(updater: StoreDataUpdater<T>) {
     return updater(this.value)
   }
 }
