@@ -171,7 +171,7 @@ describe('Bound templates', () => {
     const document = createTestDom()
     const app = createApp({ document })
     const state = app.state
-    const store = state.createList('texts', ['one'])
+    const store = state.create<string[]>('texts', ['one'])
 
     const Template = ({ texts }: { texts: string[] }) => {
       return (
@@ -209,7 +209,7 @@ describe('Bound templates', () => {
     const document = createTestDom()
     const app = createApp({ document })
     const state = app.state
-    const store = state.createList<string>('alerts', [])
+    const store = state.create<string[]>('alerts', [])
 
     const AlertsTemplate = ({ alerts }: { alerts: string[] }) => {
       return (

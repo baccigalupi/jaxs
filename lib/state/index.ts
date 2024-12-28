@@ -1,7 +1,4 @@
 import { Store } from './store'
-import { StoreUpdaterBoolean } from './updaters/boolean'
-import { StoreUpdaterList } from './updaters/list'
-import { StoreUpdaterObject } from './updaters/object'
 import type {
   StatePublisher,
   StateTransactionUpdater,
@@ -35,24 +32,6 @@ export class State {
 
     this.stores[name] = store
 
-    return store
-  }
-
-  createBoolean(name: string, initialState: boolean) {
-    const store = this.create(name, initialState)
-    store.updater = new StoreUpdaterBoolean(store)
-    return store
-  }
-
-  createRecord<T>(name: string, initialState: T) {
-    const store = this.create(name, initialState)
-    store.updater = new StoreUpdaterObject<T>(store)
-    return store
-  }
-
-  createList<T>(name: string, initialState: T[]) {
-    const store = this.create(name, initialState)
-    store.updater = new StoreUpdaterList<T>(store)
     return store
   }
 
