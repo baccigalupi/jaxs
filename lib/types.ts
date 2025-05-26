@@ -250,3 +250,41 @@ export type RenderedRoute = {
   Partial: StaticTemplate
   match: RouteMatcher
 }
+
+export interface PeriodicPublisher {
+  event: string
+  publish: PublishFunction
+  payload?: any
+  start: () => void
+  stop: () => void
+}
+
+export type RequiredPeriodicPublisherOptions = {
+  event: string
+  publish: PublishFunction
+  payload?: any
+}
+export type GeneralPeriodicOptions = {
+  period: number
+  offset?: number
+}
+export type CustomPeriodicOptions = {
+  timer: PeriodicTimerFunction
+}
+export type GeneralPeriodicPublisherOptions = RequiredPeriodicPublisherOptions &
+  GeneralPeriodicOptions
+export type CustomPeriodicPublisherOptions = RequiredPeriodicPublisherOptions &
+  CustomPeriodicOptions
+
+export type PublishPeriodicallyOptions =
+  | GeneralPeriodicPublisherOptions
+  | CustomPeriodicPublisherOptions
+
+export type PeriodicTimerFunctionOptions = {
+  timeDiff: number
+  callCount: number
+  stop: () => void
+}
+export type PeriodicTimerFunction = (
+  options: PeriodicTimerFunctionOptions,
+) => number
