@@ -81,7 +81,7 @@ describe('publishPeriodically, when using the general form', () => {
     expect(periodicEventCount).toEqual(2)
   })
 
-  it('when a delay option is passed and it is before the period', () => {
+  it('when a offset option is passed and it is before the period', () => {
     const now = new Date()
     vi.setSystemTime(now)
 
