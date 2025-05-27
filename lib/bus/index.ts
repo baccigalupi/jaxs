@@ -8,6 +8,7 @@ import {
 
 import { ExactSubscriptions } from './exact-subscriptions'
 import { FuzzySubscriptions } from './fuzzy-subscriptions'
+import { publishPeriodically } from './publish-periodically'
 
 class JaxsBus {
   options?: AppAdditionListenerOptions
@@ -79,4 +80,10 @@ const createBus = () => {
   }
 }
 
-export { createBus, JaxsBus, ExactSubscriptions, FuzzySubscriptions }
+export {
+  createBus,
+  JaxsBus,
+  ExactSubscriptions,
+  FuzzySubscriptions,
+  publishPeriodically,
+}

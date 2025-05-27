@@ -1,19 +1,25 @@
 import { expect, describe, it, vi } from 'vitest'
-import { createBus } from '../lib/bus'
+import { createBus } from '../../lib/bus'
+import { createState } from '../../lib/state'
+import { createTestDom } from '../support/test-dom'
 
 describe('JaxsBus', () => {
-  it('when the bus is configured with special optional payload, that is passed along when the listener is called', () => {
+  it('when the bus is configured with app stuff, that is passed along', () => {
     const eventName = 'do-something'
-    const { bus } = createBus()
+    const { bus, publish } = createBus()
+    const state = createState(publish)
+    const document = createTestDom()
 
     bus.addListenerOptions({
-      state: { something: 'important' },
-      foo: 'bar',
+      state: state,
+      document,
+      window: document.defaultView as unknown as Window,
     })
     const listenerOptions = bus.listenerOptions(eventName)
 
-    expect(listenerOptions.state).toEqual({ something: 'important' })
-    expect(listenerOptions.foo).toEqual('bar')
+    expect(listenerOptions.state).toEqual(state)
+    expect(listenerOptions.document).toEqual(document)
+    expect(listenerOptions.window).not.toBeUndefined()
   })
 
   it('listener options include the event name', () => {
@@ -34,22 +40,25 @@ describe('JaxsBus', () => {
   })
 
   it('passes listener options to the listener function when called', () => {
+    const busKit = createBus()
+    const state = createState(busKit.publish)
+    const document = createTestDom()
+    busKit.bus.addListenerOptions({
+      state: state,
+      document,
+      window: document.defaultView as unknown as Window,
+    })
+
     const eventName = 'do-something'
-    const { bus } = createBus()
     const listener = vi.fn()
 
-    bus.addListenerOptions({
-      state: { something: 'important' },
-      foo: 'bar',
-    })
-    bus.subscribe(eventName, listener)
-    bus.publish(eventName, 'baz')
+    busKit.bus.subscribe(eventName, listener)
+    busKit.bus.publish(eventName, 'baz')
 
     expect(listener.mock.calls[0][0]).toEqual('baz')
     expect(listener.mock.calls[0][1].publish).toBeInstanceOf(Function)
     expect(listener.mock.calls[0][1].eventName).toEqual(eventName)
-    expect(listener.mock.calls[0][1].state).toEqual({ something: 'important' })
-    expect(listener.mock.calls[0][1].foo).toEqual('bar')
+    expect(listener.mock.calls[0][1].state).toEqual(state)
   })
 
   describe('listening for exact matches', () => {
