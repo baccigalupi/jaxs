@@ -15,7 +15,7 @@ export {
 }
 export type StoreUpdater<T> =
   | StoreUpdaterBase<T>
-  | StoreUpdaterObject<T>
+  | StoreUpdaterObject<T extends object ? T : never>
   | StoreUpdaterBoolean
   | StoreUpdaterList<T>
 

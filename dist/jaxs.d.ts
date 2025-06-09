@@ -42,11 +42,14 @@ declare module "state/store-updater" {
 declare module "state/updaters/object" {
     import { Store } from "types";
     import { StoreUpdaterBase } from "state/store-updater";
-    export class StoreUpdaterObject<T> extends StoreUpdaterBase<T> {
+    export class StoreUpdaterObject<T extends object> extends StoreUpdaterBase<T> {
         updateAttribute(name: keyof T, value: T[keyof T]): void;
+        updateDynamicAttribute(name: string, value: any): void;
+        isKey(key: string): boolean;
+        isValueType(key: keyof T, value: any): boolean;
         resetAttribute(name: keyof T): void;
     }
-    export const objectUpdater: <T>(store: Store<T>) => StoreUpdaterObject<T>;
+    export const objectUpdater: <T extends Object>(store: Store<T>) => StoreUpdaterObject<T>;
 }
 declare module "state/updaters/list" {
     import { StoreListSorterFunction, Store } from "types";
@@ -76,7 +79,7 @@ declare module "state/updaters/boolean" {
 }
 declare module "state/updaters" {
     export const updaters: {
-        object: <T>(store: import("state").Store<T>) => import("state/updaters/object").StoreUpdaterObject<T>;
+        object: <T extends Object>(store: import("state").Store<T>) => import("state/updaters/object").StoreUpdaterObject<T>;
         list: <T>(store: import("state").Store<T[]>) => import("state/updaters/list").StoreUpdaterList<T>;
         boolean: (store: import("state").Store<boolean>) => import("state/updaters/boolean").StoreUpdaterBoolean;
     };
@@ -263,7 +266,7 @@ declare module "types" {
     import type { StoreUpdaterObject } from "state/updaters/object";
     export type { App } from "app/index";
     export { State, Store, StoreUpdaterBase, StoreUpdaterBoolean, StoreUpdaterList, StoreUpdaterObject, };
-    export type StoreUpdater<T> = StoreUpdaterBase<T> | StoreUpdaterObject<T> | StoreUpdaterBoolean | StoreUpdaterList<T>;
+    export type StoreUpdater<T> = StoreUpdaterBase<T> | StoreUpdaterObject<T extends object ? T : never> | StoreUpdaterBoolean | StoreUpdaterList<T>;
     export type TextValue = string | number;
     export interface JsxIded {
         __jsx?: string;
