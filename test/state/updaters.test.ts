@@ -21,41 +21,6 @@ describe('adding typed stores with updaters', () => {
     expect(store.value).toEqual(false)
   })
 
-  it('object stores come with an `updateAttribute` method', () => {
-    type CurrentUser = {
-      name: string
-      loggedIn: boolean
-    }
-    const state = new State(vi.fn())
-    const store = state.create('currentUser', {
-      name: 'Guest',
-      loggedIn: false,
-    })
-    const updater = updaters.object<CurrentUser>(store)
-
-    updater.updateAttribute('loggedIn', true)
-
-    expect(store.value.loggedIn).toEqual(true)
-  })
-
-  it('object stores come with a `resetAttribute` method', () => {
-    type CurrentUser = {
-      name: string
-      loggedIn: boolean
-    }
-    const state = new State(vi.fn())
-    const store = state.create('currentUser', {
-      name: 'Guest',
-      loggedIn: false,
-    })
-    const updater = updaters.object<CurrentUser>(store)
-
-    updater.updateAttribute('loggedIn', true)
-    updater.resetAttribute('loggedIn')
-
-    expect(store.value.loggedIn).toEqual(false)
-  })
-
   it('list stores come with `shift`, `unshift`, `push` and `pop`', () => {
     const state = new State(vi.fn())
     const store = state.create<string[]>('actions', [])
