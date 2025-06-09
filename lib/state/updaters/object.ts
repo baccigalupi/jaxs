@@ -1,13 +1,6 @@
 import { Store } from '../../types'
 import { StoreUpdaterBase } from '../store-updater'
 
-function isKey<T extends object>(
-  key: string | number | symbol,
-  obj: T,
-): key is keyof T {
-  return key in obj
-}
-
 export class StoreUpdaterObject<T extends object> extends StoreUpdaterBase<T> {
   updateAttribute(name: keyof T, value: T[keyof T]) {
     const newRecord = { ...this.value }
