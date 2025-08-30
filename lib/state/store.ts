@@ -17,7 +17,7 @@ export class Store<T> {
   constructor(options: StoreInitializationOptions<T>) {
     this.name = options.name
     this.parent = options.parent
-    this._value = options.value
+    this._value = structuredClone(options.value)
     this.initialValue = structuredClone(options.value)
   }
 
@@ -30,7 +30,7 @@ export class Store<T> {
   }
 
   reset() {
-    this._value = this.initialValue
+    this._value = structuredClone(this.initialValue)
   }
 
   update(updater: StoreUpdaterOrValue<T>) {
@@ -50,6 +50,6 @@ export class Store<T> {
   }
 
   private getUpdatedValue(updater: StoreDataUpdater<T>) {
-    return updater(this.value)
+    return updater(structuredClone(this.value))
   }
 }
