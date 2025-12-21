@@ -1,4 +1,4 @@
-declare class App {
+export declare class App {
   window: Window
   document: Document
   publish: PublishFunction
@@ -96,7 +96,10 @@ declare const buildRouter: (
 
 declare type BusEventMatcher = string | RegExp
 
-declare type BusListener<T> = (payload: T, listenerKit: ListenerKit) => void
+export declare type BusListener<T> = (
+  payload: T,
+  listenerKit: ListenerKit,
+) => void
 
 declare const catchAll: RouteMatcher
 
@@ -454,7 +457,7 @@ declare type PeriodicTimerFunctionOptions = {
   stop: () => void
 }
 
-declare type Props<T> = Partial<{
+export declare type Props<T> = Partial<{
   __source: ReactSourceObject
   children: JsxCollection
 }> &
@@ -467,7 +470,7 @@ declare type PropValue =
   | ReactSourceObject
   | JsxCollection
 
-declare type PublishFunction = (event: string, payload: any) => void
+export declare type PublishFunction = (event: string, payload: any) => void
 
 declare const publishLocation: (app: App) => void
 
@@ -490,11 +493,11 @@ declare type RemoveInstructionData = {
   isSvg?: boolean
 }
 
-declare interface Renderable {
+export declare interface Renderable {
   render: (renderKit: RenderKit, parentElement?: JaxsElement) => JaxsNode[]
 }
 
-declare type RenderedRoute = {
+export declare type RenderedRoute = {
   Partial: StaticTemplate
   match: RouteMatcher
 }
@@ -537,9 +540,9 @@ export declare const routedView: (routes: RenderedRoute[]) => (
   >,
 ) => Bound<unknown, unknown>
 
-declare type RouteMatcher = (routeState: RouteState) => boolean
+export declare type RouteMatcher = (routeState: RouteState) => boolean
 
-declare type RouteState = {
+export declare type RouteState = {
   host: string
   path: string
   query: Record<string, string>
@@ -564,7 +567,7 @@ declare namespace start {
 
 declare const startNavigation: (app: App) => void
 
-declare class State {
+export declare class State {
   publisher: StatePublisher
   stores: StoresCollection
   eventNamePrefix: string
@@ -591,9 +594,9 @@ declare type StatePublisher = (event: string, payload: any) => void
 
 declare type StateTransactionUpdater = (collection: StoresCollection) => void
 
-declare type StaticTemplate = () => Renderable
+export declare type StaticTemplate = () => Renderable
 
-declare class Store<T> {
+export declare class Store<T> {
   parent: State
   name: string
   updater: StoreUpdater<T>
@@ -624,13 +627,13 @@ declare type StoreMap = {
 
 declare type StoresCollection = Record<string, Store<any>>
 
-declare type StoreUpdater<T> =
+export declare type StoreUpdater<T> =
   | StoreUpdaterBase<T>
   | StoreUpdaterObject<T extends object ? T : never>
   | StoreUpdaterBoolean
   | StoreUpdaterList<T>
 
-declare class StoreUpdaterBase<T> {
+export declare class StoreUpdaterBase<T> {
   store: Store<T>
   constructor(store: Store<T>)
   update(updater: StoreUpdaterOrValue<T>): void
@@ -638,13 +641,13 @@ declare class StoreUpdaterBase<T> {
   get value(): T
 }
 
-declare class StoreUpdaterBoolean extends StoreUpdaterBase<boolean> {
+export declare class StoreUpdaterBoolean extends StoreUpdaterBase<boolean> {
   toggle(): void
   setTrue(): void
   setFalse(): void
 }
 
-declare class StoreUpdaterList<T> extends StoreUpdaterBase<T[]> {
+export declare class StoreUpdaterList<T> extends StoreUpdaterBase<T[]> {
   push(element: T): void
   pop(): T
   unshift(element: T): void
@@ -656,7 +659,9 @@ declare class StoreUpdaterList<T> extends StoreUpdaterBase<T[]> {
   removeBy(matcherFunction: (value: T) => boolean): void
 }
 
-declare class StoreUpdaterObject<T extends object> extends StoreUpdaterBase<T> {
+export declare class StoreUpdaterObject<
+  T extends object,
+> extends StoreUpdaterBase<T> {
   updateAttribute(name: keyof T, value: T[keyof T]): void
   updateDynamicAttribute(name: string, value: any): void
   isKey(key: string): boolean
@@ -666,7 +671,7 @@ declare class StoreUpdaterObject<T extends object> extends StoreUpdaterBase<T> {
 
 declare type StoreUpdaterOrValue<T> = UpdaterValue<T> | StoreDataUpdater<T>
 
-declare type Subscribe = (
+export declare type Subscribe = (
   matcher: BusEventMatcher,
   listener: BusListener<any>,
 ) => void
@@ -684,11 +689,11 @@ declare type TagAttributesAndEvents = {
 
 declare type TagEventAttributes = Record<string, string>
 
-declare type Template<T> = StaticTemplate | TypedTemplate<T>
+export declare type Template<T> = StaticTemplate | TypedTemplate<T>
 
 declare type TextValue = string | number
 
-declare type TypedTemplate<T> = (props: Props<T>) => Renderable
+export declare type TypedTemplate<T> = (props: Props<T>) => Renderable
 
 declare type Unsubscribe = () => void
 

@@ -1285,7 +1285,40 @@ const Te = (e) => e,
     (r) =>
       new Se({ Template: e, viewModel: t, subscriptions: s, attributes: r })
   ),
+  Oe =
+    (e) =>
+    ({ path: t }) =>
+      t === e,
+  Me = () => !0,
+  Y =
+    (e) =>
+    ({ route: t }) => {
+      const s = e.find((r) => r.match(t))
+      return s && s.Partial
+    },
   Le = /* @__PURE__ */ Object.freeze(
+    /* @__PURE__ */ Object.defineProperty(
+      {
+        __proto__: null,
+        buildRouter: Y,
+        catchAll: Me,
+        exactPathMatch: Oe,
+      },
+      Symbol.toStringTag,
+      { value: 'Module' },
+    ),
+  ),
+  ke = () => ({
+    render: (e, t) => [],
+  }),
+  ze = (e) => {
+    const t = Y(e)
+    return je({
+      Template: ({ route: r }) => (t({ route: r }) || ke)(),
+      subscriptions: ['route'],
+    })
+  },
+  Be = /* @__PURE__ */ Object.freeze(
     /* @__PURE__ */ Object.defineProperty(
       {
         __proto__: null,
@@ -1301,40 +1334,7 @@ const Te = (e) => e,
       Symbol.toStringTag,
       { value: 'Module' },
     ),
-  ),
-  Oe =
-    (e) =>
-    ({ path: t }) =>
-      t === e,
-  Me = () => !0,
-  Y =
-    (e) =>
-    ({ route: t }) => {
-      const s = e.find((r) => r.match(t))
-      return s && s.Partial
-    },
-  ze = /* @__PURE__ */ Object.freeze(
-    /* @__PURE__ */ Object.defineProperty(
-      {
-        __proto__: null,
-        buildRouter: Y,
-        catchAll: Me,
-        exactPathMatch: Oe,
-      },
-      Symbol.toStringTag,
-      { value: 'Module' },
-    ),
-  ),
-  ke = () => ({
-    render: (e, t) => [],
-  }),
-  Be = (e) => {
-    const t = Y(e)
-    return je({
-      Template: ({ route: r }) => (t({ route: r }) || ke)(),
-      subscriptions: ['route'],
-    })
-  }
+  )
 export {
   Fe as JaxsTypes,
   $e as appBuilding,
@@ -1342,8 +1342,8 @@ export {
   Ve as createApp,
   Et as jsx,
   De as messageBus,
-  Le as navigation,
-  Be as routedView,
-  ze as routing,
+  Be as navigation,
+  ze as routedView,
+  Le as routing,
   Pe as state,
 }
