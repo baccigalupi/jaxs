@@ -1163,7 +1163,33 @@
       (n) =>
         new $e({ Template: e, viewModel: t, subscriptions: s, attributes: n })
     ),
-    Pe = Object.freeze(
+    Pe =
+      (e) =>
+      ({ path: t }) =>
+        t === e,
+    Ve = () => !0,
+    st =
+      (e) =>
+      ({ route: t }) => {
+        const s = e.find((n) => n.match(t))
+        return s && s.Partial
+      },
+    Fe = Object.freeze(
+      Object.defineProperty(
+        { __proto__: null, buildRouter: st, catchAll: Ve, exactPathMatch: Pe },
+        Symbol.toStringTag,
+        { value: 'Module' },
+      ),
+    ),
+    Le = () => ({ render: (e, t) => [] }),
+    ze = (e) => {
+      const t = st(e)
+      return et({
+        Template: ({ route: n }) => (t({ route: n }) || Le)(),
+        subscriptions: ['route'],
+      })
+    },
+    Be = Object.freeze(
       Object.defineProperty(
         {
           __proto__: null,
@@ -1179,42 +1205,16 @@
         Symbol.toStringTag,
         { value: 'Module' },
       ),
-    ),
-    Ve =
-      (e) =>
-      ({ path: t }) =>
-        t === e,
-    Fe = () => !0,
-    st =
-      (e) =>
-      ({ route: t }) => {
-        const s = e.find((n) => n.match(t))
-        return s && s.Partial
-      },
-    Le = Object.freeze(
-      Object.defineProperty(
-        { __proto__: null, buildRouter: st, catchAll: Fe, exactPathMatch: Ve },
-        Symbol.toStringTag,
-        { value: 'Module' },
-      ),
-    ),
-    ze = () => ({ render: (e, t) => [] }),
-    Be = (e) => {
-      const t = st(e)
-      return et({
-        Template: ({ route: n }) => (t({ route: n }) || ze)(),
-        subscriptions: ['route'],
-      })
-    }
+    )
   ;(p.JaxsTypes = qt),
     (p.appBuilding = Tt),
     (p.bind = et),
     (p.createApp = It),
     (p.jsx = O),
     (p.messageBus = kt),
-    (p.navigation = Pe),
-    (p.routedView = Be),
-    (p.routing = Le),
+    (p.navigation = Be),
+    (p.routedView = ze),
+    (p.routing = Fe),
     (p.state = Ut),
     Object.defineProperty(p, Symbol.toStringTag, { value: 'Module' })
 })

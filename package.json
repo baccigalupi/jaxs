@@ -5,8 +5,7 @@
   "version": "0.7.2",
   "type": "module",
   "scripts": {
-    "build": "vite build && npm run build:types",
-    "build:types": "tsc --declaration --emitDeclarationOnly lib/jaxs.ts --outfile dist/jaxs.d.ts",
+    "build": "vite build; npm run lint",
     "test": "npm run lint; npm run test-s",
     "test-s": "vitest run",
     "e2e:server": "vite dev --config ./cypress/apps/vite.config.js",
@@ -19,8 +18,10 @@
   ],
   "main": "./dist/jaxs.umd.cjs",
   "module": "./dist/jaxs.js",
+  "types": "./dist/jaxs.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/jaxs.d.ts",
       "import": "./dist/jaxs.js",
       "require": "./dist/jaxs.umd.cjs"
     }
@@ -46,6 +47,7 @@
     "prettier": "^3.3.3",
     "typescript": "^5.5.4",
     "vite": "^6.3.5",
+    "vite-plugin-dts": "^4.5.4",
     "vitest": "^3.1.4"
   }
 }
