@@ -1,3 +1,6 @@
+/** @jsx jsx */
+/** @jsxFrag jsx.fragment */
+import { jsx } from '../../lib/rendering/jsx'
 import { describe, it, expect } from 'vitest'
 import { RenderedRoute } from '../../lib/types'
 import { exactPathMatch, catchAll, buildRouter } from '../../lib/app/routing'
