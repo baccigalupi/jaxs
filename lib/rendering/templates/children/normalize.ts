@@ -8,16 +8,14 @@ export const normalizeJsxChildren = (jsxChildren: JsxCollection) => {
 export const normalizeToArray = <T>(children: T | T[]): T[] => {
   if (Array.isArray(children)) {
     return children.flat() as T[]
-  }
-
-  if (!children) {
+  } else if (!children) {
     return []
+  } else {
+    return [children]
   }
-
-  return [children]
 }
 
 export const ensureJsxChildrenArray = <T>(
   maybeChildren?: JsxCollection,
   attributes = {} as AttributesWithChildren<T>,
-) => maybeChildren || attributes.children || []
+) => normalizeJsxChildren(maybeChildren || attributes.children || [])

@@ -39,6 +39,19 @@ describe('element dom management', () => {
       expect(element.getAttribute('name')).toEqual('username')
       expect(element.value).toEqual('Jasmine')
     })
+
+    it("shouldn't set the value attribute when it is an empty string", () => {
+      const document = createTestDom()
+      const element = document.createElement('DIV')
+      const attributes = {
+        class: '',
+        'aria-current': ' ',
+      }
+      setAttributesOnElement(element, attributes)
+
+      expect(element.getAttribute('class')).toEqual(null)
+      expect(element.getAttribute('aria-current')).toEqual(null)
+    })
   })
 
   describe('setEventsOnElement', () => {

@@ -6,7 +6,10 @@ import type {
   JsxCollection,
   PropValue,
 } from '../../../types'
-import { ensureJsxChildrenArray } from '../children/normalize'
+import {
+  ensureJsxChildrenArray,
+  normalizeJsxChildren,
+} from '../children/normalize'
 
 export const separateAttrsAndEvents = <T>(
   props: Props<T>,

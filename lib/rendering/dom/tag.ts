@@ -1,3 +1,4 @@
+import { isString } from '../../state/is'
 import type {
   JaxsElement,
   TagAttributes,
@@ -23,6 +24,8 @@ export const setAttributesOnElement = (
       if (input.value !== attributeValue) {
         input.value = attributeValue
       }
+    } else if (isString(attributeValue) && attributeValue.trim() === '') {
+      element.removeAttribute(key)
     } else {
       element.setAttribute(key, attributeValue)
     }
