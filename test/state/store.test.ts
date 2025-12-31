@@ -89,4 +89,22 @@ describe('Store', () => {
     expect(store.value).toEqual({ name: 'Fred', loggedIn: true })
     expect(value).toEqual({ name: 'Guest', loggedIn: false })
   })
+
+  it('does not allow modification of the current value, when get is used', () => {
+    const parent = new State(vi.fn())
+    const store = new Store({
+      name: 'currentUser',
+      parent,
+      value: {
+        name: 'Guest',
+        loggedIn: false,
+      },
+    })
+
+    const currentValue = store.value
+    currentValue.loggedIn = true
+    currentValue.name = 'Fred'
+
+    expect(store.value).toEqual({ name: 'Guest', loggedIn: false })
+  })
 })

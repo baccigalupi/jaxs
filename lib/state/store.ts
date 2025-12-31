@@ -11,7 +11,7 @@ export class Store<T> {
   parent: State
   name: string
   updater: StoreUpdater<T>
-  _value: T
+  private _value: T
   initialValue: T
 
   constructor(options: StoreInitializationOptions<T>) {
@@ -22,7 +22,7 @@ export class Store<T> {
   }
 
   get ['value']() {
-    return this._value as T
+    return structuredClone(this._value)
   }
 
   set ['value'](value: T) {
@@ -50,6 +50,6 @@ export class Store<T> {
   }
 
   private getUpdatedValue(updater: StoreDataUpdater<T>) {
-    return updater(structuredClone(this.value))
+    return updater(this.value)
   }
 }
