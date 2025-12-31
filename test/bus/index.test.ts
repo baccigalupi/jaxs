@@ -15,7 +15,7 @@ describe('JaxsBus', () => {
       document,
       window: document.defaultView as unknown as Window,
     })
-    const listenerOptions = bus.listenerOptions(eventName)
+    const listenerOptions = bus.listenerOptions(eventName, 'payload')
 
     expect(listenerOptions.state).toEqual(state)
     expect(listenerOptions.document).toEqual(document)
@@ -25,7 +25,7 @@ describe('JaxsBus', () => {
   it('listener options include the event name', () => {
     const eventName = 'do-something'
     const { bus } = createBus()
-    const listenerOptions = bus.listenerOptions(eventName)
+    const listenerOptions = bus.listenerOptions(eventName, 'payload')
 
     expect(listenerOptions.eventName).toEqual(eventName)
   })
@@ -33,7 +33,7 @@ describe('JaxsBus', () => {
   it('listener options include a publish function', () => {
     const eventName = 'do-something'
     const { bus } = createBus()
-    const listenerOptions = bus.listenerOptions(eventName)
+    const listenerOptions = bus.listenerOptions(eventName, 'payload')
 
     expect(listenerOptions.publish).toBeInstanceOf(Function)
     // TODO: make sure that it actuall publishes!
@@ -55,10 +55,10 @@ describe('JaxsBus', () => {
     busKit.bus.subscribe(eventName, listener)
     busKit.bus.publish(eventName, 'baz')
 
-    expect(listener.mock.calls[0][0]).toEqual('baz')
-    expect(listener.mock.calls[0][1].publish).toBeInstanceOf(Function)
-    expect(listener.mock.calls[0][1].eventName).toEqual(eventName)
-    expect(listener.mock.calls[0][1].state).toEqual(state)
+    expect(listener.mock.calls[0][0].payload).toEqual('baz')
+    expect(listener.mock.calls[0][0].publish).toBeInstanceOf(Function)
+    expect(listener.mock.calls[0][0].eventName).toEqual(eventName)
+    expect(listener.mock.calls[0][0].state).toEqual(state)
   })
 
   describe('listening for exact matches', () => {
@@ -135,8 +135,8 @@ describe('JaxsBus', () => {
       bus.publish('wuzzy', 'wuzzy-payload')
 
       expect(listener).toHaveBeenCalledTimes(2)
-      expect(listener.mock.calls[0][0]).toEqual('fuzz-payload')
-      expect(listener.mock.calls[1][0]).toEqual('fuzzy-payload')
+      expect(listener.mock.calls[0][0].payload).toEqual('fuzz-payload')
+      expect(listener.mock.calls[1][0].payload).toEqual('fuzzy-payload')
     })
 
     it('there can be many fuzzy matches for an event, and each listener gets called', () => {

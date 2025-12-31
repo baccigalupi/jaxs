@@ -3,7 +3,6 @@ import {
   BusListener,
   Unsubscribe,
   AppAdditionListenerOptions,
-  ListenerKit,
 } from '../types'
 
 import { ExactSubscriptions } from './exact-subscriptions'
@@ -48,7 +47,7 @@ class JaxsBus {
     ].sort((left, right) => left.index - right.index)
 
     subscriptions.forEach((subscription) => {
-      subscription.listener(payload, this.listenerOptions(event))
+      subscription.listener(this.listenerOptions<T>(event, payload))
     })
   }
 
@@ -56,12 +55,13 @@ class JaxsBus {
     this.options = options
   }
 
-  listenerOptions(event: string) {
+  listenerOptions<T>(event: string, payload: T) {
     return {
       eventName: event,
       ...this.options,
       publish: this.publish.bind(this),
-    } as ListenerKit
+      payload,
+    }
   }
 }
 

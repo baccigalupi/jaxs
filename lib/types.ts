@@ -184,11 +184,18 @@ export type DefaultBusListenerOptions = {
   publish: PublishFunction
   eventName: string
 }
-export type ListenerKit = AppAdditionListenerOptions & DefaultBusListenerOptions
+export type ListenerKit<T> = {
+  state: State
+  document: Document
+  window: Window
+  publish: PublishFunction
+  eventName: string
+  payload: T
+}
 // this type name, but progressively.
 
 export type PublishFunction = (event: string, payload: any) => void
-export type BusListener<T> = (payload: T, listenerKit: ListenerKit) => void
+export type BusListener<T> = (listenerKit: ListenerKit<T>) => void
 export type BusEventMatcher = string | RegExp
 
 export type ExactSubscriptionData<T> = {

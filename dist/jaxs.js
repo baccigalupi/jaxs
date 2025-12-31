@@ -17,7 +17,7 @@ const tt = (e) => typeof e == 'string',
     const r = {}
     for (const n in t) {
       const i = t[n],
-        a = (l) => s(i, l)
+        a = (c) => s(i, c)
       e.addEventListener(n, a),
         (r[n] = {
           domEvent: n,
@@ -288,14 +288,15 @@ const wt = (e, t, s) => {
     const t = e.closest('[href]')
     return (t && t.getAttribute('href')) || ''
   },
-  E = (e, { publish: t, window: s }) => {
+  E = ({ payload: e, publish: t, window: s }) => {
     s.history.pushState(null, '', e), t(m, null)
   },
-  F = (e, t) => {
-    if (!e || !e.target) return
-    e.preventDefault()
-    const s = V(e.target)
-    E(s, t)
+  F = (e) => {
+    const t = e.payload
+    if (!t || !t.target) return
+    t.preventDefault()
+    const s = V(t.target)
+    E({ ...e, payload: s })
   },
   L = (e) =>
     e
@@ -306,23 +307,23 @@ const wt = (e, t, s) => {
         const r = s.split('=')
         return (t[r[0]] = r[1]), t
       }, {}),
-  z = (e, t) => {
-    const { state: s, publish: r, window: n } = t,
-      { host: i, pathname: a, search: l } = n.location,
-      u = a,
-      d = L(l),
-      c = {
-        host: i,
-        path: u,
-        query: d,
+  z = (e) => {
+    const { state: t, publish: s, window: r } = e,
+      { host: n, pathname: i, search: a } = r.location,
+      c = i,
+      u = L(a),
+      h = {
+        host: n,
+        path: c,
+        query: u,
       }
-    s.store('route').update(c), r(D, c)
+    t.store('route').update(h), s(D, h)
   },
   B = (e) => {
     const { subscribe: t } = e
     t(k, F),
-      t($, (s, r) => {
-        E(s, r)
+      t($, (s) => {
+        E(s)
       })
   },
   K = (e) => {
@@ -356,7 +357,7 @@ class C {
     subscribe: n,
     bus: i,
     state: a,
-    renderKit: l,
+    renderKit: c,
   }) {
     ;(this.window = t),
       (this.document = s),
@@ -364,7 +365,7 @@ class C {
       (this.subscribe = n),
       (this.bus = i),
       (this.state = a),
-      (this.renderKit = l),
+      (this.renderKit = c),
       (this.roots = [])
   }
   render(t, s) {
@@ -507,17 +508,18 @@ class J {
     ]
       .sort((n, i) => n.index - i.index)
       .forEach((n) => {
-        n.listener(s, this.listenerOptions(t))
+        n.listener(this.listenerOptions(t, s))
       })
   }
   addListenerOptions(t) {
     this.options = t
   }
-  listenerOptions(t) {
+  listenerOptions(t, s) {
     return {
       eventName: t,
       ...this.options,
       publish: this.publish.bind(this),
+      payload: s,
     }
   }
 }
@@ -953,47 +955,47 @@ const S = (e) => {
       n = e.attributes,
       i = n.length,
       a = t.attributes,
-      l = a.length
-    let u, d, c
+      c = a.length
+    let u, h, d
     for (u = 0; u < i; u++) {
-      c = null
-      const h = n.item(u)
-      if (h) {
-        for (d = 0; d < l; d++) {
-          const p = a.item(d)
-          if (p && h.name == p.name) {
-            c = p
+      d = null
+      const l = n.item(u)
+      if (l) {
+        for (h = 0; h < c; h++) {
+          const p = a.item(h)
+          if (p && l.name == p.name) {
+            d = p
             break
           }
         }
-        c
-          ? h.value !== c.value &&
+        d
+          ? l.value !== d.value &&
             r.push(
               qt(e, t, {
-                name: h.name,
-                value: c.value,
+                name: l.name,
+                value: d.value,
                 isSvg: s,
               }),
             )
-          : r.push(Ct(e, t, { name: h.name, isSvg: s }))
+          : r.push(Ct(e, t, { name: l.name, isSvg: s }))
       }
     }
-    for (u = 0; u < l; u++) {
-      c = null
-      const h = a.item(u)
-      if (h) {
-        for (d = 0; d < i; d++) {
-          const p = n.item(d)
-          if (p && p.name == h.name) {
-            c = p
+    for (u = 0; u < c; u++) {
+      d = null
+      const l = a.item(u)
+      if (l) {
+        for (h = 0; h < i; h++) {
+          const p = n.item(h)
+          if (p && p.name == l.name) {
+            d = p
             break
           }
         }
-        c ||
+        d ||
           r.push(
             It(e, t, {
-              name: h.name,
-              value: h.value,
+              name: l.name,
+              value: l.value,
               isSvg: s,
             }),
           )
@@ -1008,15 +1010,15 @@ const S = (e) => {
       i = Object.keys(r),
       a = Object.keys(n)
     return (
-      i.forEach((l) => {
-        const u = r[l],
-          d = n[l]
-        d
-          ? d.busEvent !== u.busEvent &&
+      i.forEach((c) => {
+        const u = r[c],
+          h = n[c]
+        h
+          ? h.busEvent !== u.busEvent &&
             s.push(
               Ht(e, t, {
-                name: l,
-                targetValue: d.listener,
+                name: c,
+                targetValue: h.listener,
                 sourceValue: u.listener,
               }),
             )
@@ -1027,14 +1029,14 @@ const S = (e) => {
               }),
             )
       }),
-      a.forEach((l) => {
-        const u = r[l],
-          d = n[l]
+      a.forEach((c) => {
+        const u = r[c],
+          h = n[c]
         u ||
           s.push(
             Gt(e, t, {
-              name: d.domEvent,
-              value: d.listener,
+              name: h.domEvent,
+              value: h.listener,
             }),
           )
       }),
@@ -1063,14 +1065,14 @@ const S = (e) => {
       const n = e,
         i = t,
         a = re(n, i),
-        l = s(n.childNodes, i.childNodes, n)
-      r = a.concat(l)
+        c = s(n.childNodes, i.childNodes, n)
+      r = a.concat(c)
     } else if (e.nodeType === 1) {
       const n = e,
         i = t,
         a = se(n, i),
-        l = s(n.childNodes, i.childNodes, n)
-      r = a.concat(l)
+        c = s(n.childNodes, i.childNodes, n)
+      r = a.concat(c)
     } else e.nodeType === 3 && (r = ne(e, t))
     return r
   },
@@ -1079,14 +1081,14 @@ const S = (e) => {
       n = oe(e, t),
       i = S(e),
       a = S(t),
-      l = []
+      c = []
     let u = 0
     for (; u < n; u++) {
-      const c = e[u],
-        h = t[u]
-      if (h && a.check(h)) {
-        const p = i.pullMatch(h)
-        a.clear(h),
+      const d = e[u],
+        l = t[u]
+      if (l && a.check(l)) {
+        const p = i.pullMatch(l)
+        a.clear(l),
           p.element
             ? (p.index !== u &&
                 r.push(
@@ -1095,25 +1097,25 @@ const S = (e) => {
                     index: u,
                   }),
                 ),
-              l.push({
+              c.push({
                 source: p.element,
-                target: h,
+                target: l,
               }))
-            : c
-              ? a.check(c)
-                ? r.push(b(h, { parent: s, index: u }))
-                : (i.clear(c), r.push(Ut(c, h)))
-              : r.push(b(h, { parent: s, index: u }))
-      } else c && i.pullMatch(c).element && r.push(N(c))
+            : d
+              ? a.check(d)
+                ? r.push(b(l, { parent: s, index: u }))
+                : (i.clear(d), r.push(Ut(d, l)))
+              : r.push(b(l, { parent: s, index: u }))
+      } else d && i.pullMatch(d).element && r.push(N(d))
     }
-    i.remaining().forEach(({ element: c }) => {
-      r.push(N(c))
+    i.remaining().forEach(({ element: d }) => {
+      r.push(N(d))
     })
-    const d = l.reduce(
-      (c, { source: h, target: p }) => c.concat(ie(h, p, X)),
+    const h = c.reduce(
+      (d, { source: l, target: p }) => d.concat(ie(l, p, X)),
       [],
     )
-    return r.concat(d).sort(Wt)
+    return r.concat(h).sort(Wt)
   },
   oe = (e, t) => {
     const s = e.length,

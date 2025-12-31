@@ -2,8 +2,8 @@ import { extractQueryParams } from './extract-query-params'
 import { routeChangeEvent } from './events'
 import { ListenerKit } from '../types'
 
-export const onLocationChange = (_: null, listenerOptions: ListenerKit) => {
-  const { state, publish, window } = listenerOptions
+export const onLocationChange = (listenerKit: ListenerKit<null>) => {
+  const { state, publish, window } = listenerKit
   const { host, pathname, search } = window.location
   const path = pathname
   const query = extractQueryParams(search)

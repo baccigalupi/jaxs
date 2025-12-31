@@ -13,7 +13,7 @@ app.state.create('form', {
   emailInvalid: false,
 })
 
-export const onInput = (event, { state }) => {
+export const onInput = ({ payload: event, state }) => {
   const form = state.get('form')
   const { name, value } = event.target
   state.store('form').update({
@@ -22,7 +22,7 @@ export const onInput = (event, { state }) => {
   })
 }
 
-export const onFocus = (event, { state }) => {
+export const onFocus = ({ payload: event, state }) => {
   const form = state.get('form')
   const { name } = event.target
   state.store('form').update({
@@ -31,7 +31,7 @@ export const onFocus = (event, { state }) => {
   })
 }
 
-export const onBlur = (event, { state }) => {
+export const onBlur = ({ payload: event, state }) => {
   const form = state.get('form')
   const { name, value } = event.target
 

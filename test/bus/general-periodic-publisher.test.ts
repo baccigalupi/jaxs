@@ -1,6 +1,7 @@
 import { describe, it, vi, expect, beforeEach, afterEach } from 'vitest'
 import { publishPeriodically } from '../../lib/bus/publish-periodically'
 import { createBus } from '../../lib/bus'
+import { ListenerKit } from '../../lib/types'
 
 describe('publishPeriodically, when using the general form', () => {
   beforeEach(() => {
@@ -44,7 +45,9 @@ describe('publishPeriodically, when using the general form', () => {
 
     const { publish, subscribe } = createBus()
     const payloads: string[] = []
-    subscribe('periodic-event', (payload: string) => payloads.push(payload))
+    subscribe('periodic-event', ({ payload }: ListenerKit<string>) =>
+      payloads.push(payload),
+    )
 
     publishPeriodically({
       publish,

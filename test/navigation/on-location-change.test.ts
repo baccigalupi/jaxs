@@ -1,7 +1,6 @@
 import { describe, it, expect, vi, Mocked } from 'vitest'
 import { createApp } from '../../lib/app/builder'
 import { onLocationChange } from '../../lib/navigation/on-location-change'
-import { ListenerKit } from '../../lib/types'
 
 describe('onLocationChange', () => {
   it('gathers the route information from location and updates the store', () => {
@@ -17,11 +16,14 @@ describe('onLocationChange', () => {
 
     const app = createApp({ window })
 
-    onLocationChange(null, {
+    onLocationChange({
       state: app.state,
       publish: app.publish,
       window,
-    } as unknown as ListenerKit)
+      document: window.document,
+      payload: null,
+      eventName: 'navigate',
+    })
 
     expect(app.state.get('route')).toEqual({
       host: 'http://localhost:3456',
@@ -47,24 +49,27 @@ describe('onLocationChange', () => {
     const routeStateSpy = vi.fn()
     app.subscribe('state:route', routeStateSpy)
 
-    onLocationChange(null, {
+    onLocationChange({
       state: app.state,
       publish: app.publish,
       window,
-    } as unknown as ListenerKit)
+      document: window.document,
+      payload: null,
+      eventName: 'navigate',
+    })
 
     expect(navigationSubscriptionSpy).toHaveBeenCalledOnce()
-    expect(navigationSubscriptionSpy.mock.calls[0][0]).toEqual({
+    expect(navigationSubscriptionSpy.mock.calls[0][0].payload).toEqual({
       host: 'http://localhost:3456',
       path: '/hello',
       query: { its: 'magic', u: 'know' },
     })
 
     expect(routeStateSpy).toHaveBeenCalledOnce()
-    expect(Object.keys(routeStateSpy.mock.calls[0][0])).toEqual([
+    expect(Object.keys(routeStateSpy.mock.calls[0][0].payload)).toEqual([
       'state',
       'store',
     ])
-    expect(routeStateSpy.mock.calls[0][0].store.name).toEqual('route')
+    expect(routeStateSpy.mock.calls[0][0].payload.store.name).toEqual('route')
   })
 })

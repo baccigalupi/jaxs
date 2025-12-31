@@ -96,10 +96,7 @@ declare const buildRouter: (
 
 declare type BusEventMatcher = string | RegExp
 
-export declare type BusListener<T> = (
-  payload: T,
-  listenerKit: ListenerKit,
-) => void
+export declare type BusListener<T> = (listenerKit: ListenerKit<T>) => void
 
 declare const catchAll: RouteMatcher
 
@@ -273,7 +270,17 @@ declare class JaxsBus {
   subscribe<T>(matcher: BusEventMatcher, listener: BusListener<T>): Unsubscribe
   publish<T>(event: string, payload: T): void
   addListenerOptions(options: AppAdditionListenerOptions): void
-  listenerOptions(event: string): ListenerKit
+  listenerOptions<T>(
+    event: string,
+    payload: T,
+  ): {
+    publish: any
+    payload: T
+    state: State
+    document: Document
+    window: Window
+    eventName: string
+  }
 }
 
 declare type JaxsElement = Element & JsxIded & JsxEventMapped
@@ -399,8 +406,14 @@ declare interface JsxIded {
 
 declare const linkNavigationEvent = 'go-to-href'
 
-declare type ListenerKit = AppAdditionListenerOptions &
-  DefaultBusListenerOptions
+declare type ListenerKit<T> = {
+  state: State
+  document: Document
+  window: Window
+  publish: PublishFunction
+  eventName: string
+  payload: T
+}
 
 declare const locationChangeEvent = 'navigation:location-change'
 
@@ -414,7 +427,11 @@ export declare namespace messageBus {
   }
 }
 
-declare const navigate: (path: string, { publish, window }: ListenerKit) => void
+declare const navigate: ({
+  payload: path,
+  publish,
+  window,
+}: ListenerKit<string>) => void
 
 export declare namespace navigation {
   export {
@@ -435,9 +452,9 @@ declare type NullInstructionData = Record<string, never>
 
 declare type NullValues = null | undefined
 
-declare const onLinkClick: (domEvent: MouseEvent, options: ListenerKit) => void
+declare const onLinkClick: (listenerKit: ListenerKit<MouseEvent>) => void
 
-declare const onLocationChange: (_: null, listenerOptions: ListenerKit) => void
+declare const onLocationChange: (listenerKit: ListenerKit<null>) => void
 
 declare interface PeriodicPublisher {
   event: string

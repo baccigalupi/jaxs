@@ -13,8 +13,8 @@ import type { ListenerKit } from '../types'
 export const subscribeToNavigation = (app: App) => {
   const { subscribe } = app
   subscribe(linkNavigationEvent, onLinkClick)
-  subscribe(navigationEvent, (path: string, busOptions: ListenerKit) => {
-    navigate(path, busOptions)
+  subscribe(navigationEvent, (listenerKit: ListenerKit<string>) => {
+    navigate(listenerKit)
   })
 }
 

@@ -27,15 +27,15 @@ describe('onLinkClick', () => {
     }
     app.render(<Template />, '#app')
 
-    const element = document.getElementById('find-me')
+    const element = document.getElementById('find-me') as HTMLElement
 
     const subscriptionEvents = []
-    app.subscribe('navigation:route-change', (payload) => {
+    app.subscribe('navigation:route-change', ({ payload }) => {
       subscriptionEvents.push(payload)
     })
 
-    const event = new app.window.MouseEvent('click') as MouseEvent
-    ;(element as HTMLElement).dispatchEvent(event)
+    const event = new document.defaultView.MouseEvent('click')
+    element.dispatchEvent(event)
 
     expect(subscriptionEvents.length).toEqual(1)
     expect(subscriptionEvents[0].path).toEqual('/foo')

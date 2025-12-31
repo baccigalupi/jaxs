@@ -1,7 +1,11 @@
 import { ListenerKit } from '../types'
 import { locationChangeEvent } from './events'
 
-export const navigate = (path: string, { publish, window }: ListenerKit) => {
+export const navigate = ({
+  payload: path,
+  publish,
+  window,
+}: ListenerKit<string>) => {
   window.history.pushState(null, '', path)
   publish(locationChangeEvent, null)
 }
