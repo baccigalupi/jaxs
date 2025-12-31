@@ -50,7 +50,7 @@ describe('App', () => {
     it('connects the bus to the state and adds listener options', () => {
       const app = createApp()
 
-      const listenerOptions = app.bus.options as unknown as ListenerKit
+      const listenerOptions = app.bus.options
 
       expect(listenerOptions.state).toEqual(app.state)
       expect(listenerOptions.document).toEqual(globalDocument)
