@@ -2,13 +2,16 @@
 /** @jsxFrag jsx.fragment */
 import { jsx } from '../../../lib/jaxs'
 
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, type Mock } from 'vitest'
 import { createTestDom, domToString } from '../../support/test-dom'
 import { createRenderKit } from '../../support/render-kit'
 
 import { performChange } from '../../../lib/rendering/update/perform-change'
-import { ChangeInstructionTypes, JaxsElement } from '../../../lib/types'
-import { debugInstruction, formatElement } from '../../support/debugging'
+import {
+  ChangeInstructionTypes,
+  JaxsElement,
+  PublishFunction,
+} from '../../../lib/types'
 
 describe('rendering change', () => {
   it('replace top level text element with a tag', () => {
@@ -147,8 +150,8 @@ describe('rendering change', () => {
     const targetTemplate = <a onClick="go-somewhere">Go</a>
 
     const renderKit = createRenderKit()
-    const window = renderKit.document.defaultView as Window
     const document = createTestDom()
+    const publish = renderKit.publish as Mock<PublishFunction>
     renderKit.document = document
 
     const parent = renderKit.document.getElementById(
@@ -160,13 +163,10 @@ describe('rendering change', () => {
 
     performChange(source, target, parent)
 
-    const clickEvent = new window.MouseEvent('click')
+    const clickEvent = new renderKit.window.MouseEvent('click')
     source[0].dispatchEvent(clickEvent)
 
-    expect(renderKit.publish.mock.calls[0]).toEqual([
-      'go-somewhere',
-      clickEvent,
-    ])
+    expect(publish.mock.calls[0]).toEqual(['go-somewhere', clickEvent])
   })
 
   it('updates an event when a new bus event value is provided', () => {
@@ -175,8 +175,8 @@ describe('rendering change', () => {
 
     const renderKit = createRenderKit()
     const document = createTestDom()
-    const window = document.defaultView as Window
     renderKit.document = document
+    const publish = renderKit.publish as Mock<PublishFunction>
 
     const parent = renderKit.document.getElementById(
       'app',
@@ -187,14 +187,11 @@ describe('rendering change', () => {
 
     performChange(source, target, parent)
 
-    const clickEvent = new window.MouseEvent('click')
+    const clickEvent = new renderKit.window.MouseEvent('click')
     source[0].dispatchEvent(clickEvent)
 
-    expect(renderKit.publish).toHaveBeenCalledTimes(1)
-    expect(renderKit.publish.mock.calls[0]).toEqual([
-      'go-somewhere-else',
-      clickEvent,
-    ])
+    expect(publish).toHaveBeenCalledTimes(1)
+    expect(publish.mock.calls[0]).toEqual(['go-somewhere-else', clickEvent])
   })
 
   it('removes an event handler when the target removes the event', () => {

@@ -54,17 +54,19 @@ interface SourceMap {
   __source?: ReactSourceObject
 }
 export type Props<T> = Partial<{
-  __source: ReactSourceObject
+  __source?: ReactSourceObject
   children: JsxCollection
 }> &
   T
+
 export type PropValue =
   | TextValue
   | NullValues
   | boolean
   | ReactSourceObject
   | JsxCollection
-export type TagAttributes = SourceMap & Record<string, string>
+export type TagAttributes = SourceMap &
+  Record<string, string> & { __source?: ReactSourceObject }
 export type TagEventAttributes = Record<string, string>
 export type TagAttributesAndEvents = {
   attributes: TagAttributes

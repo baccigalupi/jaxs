@@ -8,8 +8,8 @@ describe('createIdMap', () => {
       { __jsx: 'h1' },
       { __jsx: 'input#email[type=text][name=email]' },
       { __jsx: 'input[type=submit]' },
-    ]
-    const map = createIdMap(list as unknown as JaxsNodes)
+    ] as JaxsNode[]
+    const map = createIdMap(list)
 
     const match = map.pullMatch({
       __jsx: 'input#email[type=text][name=email]',
@@ -31,8 +31,8 @@ describe('createIdMap', () => {
       { __jsx: 'TextNode', textContent: 'one' },
       { __jsx: 'input#email[type=text][name=email]' },
       { __jsx: 'TextNode', textContent: 'two' },
-    ]
-    const map = createIdMap(list as unknown as JaxsNodes)
+    ] as JaxsNode[]
+    const map = createIdMap(list)
 
     const match = map.pullMatch({
       __jsx: 'TextNode',
@@ -49,8 +49,8 @@ describe('createIdMap', () => {
     const list = [
       { __jsx: 'TextNode', textContent: 'one' },
       { __jsx: 'input#email[type=text][name=email]' },
-    ]
-    const map = createIdMap(list as unknown as JaxsNodes)
+    ] as JaxsNode[]
+    const map = createIdMap(list)
 
     const match = map.pullMatch({ __jsx: 'input[type=submit]' } as JaxsNode)
     expect(match.element).toBeFalsy()
@@ -61,8 +61,8 @@ describe('createIdMap', () => {
     const list = [
       { __jsx: 'p' },
       { __jsx: 'input#email[type=text][name=email]' },
-    ]
-    const map = createIdMap(list as unknown as JaxsNodes)
+    ] as JaxsNode[]
+    const map = createIdMap(list)
 
     map.clear({ __jsx: 'p' } as JaxsNode)
     expect(map.remaining().length).toEqual(2)
@@ -76,8 +76,8 @@ describe('createIdMap', () => {
       { __jsx: 'p' },
       { __jsx: 'input#email[type=text][name=email]' },
       { __jsx: 'p' },
-    ]
-    const map = createIdMap(list as unknown as JaxsNodes)
+    ] as JaxsNode[]
+    const map = createIdMap(list)
 
     map.clear({ __jsx: 'p' } as JaxsNode)
     expect(map.remaining().length).toEqual(3)
@@ -91,9 +91,9 @@ describe('createIdMap', () => {
       { __jsx: 'p' },
       { __jsx: 'input#email[type=text][name=email]' },
       { __jsx: 'p' },
-    ]
+    ] as JaxsNode[]
 
-    const map = createIdMap(list as unknown as JaxsNodes)
+    const map = createIdMap(list)
 
     expect(map.check({ __jsx: 'p' } as JaxsNode)).toEqual(true)
 
