@@ -5,7 +5,7 @@ import { jsx } from '@lib/jaxs'
 import { describe, expect, it, vi, beforeEach, Mocked } from 'vitest'
 import { createApp } from '@lib/app/builder'
 import { createTestDom, setupDom, domToString } from '@support/test-dom'
-import type { StaticTemplate, ListenerKit } from '@lib/types'
+import type { StaticTemplate } from '@lib/types'
 
 describe('App', () => {
   const globalWindow = {

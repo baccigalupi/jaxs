@@ -149,7 +149,10 @@ describe('Rendering static jsx', () => {
   it('is able to handle complex conditional logic with fragments and render correctly', () => {
     const renderKit = createRenderKit()
 
-    const RenderIf = ({ isVisible, children }: Props<{isVisible: boolean}>) => {
+    const RenderIf = ({
+      isVisible,
+      children,
+    }: Props<{ isVisible: boolean }>) => {
       if (!isVisible) return
       return <>{children}</>
     }
