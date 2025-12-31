@@ -2,7 +2,7 @@ import { App } from '.'
 import { JaxsBus, createBus } from '../bus'
 import { State, createState } from '../state'
 import {
-  PublishFunction,
+  Publish,
   Subscribe,
   RenderKit,
   CreateAppBuilderArguments,
@@ -10,7 +10,7 @@ import {
 class AppBuilder {
   window: Window
   document: Document
-  publish: PublishFunction
+  publish: Publish<any>
   subscribe: Subscribe
   bus: JaxsBus
   state: State

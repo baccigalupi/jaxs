@@ -1,11 +1,12 @@
 /** @jsx jsx */
 /** @jsxFrag jsx.fragment */
-import { jsx, Props, PublishFunction } from '@lib/jaxs'
+import { jsx, Props, Publish } from '@lib/jaxs'
 
 import { describe, expect, it, Mock, vi } from 'vitest'
 
 import { domToString } from '@support/test-dom'
 import { createRenderKit } from '@support/render-kit'
+import { PublishFromDom } from '@lib/types'
 
 describe('Rendering static jsx', () => {
   it('can render a self-closing tag and no attribute', () => {
@@ -55,7 +56,7 @@ describe('Rendering static jsx', () => {
     const template = <button onClick="saveSomething">Save</button>
 
     const renderKit = createRenderKit()
-    const publish = renderKit.publish as Mock<PublishFunction>
+    const publish = renderKit.publish as Mock<PublishFromDom>
     const [node] = template.render(renderKit)
 
     const clickEvent = new renderKit.window.MouseEvent('click')
@@ -76,7 +77,7 @@ describe('Rendering static jsx', () => {
     const template = <Link href="/foo/bar">Go get your foo!</Link>
 
     const renderKit = createRenderKit()
-    const publish = renderKit.publish as Mock<PublishFunction>
+    const publish = renderKit.publish as Mock<PublishFromDom>
     const [node] = template.render(renderKit)
 
     expect(domToString(node)).toEqual('<a href="/foo/bar">Go get your foo!</a>')

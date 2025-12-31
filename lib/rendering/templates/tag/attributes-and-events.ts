@@ -3,7 +3,7 @@ import type {
   TagAttributes,
   TagAttributesAndEvents,
   TagEventAttributes,
-  JsxCollection,
+  RenderableCollection,
   PropValue,
 } from '../../../types'
 import { ensureJsxChildrenArray } from '../children/normalize'
@@ -48,7 +48,7 @@ const normalizeValueForKey = (
 
 export const packageJsxAttributes = <T>(
   maybeAttributes?: Props<T>,
-  maybeChildren?: JsxCollection,
+  maybeChildren?: RenderableCollection,
 ) => {
   const attributes = maybeAttributes || ({} as Props<T>)
   const children = ensureJsxChildrenArray(maybeChildren, attributes)

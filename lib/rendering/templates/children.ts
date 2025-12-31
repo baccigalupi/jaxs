@@ -1,7 +1,7 @@
 import {
   JaxsElement,
   Renderable,
-  JsxCollection,
+  RenderableCollection,
   RenderKit,
   JaxsNodes,
   JaxsNode,
@@ -12,7 +12,7 @@ export class Children implements Renderable {
   collection: Renderable[]
   parentElement?: JaxsElement
 
-  constructor(jsxChildren: JsxCollection) {
+  constructor(jsxChildren: RenderableCollection) {
     this.collection = normalizeJsxChildren(jsxChildren)
   }
 

@@ -1,14 +1,14 @@
 import {
   PeriodicPublisher,
-  PublishFunction,
+  Publish,
   PeriodicTimerFunction,
   CustomPeriodicPublisherOptions,
 } from '../types'
 
-export class CustomPeriodicPublisher implements PeriodicPublisher {
-  publish: PublishFunction
+export class CustomPeriodicPublisher<T> implements PeriodicPublisher<T> {
+  publish: Publish<T>
   event: string
-  payload: any
+  payload?: T
   stopped: boolean
   timer: PeriodicTimerFunction
   timeoutId: any
@@ -21,7 +21,7 @@ export class CustomPeriodicPublisher implements PeriodicPublisher {
     event,
     payload,
     timer,
-  }: CustomPeriodicPublisherOptions) {
+  }: CustomPeriodicPublisherOptions<T>) {
     this.publish = publish
     this.event = event
     this.payload = payload || null

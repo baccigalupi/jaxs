@@ -17,7 +17,7 @@ export type {
   RenderedRoute,
   RouteMatcher,
   BusListener,
-  PublishFunction,
+  Publish,
   Subscribe,
   StoreUpdater,
   StoreUpdaterBase,

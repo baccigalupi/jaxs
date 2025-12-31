@@ -1,15 +1,14 @@
 import { CustomPeriodicPublisher } from './custom-periodic-publisher'
 import type {
   PublishPeriodicallyOptions,
-  PeriodicPublisher,
   GeneralPeriodicPublisherOptions,
   CustomPeriodicPublisherOptions,
   PeriodicTimerFunctionOptions,
 } from '../types'
 
-const convertGeneralOptionsToCustom = (
-  options: GeneralPeriodicPublisherOptions,
-): CustomPeriodicPublisherOptions => {
+const convertGeneralOptionsToCustom = <T>(
+  options: GeneralPeriodicPublisherOptions<T>,
+): CustomPeriodicPublisherOptions<T> => {
   const { offset, period } = options
   const timer = ({ callCount }: PeriodicTimerFunctionOptions) => {
     if (offset && callCount == 0) return offset
@@ -24,14 +23,16 @@ const convertGeneralOptionsToCustom = (
   }
 }
 
-export const publishPeriodically = (options: PublishPeriodicallyOptions) => {
-  let normalizedOptions: CustomPeriodicPublisherOptions
+export const publishPeriodically = <T>(
+  options: PublishPeriodicallyOptions<T>,
+) => {
+  let normalizedOptions: CustomPeriodicPublisherOptions<T>
 
   if ('timer' in options) {
-    normalizedOptions = options as CustomPeriodicPublisherOptions
+    normalizedOptions = options as CustomPeriodicPublisherOptions<T>
   } else {
     normalizedOptions = convertGeneralOptionsToCustom(
-      options as GeneralPeriodicPublisherOptions,
+      options as GeneralPeriodicPublisherOptions<T>,
     )
   }
 

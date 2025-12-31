@@ -1,6 +1,6 @@
 import { Store } from './store'
 import type {
-  StatePublisher,
+  Publish,
   StateTransactionUpdater,
   StoresCollection,
 } from '../types'
@@ -9,13 +9,13 @@ import { updaters } from './updaters'
 export const eventName = 'state'
 
 export class State {
-  publisher: StatePublisher
+  publisher: Publish<any>
   stores: StoresCollection
   eventNamePrefix: string
   notifications: Set<string>
   inTransaction: boolean
 
-  constructor(publisher: StatePublisher) {
+  constructor(publisher: Publish<any>) {
     this.publisher = publisher
     this.stores = {}
     this.eventNamePrefix = eventName
@@ -95,7 +95,7 @@ export class State {
   }
 }
 
-export const createState = (publisher: StatePublisher) => {
+export const createState = (publisher: Publish<any>) => {
   return new State(publisher)
 }
 

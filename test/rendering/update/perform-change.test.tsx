@@ -7,11 +7,7 @@ import { createTestDom, domToString } from '@support/test-dom'
 import { createRenderKit } from '@support/render-kit'
 
 import { performChange } from '@lib/rendering/update/perform-change'
-import {
-  ChangeInstructionTypes,
-  JaxsElement,
-  PublishFunction,
-} from '@lib/types'
+import { ChangeInstructionTypes, JaxsElement, PublishFromDom } from '@lib/types'
 
 describe('rendering change', () => {
   it('replace top level text element with a tag', () => {
@@ -151,7 +147,7 @@ describe('rendering change', () => {
 
     const renderKit = createRenderKit()
     const document = createTestDom()
-    const publish = renderKit.publish as Mock<PublishFunction>
+    const publish = renderKit.publish as Mock<PublishFromDom>
     renderKit.document = document
 
     const parent = renderKit.document.getElementById(
@@ -176,7 +172,7 @@ describe('rendering change', () => {
     const renderKit = createRenderKit()
     const document = createTestDom()
     renderKit.document = document
-    const publish = renderKit.publish as Mock<PublishFunction>
+    const publish = renderKit.publish as Mock<PublishFromDom>
 
     const parent = renderKit.document.getElementById(
       'app',
