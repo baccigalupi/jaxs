@@ -1,6 +1,6 @@
 import { expect, it, describe, vi } from 'vitest'
-import { State } from '../../lib/state'
-import { updaters } from '../../lib/state/updaters'
+import { State } from '@lib/state'
+import { updaters } from '@lib/state/updaters'
 
 describe('adding typed stores with updaters', () => {
   it('boolean stores come with `toggle`, `setFalse` and `setTrue`', () => {

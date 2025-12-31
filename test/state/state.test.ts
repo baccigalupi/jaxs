@@ -1,9 +1,9 @@
 import { expect, it, describe, vi } from 'vitest'
-import { Store } from '../../lib/state/store'
-import { State } from '../../lib/state'
-import { StoreUpdaterBoolean } from '../../lib/state/updaters/boolean'
-import { StoreUpdaterObject } from '../../lib/state/updaters/object'
-import { StoreUpdaterList } from '../../lib/state/updaters/list'
+import { Store } from '@lib/state/store'
+import { State } from '@lib/state'
+import { StoreUpdaterBoolean } from '@lib/state/updaters/boolean'
+import { StoreUpdaterObject } from '@lib/state/updaters/object'
+import { StoreUpdaterList } from '@lib/state/updaters/list'
 
 describe('State', () => {
   it('allows the creation and reading of stores', () => {

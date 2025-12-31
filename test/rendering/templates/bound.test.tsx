@@ -1,14 +1,14 @@
 /** @jsx jsx */
 /** @jsxFrag jsx.fragment */
 
-import { createApp, jsx } from '../../../lib/jaxs'
+import { createApp, jsx } from '@lib/jaxs'
 
 import { describe, expect, it, vi } from 'vitest'
-import { createTestDom, domToString } from '../../support/test-dom'
-import { createRenderKitWithBus } from '../../support/render-kit'
+import { createTestDom, domToString } from '@support/test-dom'
+import { createRenderKitWithBus } from '@support/render-kit'
 
-import { bind } from '../../../lib/rendering/templates/bound'
-import { RouteState, Template } from '../../../lib/types'
+import { bind } from '@lib/rendering/templates/bound'
+import { RouteState, Template } from '@lib/types'
 
 describe('Bound templates', () => {
   it('renders correctly the first time', () => {

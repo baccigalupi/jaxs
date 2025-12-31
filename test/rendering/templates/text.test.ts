@@ -1,7 +1,7 @@
 import { expect, describe, it } from 'vitest'
-import { createRenderKit } from '../../support/render-kit'
+import { createRenderKit } from '@support/render-kit'
 
-import { TextTemplate } from '../../../lib/rendering/templates/text'
+import { TextTemplate } from '@lib/rendering/templates/text'
 
 describe('TextTemplate', () => {
   it('renders a Text element into an array', () => {

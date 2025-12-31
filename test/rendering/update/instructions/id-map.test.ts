@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { createIdMap } from '../../../../lib/rendering/update/instructions/id-map'
-import { JsxIded, JaxsNode } from '../../../../lib/types'
+import { createIdMap } from '@lib/rendering/update/instructions/id-map'
+import { JsxIded, JaxsNode } from '@lib/types'
 
 describe('createIdMap', () => {
   it('populates the map helper and allows you to pull via matching jsx ids', () => {

@@ -1,10 +1,10 @@
 /** @jsx jsx */
 /** @jsxFrag jsx.fragment */
-import { jsx } from '../../lib/jaxs'
+import { jsx } from '@lib/jaxs'
 
 import { describe, it, expect, vi, Mock } from 'vitest'
-import { createApp } from '../../lib/app/builder'
-import { createTestDom } from '../support/test-dom'
+import { createApp } from '@lib/app/builder'
+import { createTestDom } from '@support/test-dom'
 
 describe('onLinkClick', () => {
   /*

@@ -1,6 +1,6 @@
 import { expect, describe, it } from 'vitest'
-import { createTextNode } from '../../../lib/rendering/dom/text'
-import { createTestDom } from '../../support/test-dom'
+import { createTextNode } from '@lib/rendering/dom/text'
+import { createTestDom } from '@support/test-dom'
 
 describe('createTextNode', () => {
   it('creates it correctly', () => {

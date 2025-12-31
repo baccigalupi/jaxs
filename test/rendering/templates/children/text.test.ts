@@ -3,9 +3,9 @@ import {
   isTextValue,
   textNode,
   replaceTextNodes,
-} from '../../../../lib/rendering/templates/children/text'
-import { Tag } from '../../../../lib/rendering/templates/tag'
-import { TextTemplate } from '../../../../lib/rendering/templates/text'
+} from '@lib/rendering/templates/children/text'
+import { Tag } from '@lib/rendering/templates/tag'
+import { TextTemplate } from '@lib/rendering/templates/text'
 
 describe('text', () => {
   describe('isTextValue', () => {

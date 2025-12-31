@@ -1,16 +1,13 @@
 /** @jsx jsx */
 /** @jsxFrag jsx.fragment */
-import { jsx } from '../../../../lib/jaxs'
+import { jsx } from '@lib/jaxs'
 
 import { describe, expect, test, vi } from 'vitest'
 
-import { createRenderKit } from '../../../support/render-kit'
-import {
-  ChangeInstructionTypes,
-  AttributeInstructionData,
-} from '../../../../lib/types'
-import { compileCollection } from '../../../../lib/rendering/update/instructions/collection'
-import { compileForElement } from '../../../../lib/rendering/update/instructions/nodes/element'
+import { createRenderKit } from '@support/render-kit'
+import { ChangeInstructionTypes, AttributeInstructionData } from '@lib/types'
+import { compileCollection } from '@lib/rendering/update/instructions/collection'
+import { compileForElement } from '@lib/rendering/update/instructions/nodes/element'
 
 // add/replace/insert/move handled by children tests
 describe('compileChange for a elements', () => {

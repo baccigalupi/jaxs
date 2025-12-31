@@ -1,9 +1,9 @@
 /** @jsx jsx */
 /** @jsxFrag jsx.fragment */
-import { jsx } from '../../lib/rendering/jsx'
+import { jsx } from '@lib/rendering/jsx'
 import { describe, it, expect } from 'vitest'
-import { RenderedRoute } from '../../lib/types'
-import { exactPathMatch, catchAll, buildRouter } from '../../lib/app/routing'
+import { RenderedRoute } from '@lib/types'
+import { exactPathMatch, catchAll, buildRouter } from '@lib/app/routing'
 
 describe('Routing', () => {
   it('exactPathMatch takes a full RouteState object and returns true if the path is an exact match', () => {

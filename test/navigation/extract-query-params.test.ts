@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { extractQueryParams } from '../../lib/navigation/extract-query-params'
+import { extractQueryParams } from '@lib/navigation/extract-query-params'
 
 describe('extractQueryParams', () => {
   it('returns an empty object when the string is empty', () => {

@@ -1,13 +1,13 @@
 /** @jsx jsx */
 /** @jsxFrag jsx.fragment */
-import { jsx } from '../../lib/rendering/jsx'
+import { jsx } from '@lib/rendering/jsx'
 import { describe, it, expect } from 'vitest'
 
-import { routedView } from '../../lib/app/routed-view'
-import type { RenderedRoute } from '../../lib/types'
-import { exactPathMatch, catchAll } from '../../lib/app/routing'
-import { createApp } from '../../lib/app/builder'
-import { createTestDom, domToString } from '../support/test-dom'
+import { routedView } from '@lib/app/routed-view'
+import type { RenderedRoute } from '@lib/types'
+import { exactPathMatch, catchAll } from '@lib/app/routing'
+import { createApp } from '@lib/app/builder'
+import { createTestDom, domToString } from '@support/test-dom'
 
 describe('routedView', () => {
   it('returns a bound template that renders the right initial view', () => {

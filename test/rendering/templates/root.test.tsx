@@ -1,13 +1,13 @@
 /** @jsx jsx */
 /** @jsxFrag jsx.fragment */
-import { jsx } from '../../../lib/jaxs'
+import { jsx } from '@lib/jaxs'
 
 import { describe, expect, it } from 'vitest'
-import { addAppContainerToDocument, domToString } from '../../support/test-dom'
-import { createRenderKitWithBus } from '../../support/render-kit'
+import { addAppContainerToDocument, domToString } from '@support/test-dom'
+import { createRenderKitWithBus } from '@support/render-kit'
 
-import { bind } from '../../../lib/rendering/templates/bound'
-import { render } from '../../../lib/rendering/templates/root'
+import { bind } from '@lib/rendering/templates/bound'
+import { render } from '@lib/rendering/templates/root'
 
 describe('root templates', () => {
   it('renders a bound template into the document, in the right place', () => {

@@ -1,11 +1,11 @@
 /** @jsx jsx */
 /** @jsxFrag jsx.fragment */
-import { jsx } from '../../lib/jaxs'
+import { jsx, Props, PublishFunction } from '@lib/jaxs'
 
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, Mock, vi } from 'vitest'
 
-import { domToString } from '../support/test-dom'
-import { createRenderKit } from '../support/render-kit'
+import { domToString } from '@support/test-dom'
+import { createRenderKit } from '@support/render-kit'
 
 describe('Rendering static jsx', () => {
   it('can render a self-closing tag and no attribute', () => {
@@ -55,7 +55,7 @@ describe('Rendering static jsx', () => {
     const template = <button onClick="saveSomething">Save</button>
 
     const renderKit = createRenderKit()
-    const publish = renderKit.publish
+    const publish = renderKit.publish as Mock<PublishFunction>
     const [node] = template.render(renderKit)
 
     const clickEvent = new renderKit.window.MouseEvent('click')
@@ -76,7 +76,7 @@ describe('Rendering static jsx', () => {
     const template = <Link href="/foo/bar">Go get your foo!</Link>
 
     const renderKit = createRenderKit()
-    const publish = renderKit.publish
+    const publish = renderKit.publish as Mock<PublishFunction>
     const [node] = template.render(renderKit)
 
     expect(domToString(node)).toEqual('<a href="/foo/bar">Go get your foo!</a>')
@@ -97,7 +97,7 @@ describe('Rendering static jsx', () => {
       )
     }
 
-    const Page = ({ buttonText, children }) => {
+    const Page = ({ buttonText, children }: Props<{ buttonText: string }>) => {
       return (
         <>
           <Link href="/save-the-world">
@@ -149,7 +149,7 @@ describe('Rendering static jsx', () => {
   it('is able to handle complex conditional logic with fragments and render correctly', () => {
     const renderKit = createRenderKit()
 
-    const RenderIf = ({ isVisible, children }) => {
+    const RenderIf = ({ isVisible, children }: Props<{isVisible: boolean}>) => {
       if (!isVisible) return
       return <>{children}</>
     }

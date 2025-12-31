@@ -1,7 +1,7 @@
 import { describe, it, vi, expect, beforeEach, afterEach } from 'vitest'
-import { PeriodicTimerFunctionOptions } from '../../lib/types'
-import { publishPeriodically } from '../../lib/bus/publish-periodically'
-import { createBus } from '../../lib/bus'
+import { PeriodicTimerFunctionOptions } from '@lib/types'
+import { publishPeriodically } from '@lib/bus/publish-periodically'
+import { createBus } from '@lib/bus'
 
 describe('publishPeriodically, when using the custom function instead', () => {
   beforeEach(() => {

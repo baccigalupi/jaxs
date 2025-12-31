@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, Mocked } from 'vitest'
-import { createApp } from '../../lib/app/builder'
-import { onLocationChange } from '../../lib/navigation/on-location-change'
+import { createApp } from '@lib/app/builder'
+import { onLocationChange } from '@lib/navigation/on-location-change'
 
 describe('onLocationChange', () => {
   it('gathers the route information from location and updates the store', () => {

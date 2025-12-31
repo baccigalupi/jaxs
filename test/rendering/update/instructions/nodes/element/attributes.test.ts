@@ -1,10 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { createTestDom } from '../../../../../support/test-dom'
-import {
-  ChangeInstructionTypes,
-  JaxsElement,
-} from '../../../../../../lib/types'
-import { compileForAttributes } from '../../../../../../lib/rendering/update/instructions/nodes/element/attributes'
+import { createTestDom } from '@support/test-dom'
+import { ChangeInstructionTypes, JaxsElement } from '@lib/types'
+import { compileForAttributes } from '@lib/rendering/update/instructions/nodes/element/attributes'
 
 describe('compileForEvents instructions', () => {
   it('is empty when neither source nor target have an attributes', () => {

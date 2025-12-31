@@ -1,6 +1,6 @@
 import { expect, it, describe, vi } from 'vitest'
-import { State } from '../../lib/state'
-import { Store } from '../../lib/state/store'
+import { State } from '@lib/state'
+import { Store } from '@lib/state/store'
 
 describe('Store', () => {
   it("'value' attribute will return it's underlying value", () => {

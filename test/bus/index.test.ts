@@ -1,7 +1,7 @@
 import { expect, describe, it, vi } from 'vitest'
-import { createBus } from '../../lib/bus'
-import { createState } from '../../lib/state'
-import { createTestDom } from '../support/test-dom'
+import { createBus } from '@lib/bus'
+import { createState } from '@lib/state'
+import { createTestDom } from '@support/test-dom'
 
 describe('JaxsBus', () => {
   it('when the bus is configured with app stuff, that is passed along', () => {

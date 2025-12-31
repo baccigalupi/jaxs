@@ -1,11 +1,5 @@
 import { expect, it, describe } from 'vitest'
-import {
-  isBoolean,
-  isNumber,
-  isString,
-  isArray,
-  isObject,
-} from '../../lib/state/is'
+import { isBoolean, isNumber, isString, isArray, isObject } from '@lib/state/is'
 
 describe('Utilities for testing types', () => {
   it('correctly determines whether a thing is a boolean or not', () => {

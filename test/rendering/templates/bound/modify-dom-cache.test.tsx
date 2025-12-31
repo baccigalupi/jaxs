@@ -2,12 +2,12 @@
 /** @jsxFrag jsx.fragment */
 
 import { describe, expect, it, vi } from 'vitest'
-import { jsx } from '../../../../lib/jaxs'
-import { createRenderKit } from '../../../support/render-kit'
-import { performChange } from '../../../../lib/rendering/update/perform-change'
-import { JaxsElement } from '../../../../lib/types'
-import { modifyDomCache } from '../../../../lib/rendering/templates/bound/modify-dom-cache'
-import { debugElement, debugInstruction } from '../../../support/debugging'
+import { jsx } from '@lib/jaxs'
+import { createRenderKit } from '@support/render-kit'
+import { performChange } from '@lib/rendering/update/perform-change'
+import { JaxsElement } from '@lib/types'
+import { modifyDomCache } from '@lib/rendering/templates/bound/modify-dom-cache'
+import { debugElement, debugInstruction } from '@support/debugging'
 
 describe('modifyDomCache', () => {
   it('when replacing a top level node, it returns the correct top level dom', () => {

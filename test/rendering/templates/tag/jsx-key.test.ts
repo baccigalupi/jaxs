@@ -1,6 +1,6 @@
 import { expect, describe, it } from 'vitest'
-import { JsxKey } from '../../../../lib/rendering/templates/tag/jsx-key'
-import type { TagAttributes } from '../../../../lib/types'
+import { JsxKey } from '@lib/rendering/templates/tag/jsx-key'
+import type { TagAttributes } from '@lib/types'
 
 describe('JsxKey generate', () => {
   it('when the attributes include a key, it uses that', () => {

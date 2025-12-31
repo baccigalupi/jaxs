@@ -1,10 +1,10 @@
 /** @jsx jsx */
 /** @jsxFrag jsx.fragment */
-import { jsx } from '../../../lib/jaxs'
-import { Props } from '../../../lib/types'
+import { jsx } from '@lib/jaxs'
+import { Props } from '@lib/types'
 import { describe, expect, it } from 'vitest'
-import { createTestDom, domToString } from '../../support/test-dom'
-import { createApp } from '../../../lib/jaxs'
+import { createTestDom, domToString } from '@support/test-dom'
+import { createApp } from '@lib/jaxs'
 
 describe('Bug with passed down string children', () => {
   // Global HTML attribute types

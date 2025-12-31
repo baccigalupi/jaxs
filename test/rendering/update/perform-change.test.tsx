@@ -1,17 +1,17 @@
 /** @jsx jsx */
 /** @jsxFrag jsx.fragment */
-import { jsx } from '../../../lib/jaxs'
+import { jsx } from '@lib/jaxs'
 
 import { describe, expect, it, type Mock } from 'vitest'
-import { createTestDom, domToString } from '../../support/test-dom'
-import { createRenderKit } from '../../support/render-kit'
+import { createTestDom, domToString } from '@support/test-dom'
+import { createRenderKit } from '@support/render-kit'
 
-import { performChange } from '../../../lib/rendering/update/perform-change'
+import { performChange } from '@lib/rendering/update/perform-change'
 import {
   ChangeInstructionTypes,
   JaxsElement,
   PublishFunction,
-} from '../../../lib/types'
+} from '@lib/types'
 
 describe('rendering change', () => {
   it('replace top level text element with a tag', () => {

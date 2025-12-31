@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
-import { createApp } from '../../lib/app/builder'
-import { createTestDom } from '../support/test-dom'
+import { createApp } from '@lib/app/builder'
+import { createTestDom } from '@support/test-dom'
 
 describe('go-to events', () => {
   it('triggers navigation to the right url', () => {

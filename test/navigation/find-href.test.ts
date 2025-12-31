@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { createTestDom } from '../support/test-dom'
-import { findHref } from '../../lib/navigation/find-href'
+import { createTestDom } from '@support/test-dom'
+import { findHref } from '@lib/navigation/find-href'
 
 describe('findHref', () => {
   it('finds the href when test is the direct target node', () => {

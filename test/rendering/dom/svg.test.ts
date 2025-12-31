@@ -1,6 +1,6 @@
 import { expect, describe, it } from 'vitest'
-import { createTestDom } from '../../support/test-dom'
-import { createSvgNode, isSvgTag } from '../../../lib/rendering/dom/svg'
+import { createTestDom } from '@support/test-dom'
+import { createSvgNode, isSvgTag } from '@lib/rendering/dom/svg'
 
 describe('svg dom management', () => {
   it('createSvgNode ignores __self and xmlns attributes', () => {

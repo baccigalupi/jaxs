@@ -1,12 +1,13 @@
 import { expect, describe, it, vi } from 'vitest'
-import { createTestDom } from '../../support/test-dom'
+import { createTestDom } from '@support/test-dom'
 import {
   setAttributesOnElement,
   setEventsOnElement,
   createNode,
   createDecoratedNode,
-} from '../../../lib/rendering/dom/tag'
-import { createRenderKit } from '../../support/render-kit'
+} from '@lib/rendering/dom/tag'
+import { createRenderKit } from '@support/render-kit'
+import { type TagAttributes } from '@lib/types'
 
 describe('element dom management', () => {
   describe('setAttributesOnElement', () => {
@@ -16,7 +17,7 @@ describe('element dom management', () => {
       const attributes = {
         min: 1,
         __self: 'foo',
-      }
+      } as unknown as TagAttributes
 
       setAttributesOnElement(element, attributes)
 
