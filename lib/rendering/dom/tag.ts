@@ -4,7 +4,7 @@ import type {
   TagAttributes,
   TagEventAttributes,
   EventMaps,
-  DomPublish,
+  PublishFromDom,
   RenderKit,
 } from '../../types'
 
@@ -35,7 +35,7 @@ export const setAttributesOnElement = (
 export const setEventsOnElement = (
   element: JaxsElement,
   events: TagEventAttributes,
-  publish: DomPublish,
+  publish: PublishFromDom,
 ) => {
   const eventMaps = {} as EventMaps
 

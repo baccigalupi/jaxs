@@ -2,7 +2,7 @@ import { vi, Mock } from 'vitest'
 import { createTestDom } from './test-dom'
 import { createState } from '../../lib/state'
 import { createBus, type JaxsBus } from '../../lib/bus'
-import { PublishFunction, BusEventMatcher, BusListener } from '../../lib/types'
+import { Publish, BusEventMatcher, BusListener } from '../../lib/types'
 
 type Subscribe<T> = (matcher: BusEventMatcher, listener: BusListener<T>) => void
 
@@ -10,7 +10,7 @@ export const createRenderKit = <T>(messageBus = {} as Partial<JaxsBus>) => {
   const document = createTestDom()
 
   const busOptions = {
-    publish: messageBus.publish || (vi.fn() as Mock<PublishFunction>),
+    publish: messageBus.publish || (vi.fn() as Mock<Publish<unknown>>),
     subscribe: messageBus.subscribe || (vi.fn() as Subscribe<T>),
   }
   const state = createState(busOptions.publish)

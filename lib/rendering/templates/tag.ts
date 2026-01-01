@@ -5,7 +5,7 @@ import type {
   Renderable,
   RenderKit,
   TagAttributes,
-  JsxCollection,
+  RenderableCollection,
 } from '../../types'
 
 import { createDecoratedNode } from '../dom/tag'
@@ -25,7 +25,7 @@ export class Tag<T> implements Renderable {
   constructor(
     tagType: string,
     props: Props<T>,
-    children = [] as JsxCollection,
+    children = [] as RenderableCollection,
   ) {
     this.type = tagType
 

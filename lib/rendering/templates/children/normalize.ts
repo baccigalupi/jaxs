@@ -1,7 +1,7 @@
-import { JsxCollection, AttributesWithChildren } from '../../../types'
+import { RenderableCollection, Props } from '../../../types'
 import { replaceTextNodes } from './text'
 
-export const normalizeJsxChildren = (jsxChildren: JsxCollection) => {
+export const normalizeJsxChildren = (jsxChildren: RenderableCollection) => {
   return normalizeToArray(jsxChildren).map(replaceTextNodes).flat()
 }
 
@@ -16,6 +16,6 @@ export const normalizeToArray = <T>(children: T | T[]): T[] => {
 }
 
 export const ensureJsxChildrenArray = <T>(
-  maybeChildren?: JsxCollection,
-  attributes = {} as AttributesWithChildren<T>,
+  maybeChildren?: RenderableCollection,
+  attributes = {} as Props<T>,
 ) => normalizeJsxChildren(maybeChildren || attributes.children || [])
