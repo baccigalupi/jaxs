@@ -1,14 +1,31 @@
-import { StoreListSorterFunction, Store } from '../../types'
-import { StoreUpdaterBase } from '../store-updater'
+import { StoreListSorterFunction, Store, StoreUpdaterOrValue } from '../../types'
 
-export class StoreUpdaterList<T> extends StoreUpdaterBase<T[]> {
+export class StoreUpdaterList<T> {
+  store: Store<T[]>
+  
+  constructor(store: Store<T[]>) {
+    this.store = store
+  }
+
+  private update(updater: StoreUpdaterOrValue<T[]>) {
+    this.store.update(updater)
+  }
+
+  private get value() {
+    return this.store.value
+  }
+
+  reset() {
+    this.store.update(this.store.initialValue)
+  }
+  
   push(element: T) {
     const value = [...this.value, element]
     this.update(value)
   }
 
   pop() {
-    const list = [...this.value]
+    const list = this.value
     const poppedValue = list.pop()
     this.update(list)
     return poppedValue
@@ -20,26 +37,20 @@ export class StoreUpdaterList<T> extends StoreUpdaterBase<T[]> {
   }
 
   shift() {
-    const list = [...this.value]
+    const list = this.value
     const shiftedValue = list.shift()
     this.update(list)
     return shiftedValue
   }
 
-  addSorter(name: string, sorter: StoreListSorterFunction<T>) {
-    this[name] = () => {
-      this.sortBy(sorter)
-    }
-  }
-
   sortBy(sorter: StoreListSorterFunction<T>) {
-    const list = [...this.value]
+    const list = this.value
     list.sort(sorter)
     this.update(list)
   }
 
   insertAt(index: number, item: T) {
-    const list = [...this.value]
+    const list = this.value
     list.splice(index, 0, item)
     this.update(list)
   }
@@ -63,3 +74,21 @@ export class StoreUpdaterList<T> extends StoreUpdaterBase<T[]> {
 
 export const listUpdater = <T>(store: Store<T[]>) =>
   new StoreUpdaterList<T>(store)
+
+export const UpdateList = {
+  push: <T>(store: Store<T[]>, element: T) => listUpdater(store).push(element),
+  pop: <T>(store: Store<T[]>) => listUpdater(store).pop(),
+  unshift: <T>(store: Store<T[]>, element: T) =>
+    listUpdater(store).unshift(element),
+  shift: <T>(store: Store<T[]>) => listUpdater(store).shift(),
+  sortBy: <T>(store: Store<T[]>, sorter: StoreListSorterFunction<T>) =>
+    listUpdater(store).sortBy(sorter),
+  insertAt: <T>(store: Store<T[]>, index: number, item: T) =>
+    listUpdater(store).insertAt(index, item),
+  remove: <T>(store: Store<T[]>, value: T) => listUpdater(store).remove(value),
+  removeBy: <T>(
+    store: Store<T[]>,
+    matcherFunction: (value: T) => boolean,
+  ) => listUpdater(store).removeBy(matcherFunction),
+  reset: <T>(store: Store<T[]>) => listUpdater(store).reset(),
+}
