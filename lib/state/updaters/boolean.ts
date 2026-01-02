@@ -2,7 +2,7 @@ import { Store, StoreUpdaterOrValue } from '../../types'
 
 export class StoreUpdaterBoolean {
   store: Store<boolean>
-  
+
   constructor(store: Store<boolean>) {
     this.store = store
   }

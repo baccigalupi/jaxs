@@ -2,7 +2,7 @@ import { Store, StoreUpdaterOrValue } from '../../types'
 
 export class StoreUpdaterObject<T extends object> {
   store: Store<T>
-  
+
   constructor(store: Store<T>) {
     this.store = store
   }
@@ -18,7 +18,7 @@ export class StoreUpdaterObject<T extends object> {
   reset() {
     this.store.update(this.store.initialValue)
   }
-  
+
   updateAttribute(name: keyof T, value: T[keyof T]) {
     const newRecord = { ...this.value }
     newRecord[name] = value
@@ -63,5 +63,5 @@ export const UpdateRecord = {
   updateAttribute: <T>(store: Store<T>, name: keyof T, value: T[keyof T]) =>
     objectUpdater(store).updateAttribute(name, value),
   updateAttributes: <T>(store: Store<T>, values: Partial<T>) =>
-    objectUpdater(store).updateAttributes(values)
+    objectUpdater(store).updateAttributes(values),
 }

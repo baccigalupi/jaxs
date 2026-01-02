@@ -1,3 +1,4 @@
+import { ArrayModifiers } from './state/updaters/array'
 import { UpdateBoolean } from './state/updaters/boolean'
 import { UpdateList } from './state/updaters/list'
 import { UpdateRecord } from './state/updaters/object'
@@ -35,8 +36,14 @@ export * as messageBus from './bus'
 export * as state from './state'
 export * as routing from './app/routing'
 
-export const UpdateStore = {
-  Record: UpdateRecord,
-  Boolean: UpdateBoolean,
-  List: UpdateList,
+// Different export attempt to make these more intuitive
+
+export { Is } from './state/is'
+export { Equality } from './state/equality'
+
+export const Update = {
+  RecordStore: UpdateRecord,
+  BooleanStore: UpdateBoolean,
+  ListStore: UpdateList,
+  ArrayModifiers: ArrayModifiers,
 }

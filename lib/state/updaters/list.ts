@@ -1,8 +1,12 @@
-import { StoreListSorterFunction, Store, StoreUpdaterOrValue } from '../../types'
-
+import {
+  StoreListSorterFunction,
+  Store,
+  StoreUpdaterOrValue,
+} from '../../types'
+import { remove, removeBy, insertAt } from './array'
 export class StoreUpdaterList<T> {
   store: Store<T[]>
-  
+
   constructor(store: Store<T[]>) {
     this.store = store
   }
@@ -18,9 +22,10 @@ export class StoreUpdaterList<T> {
   reset() {
     this.store.update(this.store.initialValue)
   }
-  
+
   push(element: T) {
-    const value = [...this.value, element]
+    const value = this.value
+    value.push(element)
     this.update(value)
   }
 
@@ -32,7 +37,8 @@ export class StoreUpdaterList<T> {
   }
 
   unshift(element: T) {
-    const value = [element, ...this.value]
+    const value = this.value
+    value.unshift(element)
     this.update(value)
   }
 
@@ -51,23 +57,17 @@ export class StoreUpdaterList<T> {
 
   insertAt(index: number, item: T) {
     const list = this.value
-    list.splice(index, 0, item)
+    insertAt(list, index, item)
     this.update(list)
   }
 
   remove(value: T) {
-    const list = this.value.reduce((collection: T[], item: T) => {
-      if (item !== value) collection.push(item)
-      return collection
-    }, [])
+    const list = remove(this.value, value)
     this.update(list)
   }
 
   removeBy(matcherFunction: (value: T) => boolean) {
-    const list = this.value.reduce((collection: T[], item: T) => {
-      if (!matcherFunction(item)) collection.push(item)
-      return collection
-    }, [])
+    const list = removeBy(this.value, matcherFunction)
     this.update(list)
   }
 }
@@ -86,9 +86,7 @@ export const UpdateList = {
   insertAt: <T>(store: Store<T[]>, index: number, item: T) =>
     listUpdater(store).insertAt(index, item),
   remove: <T>(store: Store<T[]>, value: T) => listUpdater(store).remove(value),
-  removeBy: <T>(
-    store: Store<T[]>,
-    matcherFunction: (value: T) => boolean,
-  ) => listUpdater(store).removeBy(matcherFunction),
+  removeBy: <T>(store: Store<T[]>, matcherFunction: (value: T) => boolean) =>
+    listUpdater(store).removeBy(matcherFunction),
   reset: <T>(store: Store<T[]>) => listUpdater(store).reset(),
 }
