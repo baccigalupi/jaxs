@@ -1,7 +1,12 @@
+import { PublishFromDom } from '.'
+import { State as State_2 } from '.'
+import { Store as Store_2 } from '.'
+import { Subscribe as Subscribe_2 } from '.'
+
 export declare class App {
   window: Window
   document: Document
-  publish: PublishFunction
+  publish: Publish<any>
   subscribe: Subscribe
   bus: JaxsBus
   state: State
@@ -29,7 +34,7 @@ export declare class App {
 }
 
 declare type AppAdditionListenerOptions = {
-  state: State
+  state: State_2
   document: Document
   window: Window
 }
@@ -42,10 +47,6 @@ declare type AttributeInstructionData = {
   name: string
   value: string
   isSvg?: boolean
-}
-
-declare type AttributesWithChildren<T> = Props<T> & {
-  children?: JsxCollection
 }
 
 export declare const bind: <ATTRIBUTES, STATE_MAP>({
@@ -126,7 +127,7 @@ declare enum ChangeInstructionTypes {
 declare class Children implements Renderable {
   collection: Renderable[]
   parentElement?: JaxsElement
-  constructor(jsxChildren: JsxCollection)
+  constructor(jsxChildren: RenderableCollection)
   render(renderKit: RenderKit, parentElement?: JaxsElement): JaxsNode[]
   generateDom(renderKit: RenderKit): JaxsNode[]
   attachToParent(dom: JaxsNodes): void
@@ -158,26 +159,25 @@ declare const createBus: () => {
 
 declare const createRouteState: (state: State) => void
 
-declare const createState: (publisher: StatePublisher) => State
+declare const createState: (publisher: Publish<any>) => State
 
 declare type CustomPeriodicOptions = {
   timer: PeriodicTimerFunction
 }
 
-declare type CustomPeriodicPublisherOptions = RequiredPeriodicPublisherOptions &
-  CustomPeriodicOptions
-
-declare type DefaultBusListenerOptions = {
-  publish: PublishFunction
-  eventName: string
-}
+declare type CustomPeriodicPublisherOptions<T> =
+  RequiredPeriodicPublisherOptions<T> & CustomPeriodicOptions
 
 declare type DiffPair = {
   source: JaxsNode
   target: JaxsNode
 }
 
-declare type DomPublish = (eventName: string, domEvent: Event) => void
+export declare const Equality: {
+  objects: (oldValue: Object_2, newValue: Object_2) => any
+  arrays: (oldValue: any[], newValue: any[]) => any
+  equal: (oldValue: any, newValue: any) => any
+}
 
 declare type EventInstructionData = {
   name: string
@@ -243,8 +243,8 @@ declare type GeneralPeriodicOptions = {
   offset?: number
 }
 
-declare type GeneralPeriodicPublisherOptions =
-  RequiredPeriodicPublisherOptions & GeneralPeriodicOptions
+declare type GeneralPeriodicPublisherOptions<T> =
+  RequiredPeriodicPublisherOptions<T> & GeneralPeriodicOptions
 
 declare type InsertNodeData = {
   parent: JaxsElement
@@ -260,6 +260,14 @@ declare type InstructionData =
   | NullInstructionData
 
 declare type InstructionsUpdater = (instruction: ChangeInstruction) => void
+
+export declare const Is: {
+  boolean: (value: any) => value is boolean
+  number: (value: any) => value is number
+  string: (value: any) => value is string
+  array: (value: any) => value is any[]
+  object: (value: any) => boolean
+}
 
 declare class JaxsBus {
   options?: AppAdditionListenerOptions
@@ -300,11 +308,11 @@ export declare namespace JaxsTypes {
     App,
     State,
     Store,
-    StoreUpdaterBase,
     StoreUpdaterBoolean,
     StoreUpdaterList,
     StoreUpdaterObject,
     StoreUpdater,
+    CreateAppBuilderArguments,
     TextValue,
     JsxIded,
     JsxChangeId,
@@ -322,14 +330,16 @@ export declare namespace JaxsTypes {
     TagAttributes,
     TagEventAttributes,
     TagAttributesAndEvents,
-    DomPublish,
-    Subscribe,
     RenderKit,
     Renderable,
     StaticTemplate,
     TypedTemplate,
     Template,
-    JsxCollection,
+    RenderableCollection,
+    StoreMap,
+    ViewModel,
+    BindSubscriptionList,
+    BindParams,
     ChangeInstructionTypes,
     RemoveInstructionData,
     AttributeInstructionData,
@@ -340,25 +350,18 @@ export declare namespace JaxsTypes {
     ChangeInstruction,
     ChangeInstructions,
     InstructionsUpdater,
-    StoreMap,
-    ViewModel,
-    BindSubscriptionList,
-    BindParams,
+    DiffPair,
+    CompileChildren,
+    PublishFromDom_2 as PublishFromDom,
+    Subscribe,
     AppAdditionListenerOptions,
-    DefaultBusListenerOptions,
     ListenerKit,
-    PublishFunction,
+    Publish,
     BusListener,
     BusEventMatcher,
     ExactSubscriptionData,
     FuzzySubscriptionData,
     Unsubscribe,
-    CreateAppBuilderArguments,
-    RouteState,
-    AttributesWithChildren,
-    DiffPair,
-    CompileChildren,
-    StatePublisher,
     StateTransactionUpdater,
     StoresCollection,
     StoreInitializationOptions,
@@ -366,8 +369,6 @@ export declare namespace JaxsTypes {
     UpdaterValue,
     StoreUpdaterOrValue,
     StoreListSorterFunction,
-    RouteMatcher,
-    RenderedRoute,
     PeriodicPublisher,
     RequiredPeriodicPublisherOptions,
     GeneralPeriodicOptions,
@@ -377,6 +378,9 @@ export declare namespace JaxsTypes {
     PublishPeriodicallyOptions,
     PeriodicTimerFunctionOptions,
     PeriodicTimerFunction,
+    RouteState,
+    RouteMatcher,
+    RenderedRoute,
   }
 }
 
@@ -384,17 +388,18 @@ export declare const jsx: {
   <T>(
     type: string | Template<T>,
     attributes: Props<T>,
-    ...children: JsxCollection
+    ...children: RenderableCollection
   ): Renderable
-  fragment<T>(attributes: Props<T>, maybeChildren: JsxCollection): Children
+  fragment<T>(
+    attributes: Props<T>,
+    maybeChildren: RenderableCollection,
+  ): Children
 }
 
 declare type JsxChangeId = {
   element: JaxsNode
   index: number
 }
-
-declare type JsxCollection = (Renderable | TextValue)[]
 
 declare interface JsxEventMapped {
   eventMaps: EventMaps
@@ -407,10 +412,10 @@ declare interface JsxIded {
 declare const linkNavigationEvent = 'go-to-href'
 
 declare type ListenerKit<T> = {
-  state: State
+  state: State_2
   document: Document
   window: Window
-  publish: PublishFunction
+  publish: Publish<any>
   eventName: string
   payload: T
 }
@@ -452,14 +457,16 @@ declare type NullInstructionData = Record<string, never>
 
 declare type NullValues = null | undefined
 
+declare type Object_2 = Record<string, any>
+
 declare const onLinkClick: (listenerKit: ListenerKit<MouseEvent>) => void
 
 declare const onLocationChange: (listenerKit: ListenerKit<null>) => void
 
-declare interface PeriodicPublisher {
+declare interface PeriodicPublisher<T> {
   event: string
-  publish: PublishFunction
-  payload?: any
+  publish: Publish<T>
+  payload?: T
   start: () => void
   stop: () => void
 }
@@ -475,8 +482,8 @@ declare type PeriodicTimerFunctionOptions = {
 }
 
 export declare type Props<T> = Partial<{
-  __source: ReactSourceObject
-  children: JsxCollection
+  __source?: ReactSourceObject
+  children: RenderableCollection
 }> &
   T
 
@@ -485,19 +492,21 @@ declare type PropValue =
   | NullValues
   | boolean
   | ReactSourceObject
-  | JsxCollection
+  | RenderableCollection
 
-export declare type PublishFunction = (event: string, payload: any) => void
+export declare type Publish<T> = (event: string, payload: T) => void
+
+declare type PublishFromDom_2 = Publish<Event>
 
 declare const publishLocation: (app: App) => void
 
-declare const publishPeriodically: (
-  options: PublishPeriodicallyOptions,
+declare const publishPeriodically: <T>(
+  options: PublishPeriodicallyOptions<T>,
 ) => () => void
 
-declare type PublishPeriodicallyOptions =
-  | GeneralPeriodicPublisherOptions
-  | CustomPeriodicPublisherOptions
+declare type PublishPeriodicallyOptions<T> =
+  | GeneralPeriodicPublisherOptions<T>
+  | CustomPeriodicPublisherOptions<T>
 
 declare type ReactSourceObject = {
   fileName: string
@@ -514,6 +523,8 @@ export declare interface Renderable {
   render: (renderKit: RenderKit, parentElement?: JaxsElement) => JaxsNode[]
 }
 
+declare type RenderableCollection = Renderable[]
+
 export declare type RenderedRoute = {
   Partial: StaticTemplate
   match: RouteMatcher
@@ -522,16 +533,16 @@ export declare type RenderedRoute = {
 declare type RenderKit = {
   document: Document
   window: Window
-  publish: DomPublish
-  subscribe: Subscribe
-  state: State
+  publish: PublishFromDom
+  subscribe: Subscribe_2
+  state: State_2
   parent?: JaxsNode | null
 }
 
-declare type RequiredPeriodicPublisherOptions = {
+declare type RequiredPeriodicPublisherOptions<T> = {
   event: string
-  publish: PublishFunction
-  payload?: any
+  publish: Publish<T>
+  payload?: T
 }
 
 declare class Root {
@@ -585,12 +596,12 @@ declare namespace start {
 declare const startNavigation: (app: App) => void
 
 export declare class State {
-  publisher: StatePublisher
+  publisher: Publish<any>
   stores: StoresCollection
   eventNamePrefix: string
   notifications: Set<string>
   inTransaction: boolean
-  constructor(publisher: StatePublisher)
+  constructor(publisher: Publish<any>)
   create<T>(name: string, initialState: T): Store<T>
   store<T>(name: string): Store<T>
   get<T>(name: string): T
@@ -607,8 +618,6 @@ export declare namespace state {
   export { eventName, State, createState, Store, updaters }
 }
 
-declare type StatePublisher = (event: string, payload: any) => void
-
 declare type StateTransactionUpdater = (collection: StoresCollection) => void
 
 export declare type StaticTemplate = () => Renderable
@@ -617,7 +626,7 @@ export declare class Store<T> {
   parent: State
   name: string
   updater: StoreUpdater<T>
-  _value: T
+  private _value
   initialValue: T
   constructor(options: StoreInitializationOptions<T>)
   get ['value'](): T
@@ -632,7 +641,7 @@ declare type StoreDataUpdater<T> = (originalValue: T) => T
 
 declare type StoreInitializationOptions<T> = {
   name: string
-  parent: State
+  parent: State_2
   value: T
 }
 
@@ -642,48 +651,52 @@ declare type StoreMap = {
   [key: string]: any
 }
 
-declare type StoresCollection = Record<string, Store<any>>
+declare type StoresCollection = Record<string, Store_2<any>>
 
-export declare type StoreUpdater<T> =
-  | StoreUpdaterBase<T>
+declare type StoreUpdater<T> =
   | StoreUpdaterObject<T extends object ? T : never>
   | StoreUpdaterBoolean
   | StoreUpdaterList<T>
 
-export declare class StoreUpdaterBase<T> {
-  store: Store<T>
-  constructor(store: Store<T>)
-  update(updater: StoreUpdaterOrValue<T>): void
+declare class StoreUpdaterBoolean {
+  store: Store<boolean>
+  constructor(store: Store<boolean>)
+  private update
+  private get value()
   reset(): void
-  get value(): T
-}
-
-export declare class StoreUpdaterBoolean extends StoreUpdaterBase<boolean> {
   toggle(): void
   setTrue(): void
   setFalse(): void
 }
 
-export declare class StoreUpdaterList<T> extends StoreUpdaterBase<T[]> {
+declare class StoreUpdaterList<T> {
+  store: Store<T[]>
+  constructor(store: Store<T[]>)
+  private update
+  private get value()
+  reset(): void
   push(element: T): void
   pop(): T
   unshift(element: T): void
   shift(): T
-  addSorter(name: string, sorter: StoreListSorterFunction<T>): void
   sortBy(sorter: StoreListSorterFunction<T>): void
   insertAt(index: number, item: T): void
   remove(value: T): void
   removeBy(matcherFunction: (value: T) => boolean): void
 }
 
-export declare class StoreUpdaterObject<
-  T extends object,
-> extends StoreUpdaterBase<T> {
+declare class StoreUpdaterObject<T extends object> {
+  store: Store<T>
+  constructor(store: Store<T>)
+  private update
+  private get value()
+  reset(): void
   updateAttribute(name: keyof T, value: T[keyof T]): void
   updateDynamicAttribute(name: string, value: any): void
   isKey(key: string): boolean
   isValueType(key: keyof T, value: any): boolean
   resetAttribute(name: keyof T): void
+  updateAttributes(values: Partial<T>): void
 }
 
 declare type StoreUpdaterOrValue<T> = UpdaterValue<T> | StoreDataUpdater<T>
@@ -697,7 +710,10 @@ declare const subscribeToHistoryChange: (app: App) => void
 
 declare const subscribeToNavigation: (app: App) => void
 
-declare type TagAttributes = SourceMap & Record<string, string>
+declare type TagAttributes = SourceMap &
+  Record<string, string> & {
+    __source?: ReactSourceObject
+  }
 
 declare type TagAttributesAndEvents = {
   attributes: TagAttributes
@@ -713,6 +729,47 @@ declare type TextValue = string | number
 export declare type TypedTemplate<T> = (props: Props<T>) => Renderable
 
 declare type Unsubscribe = () => void
+
+export declare const Update: {
+  RecordStore: {
+    reset: <T>(store: Store<T>) => void
+    resetAttribute: <T>(store: Store<T>, name: keyof T) => void
+    updateAttribute: <T>(
+      store: Store<T>,
+      name: keyof T,
+      value: T[keyof T],
+    ) => void
+    updateAttributes: <T>(store: Store<T>, values: Partial<T>) => void
+  }
+  BooleanStore: {
+    toggle: (store: Store<boolean>) => void
+    setTrue: (store: Store<boolean>) => void
+    setFalse: (store: Store<boolean>) => void
+    reset: (store: Store<boolean>) => void
+  }
+  ListStore: {
+    push: <T>(store: Store<T[]>, element: T) => void
+    pop: <T>(store: Store<T[]>) => T
+    unshift: <T>(store: Store<T[]>, element: T) => void
+    shift: <T>(store: Store<T[]>) => T
+    sortBy: <T>(store: Store<T[]>, sorter: StoreListSorterFunction<T>) => void
+    insertAt: <T>(store: Store<T[]>, index: number, item: T) => void
+    remove: <T>(store: Store<T[]>, value: T) => void
+    removeBy: <T>(
+      store: Store<T[]>,
+      matcherFunction: (value: T) => boolean,
+    ) => void
+    reset: <T>(store: Store<T[]>) => void
+  }
+  ArrayModifiers: {
+    remove: <T>(originalCollection: T[], itemToRemove: T) => T[]
+    removeBy: <T>(
+      originalCollection: T[],
+      matcherFunction: (value: T) => boolean,
+    ) => T[]
+    insertAt: <T>(originalCollection: T[], index: number, item: T) => T[]
+  }
+}
 
 declare type UpdateEventInstructionData = {
   name: string
