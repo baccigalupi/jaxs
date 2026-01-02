@@ -24,8 +24,16 @@ export const insertAt = <T>(
   return originalCollection
 }
 
+export const appendIfUnique = <T>(originalCollection: T[], item: T) => {
+  if (!originalCollection.includes(item)) {
+    originalCollection.push(item)
+  }
+  return originalCollection
+}
+
 export const ArrayModifiers = {
   remove,
   removeBy,
   insertAt,
+  appendIfUnique,
 }

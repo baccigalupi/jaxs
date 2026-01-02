@@ -3,7 +3,7 @@ import {
   Store,
   StoreUpdaterOrValue,
 } from '../../types'
-import { remove, removeBy, insertAt } from './array'
+import { remove, removeBy, insertAt, appendIfUnique } from './array'
 export class StoreUpdaterList<T> {
   store: Store<T[]>
 
@@ -70,12 +70,22 @@ export class StoreUpdaterList<T> {
     const list = removeBy(this.value, matcherFunction)
     this.update(list)
   }
+
+  includes(value: T) {
+    return this.value.includes(value)
+  }
+
+  appendIfUnique(item: T) {
+    const list = this.value
+    appendIfUnique(list, item)
+    this.update(list)
+  }
 }
 
 export const listUpdater = <T>(store: Store<T[]>) =>
   new StoreUpdaterList<T>(store)
 
-export const UpdateList = {
+export const ListStore = {
   push: <T>(store: Store<T[]>, element: T) => listUpdater(store).push(element),
   pop: <T>(store: Store<T[]>) => listUpdater(store).pop(),
   unshift: <T>(store: Store<T[]>, element: T) =>
@@ -89,4 +99,8 @@ export const UpdateList = {
   removeBy: <T>(store: Store<T[]>, matcherFunction: (value: T) => boolean) =>
     listUpdater(store).removeBy(matcherFunction),
   reset: <T>(store: Store<T[]>) => listUpdater(store).reset(),
+  includes: <T>(store: Store<T[]>, value: T) =>
+    listUpdater(store).includes(value),
+  appendIfUnique: <T>(store: Store<T[]>, item: T) =>
+    listUpdater(store).appendIfUnique(item),
 }
