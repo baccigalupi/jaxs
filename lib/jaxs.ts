@@ -1,3 +1,8 @@
+import { ArrayModifiers } from './state/updaters/array'
+import { UpdateBoolean } from './state/updaters/boolean'
+import { UpdateList } from './state/updaters/list'
+import { UpdateRecord } from './state/updaters/object'
+
 export { jsx } from './rendering/jsx'
 export { createApp } from './app/builder'
 export { bind } from './rendering/templates/bound'
@@ -19,11 +24,6 @@ export type {
   BusListener,
   Publish,
   Subscribe,
-  StoreUpdater,
-  StoreUpdaterBase,
-  StoreUpdaterBoolean,
-  StoreUpdaterList,
-  StoreUpdaterObject,
 } from './types'
 
 // All types available via namespace
@@ -35,3 +35,15 @@ export * as appBuilding from './app'
 export * as messageBus from './bus'
 export * as state from './state'
 export * as routing from './app/routing'
+
+// Different export attempt to make these more intuitive
+
+export { Is } from './state/is'
+export { Equality } from './state/equality'
+
+export const Update = {
+  RecordStore: UpdateRecord,
+  BooleanStore: UpdateBoolean,
+  ListStore: UpdateList,
+  ArrayModifiers: ArrayModifiers,
+}

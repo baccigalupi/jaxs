@@ -37,3 +37,9 @@ export const areEqual = (oldValue: any, newValue: any) => {
 
   return areElementsEqual(oldValue, newValue)
 }
+
+export const Equality = {
+  objects: areObjectsEqual,
+  arrays: areArraysEqual,
+  equal: areEqual,
+}
