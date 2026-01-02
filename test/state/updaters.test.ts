@@ -1,52 +1,50 @@
 import { expect, it, describe, vi } from 'vitest'
 import { State } from '@lib/state'
-import { updaters } from '@lib/state/updaters'
+import { ListStore, BooleanStore } from '@lib/jaxs'
 
 describe('adding typed stores with updaters', () => {
   it('boolean stores come with `toggle`, `setFalse` and `setTrue`', () => {
     const state = new State(vi.fn())
     const store = state.create('loggedIn', false)
-    const updater = updaters.boolean(store)
 
-    updater.toggle()
+    BooleanStore.toggle(store)
     expect(store.value).toEqual(true)
 
-    updater.setFalse()
+    BooleanStore.setFalse(store)
     expect(store.value).toEqual(false)
 
-    updater.setTrue()
+    BooleanStore.setTrue(store)
     expect(store.value).toEqual(true)
 
-    updater.reset()
+    BooleanStore.reset(store)
     expect(store.value).toEqual(false)
   })
 
   it('list stores come with `shift`, `unshift`, `push` and `pop`', () => {
     const state = new State(vi.fn())
     const store = state.create<string[]>('actions', [])
-    const updater = updaters.list<string>(store)
 
-    updater.push('pushed first')
-    updater.push('pushed second')
+    ListStore.push(store, 'pushed first')
+    ListStore.push(store, 'pushed second')
     expect(store.value).toEqual(['pushed first', 'pushed second'])
 
-    const poppedValue = updater.pop()
+    const poppedValue = ListStore.pop(store)
     expect(poppedValue).toEqual('pushed second')
     expect(store.value).toEqual(['pushed first'])
 
-    updater.unshift('unshifted first')
-    updater.unshift('unshifted second')
+    ListStore.unshift(store, 'unshifted first')
+    ListStore.unshift(store, 'unshifted second')
     expect(store.value).toEqual([
       'unshifted second',
       'unshifted first',
       'pushed first',
     ])
 
-    const shiftedValue = updater.shift()
+    const shiftedValue = ListStore.shift(store)
     expect(shiftedValue).toEqual('unshifted second')
     expect(store.value).toEqual(['unshifted first', 'pushed first'])
 
-    updater.insertAt(1, 'stuck in the middle with you')
+    ListStore.insertAt(store, 1, 'stuck in the middle with you')
 
     expect(store.value).toEqual([
       'unshifted first',
@@ -58,9 +56,8 @@ describe('adding typed stores with updaters', () => {
   it('list updaters can remove an item', () => {
     const state = new State(vi.fn())
     const store = state.create<string[]>('actions', ['foo', 'bar'])
-    const updater = updaters.list(store)
 
-    updater.remove('bar')
+    ListStore.remove(store, 'bar')
 
     expect(store.value).toEqual(['foo'])
   })
@@ -68,10 +65,23 @@ describe('adding typed stores with updaters', () => {
   it('list updaters can remove an item via a function matcher', () => {
     const state = new State(vi.fn())
     const store = state.create<string[]>('actions', ['foo', 'bar', 'good'])
-    const updater = updaters.list(store)
 
-    updater.removeBy((item: string) => item.includes('oo'))
+    ListStore.removeBy(store, (item: string) => item.includes('oo'))
 
     expect(store.value).toEqual(['bar'])
+  })
+
+  it('list updaters can append if unique', () => {
+    const state = new State(vi.fn())
+    const store = state.create<string[]>('items', ['apple', 'banana'])
+
+    ListStore.appendIfUnique(store, 'cherry')
+    expect(store.value).toEqual(['apple', 'banana', 'cherry'])
+
+    ListStore.appendIfUnique(store, 'banana')
+    expect(store.value).toEqual(['apple', 'banana', 'cherry'])
+
+    ListStore.appendIfUnique(store, 'date')
+    expect(store.value).toEqual(['apple', 'banana', 'cherry', 'date'])
   })
 })

@@ -31,14 +31,24 @@ export class StoreUpdaterBoolean {
   setFalse() {
     this.update(false)
   }
+
+  isTrue(): boolean {
+    return this.value === true
+  }
+
+  isFalse(): boolean {
+    return this.value === false
+  }
 }
 
 export const booleanUpdater = (store: Store<boolean>) =>
   new StoreUpdaterBoolean(store)
 
-export const UpdateBoolean = {
+export const BooleanStore = {
   toggle: (store: Store<boolean>) => booleanUpdater(store).toggle(),
   setTrue: (store: Store<boolean>) => booleanUpdater(store).setTrue(),
   setFalse: (store: Store<boolean>) => booleanUpdater(store).setFalse(),
   reset: (store: Store<boolean>) => booleanUpdater(store).reset(),
+  isTrue: (store: Store<boolean>): boolean => booleanUpdater(store).isTrue(),
+  isFalse: (store: Store<boolean>): boolean => booleanUpdater(store).isFalse(),
 }

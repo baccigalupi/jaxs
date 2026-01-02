@@ -1,7 +1,7 @@
-import { ArrayModifiers } from './state/updaters/array'
-import { UpdateBoolean } from './state/updaters/boolean'
-import { UpdateList } from './state/updaters/list'
-import { UpdateRecord } from './state/updaters/object'
+export { ArrayModifiers } from './state/updaters/array'
+export { BooleanStore } from './state/updaters/boolean'
+export { ListStore } from './state/updaters/list'
+export { RecordStore } from './state/updaters/object'
 
 export { jsx } from './rendering/jsx'
 export { createApp } from './app/builder'
@@ -40,10 +40,3 @@ export * as routing from './app/routing'
 
 export { Is } from './state/is'
 export { Equality } from './state/equality'
-
-export const Update = {
-  RecordStore: UpdateRecord,
-  BooleanStore: UpdateBoolean,
-  ListStore: UpdateList,
-  ArrayModifiers: ArrayModifiers,
-}

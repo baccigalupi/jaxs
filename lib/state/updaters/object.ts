@@ -51,12 +51,17 @@ export class StoreUpdaterObject<T extends object> {
     const newRecord = { ...this.value, ...values }
     this.update(newRecord)
   }
+
+  attributeTruthy(name: keyof T): boolean {
+    const value = this.value[name]
+    return Boolean(value)
+  }
 }
 
 export const objectUpdater = <T extends Object>(store: Store<T>) =>
   new StoreUpdaterObject<T>(store)
 
-export const UpdateRecord = {
+export const RecordStore = {
   reset: <T>(store: Store<T>) => objectUpdater(store).reset(),
   resetAttribute: <T>(store: Store<T>, name: keyof T) =>
     objectUpdater(store).resetAttribute(name),
@@ -64,4 +69,6 @@ export const UpdateRecord = {
     objectUpdater(store).updateAttribute(name, value),
   updateAttributes: <T>(store: Store<T>, values: Partial<T>) =>
     objectUpdater(store).updateAttributes(values),
+  attributeTruthy: <T>(store: Store<T>, name: keyof T): boolean =>
+    objectUpdater(store).attributeTruthy(name),
 }

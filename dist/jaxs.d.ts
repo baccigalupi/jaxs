@@ -43,6 +43,16 @@ export declare namespace appBuilding {
   export { App }
 }
 
+export declare const ArrayModifiers: {
+  remove: <T>(originalCollection: T[], itemToRemove: T) => T[]
+  removeBy: <T>(
+    originalCollection: T[],
+    matcherFunction: (value: T) => boolean,
+  ) => T[]
+  insertAt: <T>(originalCollection: T[], index: number, item: T) => T[]
+  appendIfUnique: <T>(originalCollection: T[], item: T) => T[]
+}
+
 declare type AttributeInstructionData = {
   name: string
   value: string
@@ -64,6 +74,15 @@ declare type BindParams<T, U> = {
 }
 
 declare type BindSubscriptionList = string[]
+
+export declare const BooleanStore: {
+  toggle: (store: Store<boolean>) => void
+  setTrue: (store: Store<boolean>) => void
+  setFalse: (store: Store<boolean>) => void
+  reset: (store: Store<boolean>) => void
+  isTrue: (store: Store<boolean>) => boolean
+  isFalse: (store: Store<boolean>) => boolean
+}
 
 declare class Bound<ATTRIBUTES, STATE_MAP> {
   Template: Template<ATTRIBUTES>
@@ -420,6 +439,23 @@ declare type ListenerKit<T> = {
   payload: T
 }
 
+export declare const ListStore: {
+  push: <T>(store: Store<T[]>, element: T) => void
+  pop: <T>(store: Store<T[]>) => T
+  unshift: <T>(store: Store<T[]>, element: T) => void
+  shift: <T>(store: Store<T[]>) => T
+  sortBy: <T>(store: Store<T[]>, sorter: StoreListSorterFunction<T>) => void
+  insertAt: <T>(store: Store<T[]>, index: number, item: T) => void
+  remove: <T>(store: Store<T[]>, value: T) => void
+  removeBy: <T>(
+    store: Store<T[]>,
+    matcherFunction: (value: T) => boolean,
+  ) => void
+  reset: <T>(store: Store<T[]>) => void
+  includes: <T>(store: Store<T[]>, value: T) => boolean
+  appendIfUnique: <T>(store: Store<T[]>, item: T) => void
+}
+
 declare const locationChangeEvent = 'navigation:location-change'
 
 export declare namespace messageBus {
@@ -512,6 +548,18 @@ declare type ReactSourceObject = {
   fileName: string
   lineNumber: string
   columnNumber: string
+}
+
+export declare const RecordStore: {
+  reset: <T>(store: Store<T>) => void
+  resetAttribute: <T>(store: Store<T>, name: keyof T) => void
+  updateAttribute: <T>(
+    store: Store<T>,
+    name: keyof T,
+    value: T[keyof T],
+  ) => void
+  updateAttributes: <T>(store: Store<T>, values: Partial<T>) => void
+  attributeTruthy: <T>(store: Store<T>, name: keyof T) => boolean
 }
 
 declare type RemoveInstructionData = {
@@ -615,7 +663,7 @@ export declare class State {
 }
 
 export declare namespace state {
-  export { eventName, State, createState, Store, updaters }
+  export { eventName, State, createState, Store }
 }
 
 declare type StateTransactionUpdater = (collection: StoresCollection) => void
@@ -667,6 +715,8 @@ declare class StoreUpdaterBoolean {
   toggle(): void
   setTrue(): void
   setFalse(): void
+  isTrue(): boolean
+  isFalse(): boolean
 }
 
 declare class StoreUpdaterList<T> {
@@ -683,6 +733,8 @@ declare class StoreUpdaterList<T> {
   insertAt(index: number, item: T): void
   remove(value: T): void
   removeBy(matcherFunction: (value: T) => boolean): void
+  includes(value: T): boolean
+  appendIfUnique(item: T): void
 }
 
 declare class StoreUpdaterObject<T extends object> {
@@ -697,6 +749,7 @@ declare class StoreUpdaterObject<T extends object> {
   isValueType(key: keyof T, value: any): boolean
   resetAttribute(name: keyof T): void
   updateAttributes(values: Partial<T>): void
+  attributeTruthy(name: keyof T): boolean
 }
 
 declare type StoreUpdaterOrValue<T> = UpdaterValue<T> | StoreDataUpdater<T>
@@ -730,57 +783,10 @@ export declare type TypedTemplate<T> = (props: Props<T>) => Renderable
 
 declare type Unsubscribe = () => void
 
-export declare const Update: {
-  RecordStore: {
-    reset: <T>(store: Store<T>) => void
-    resetAttribute: <T>(store: Store<T>, name: keyof T) => void
-    updateAttribute: <T>(
-      store: Store<T>,
-      name: keyof T,
-      value: T[keyof T],
-    ) => void
-    updateAttributes: <T>(store: Store<T>, values: Partial<T>) => void
-  }
-  BooleanStore: {
-    toggle: (store: Store<boolean>) => void
-    setTrue: (store: Store<boolean>) => void
-    setFalse: (store: Store<boolean>) => void
-    reset: (store: Store<boolean>) => void
-  }
-  ListStore: {
-    push: <T>(store: Store<T[]>, element: T) => void
-    pop: <T>(store: Store<T[]>) => T
-    unshift: <T>(store: Store<T[]>, element: T) => void
-    shift: <T>(store: Store<T[]>) => T
-    sortBy: <T>(store: Store<T[]>, sorter: StoreListSorterFunction<T>) => void
-    insertAt: <T>(store: Store<T[]>, index: number, item: T) => void
-    remove: <T>(store: Store<T[]>, value: T) => void
-    removeBy: <T>(
-      store: Store<T[]>,
-      matcherFunction: (value: T) => boolean,
-    ) => void
-    reset: <T>(store: Store<T[]>) => void
-  }
-  ArrayModifiers: {
-    remove: <T>(originalCollection: T[], itemToRemove: T) => T[]
-    removeBy: <T>(
-      originalCollection: T[],
-      matcherFunction: (value: T) => boolean,
-    ) => T[]
-    insertAt: <T>(originalCollection: T[], index: number, item: T) => T[]
-  }
-}
-
 declare type UpdateEventInstructionData = {
   name: string
   sourceValue: EventListener
   targetValue: EventListener
-}
-
-declare const updaters: {
-  object: <T extends Object>(store: Store<T>) => StoreUpdaterObject<T>
-  list: <T>(store: Store<T[]>) => StoreUpdaterList<T>
-  boolean: (store: Store<boolean>) => StoreUpdaterBoolean
 }
 
 declare type UpdaterValue<T> = boolean | T | T[]
