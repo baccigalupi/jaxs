@@ -1,5 +1,10 @@
 import { expect, it, describe } from 'vitest'
-import { remove, removeBy, insertAt } from '@lib/state/updaters/array'
+import {
+  remove,
+  removeBy,
+  insertAt,
+  appendIfUnique,
+} from '@lib/state/updaters/array'
 
 describe('array updaters', () => {
   describe('remove', () => {
@@ -10,12 +15,12 @@ describe('array updaters', () => {
       expect(result).toEqual(['a', 'c'])
     })
 
-    it('returns a new array (does not mutate original)', () => {
+    it('mutates and returns the original array', () => {
       const original = ['a', 'b', 'c']
       const result = remove(original, 'b')
 
-      expect(result).not.toBe(original)
-      expect(original).toEqual(['a', 'b', 'c'])
+      expect(result).toBe(original)
+      expect(original).toEqual(['a', 'c'])
     })
   })
 
@@ -27,12 +32,12 @@ describe('array updaters', () => {
       expect(result).toEqual(['banana', 'cherry'])
     })
 
-    it('returns a new array (does not mutate original)', () => {
+    it('mutates and returns the original array', () => {
       const original = ['a', 'b', 'c', 'ab']
       const result = removeBy(original, (item) => item.includes('a'))
 
-      expect(result).not.toBe(original)
-      expect(original).toEqual(['a', 'b', 'c', 'ab'])
+      expect(result).toBe(original)
+      expect(original).toEqual(['b', 'c'])
     })
   })
 
@@ -43,12 +48,31 @@ describe('array updaters', () => {
 
       expect(result).toEqual(['a', 'b', 'c', 'd'])
     })
+
     it('mutates and returns the original array', () => {
       const original = ['a', 'b', 'c']
       const result = insertAt(original, 1, 'x')
 
       expect(result).toBe(original)
       expect(original).toEqual(['a', 'x', 'b', 'c'])
+    })
+  })
+
+  describe('appendIfUnique', () => {
+    it('appends when item is not present', () => {
+      const original = ['apple', 'banana']
+      const result = appendIfUnique(original, 'cherry')
+
+      expect(result).toBe(original)
+      expect(original).toEqual(['apple', 'banana', 'cherry'])
+    })
+
+    it('does not append duplicates', () => {
+      const original = [1, 2, 3]
+      const result = appendIfUnique(original, 2)
+
+      expect(result).toBe(original)
+      expect(original).toEqual([1, 2, 3])
     })
   })
 })

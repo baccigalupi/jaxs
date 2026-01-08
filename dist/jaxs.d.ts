@@ -51,6 +51,12 @@ export declare const ArrayModifiers: {
   ) => T[]
   insertAt: <T>(originalCollection: T[], index: number, item: T) => T[]
   appendIfUnique: <T>(originalCollection: T[], item: T) => T[]
+  push: <T>(array: T[], item: T) => number
+  pop: <T>(array: T[]) => T
+  unshift: <T>(array: T[], item: T) => number
+  shift: <T>(array: T[]) => T
+  sortBy: <T>(array: T[], sorter: (a: T, b: T) => number) => T[]
+  includes: <T>(array: T[], item: T) => boolean
 }
 
 declare type AttributeInstructionData = {

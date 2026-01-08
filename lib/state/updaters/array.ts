@@ -1,18 +1,22 @@
 export const remove = <T>(originalCollection: T[], itemToRemove: T) => {
-  return originalCollection.reduce((collection: T[], item: T) => {
-    if (item !== itemToRemove) collection.push(item)
-    return collection
-  }, [])
+  for (let i = originalCollection.length - 1; i >= 0; i--) {
+    if (originalCollection[i] === itemToRemove) {
+      originalCollection.splice(i, 1)
+    }
+  }
+  return originalCollection
 }
 
 export const removeBy = <T>(
   originalCollection: T[],
   matcherFunction: (value: T) => boolean,
 ) => {
-  return originalCollection.reduce((collection: T[], item: T) => {
-    if (!matcherFunction(item)) collection.push(item)
-    return collection
-  }, [])
+  for (let i = originalCollection.length - 1; i >= 0; i--) {
+    if (matcherFunction(originalCollection[i])) {
+      originalCollection.splice(i, 1)
+    }
+  }
+  return originalCollection
 }
 
 export const insertAt = <T>(
@@ -36,4 +40,10 @@ export const ArrayModifiers = {
   removeBy,
   insertAt,
   appendIfUnique,
+  push: <T>(array: T[], item: T) => array.push(item), // mutates
+  pop: <T>(array: T[]) => array.pop(), // mutates
+  unshift: <T>(array: T[], item: T) => array.unshift(item), // mutates
+  shift: <T>(array: T[]) => array.shift(), // mutates
+  sortBy: <T>(array: T[], sorter: (a: T, b: T) => number) => array.sort(sorter), // mutates
+  includes: <T>(array: T[], item: T) => array.includes(item), // reader
 }
