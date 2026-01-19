@@ -80,6 +80,19 @@ export class StoreUpdaterList<T> {
     appendIfUnique(list, item)
     this.update(list)
   }
+
+  findBy(matcherFunction: (value: T) => boolean) {
+    return this.value.find(matcherFunction)
+  }
+
+  replace(original: T, replacement: T) {
+    const list = this.value
+    const index = list.indexOf(original)
+    if (index !== -1) {
+      list[index] = replacement
+      this.update(list)
+    }
+  }
 }
 
 export const listUpdater = <T>(store: Store<T[]>) =>
@@ -103,4 +116,8 @@ export const ListStore = {
     listUpdater(store).includes(value),
   appendIfUnique: <T>(store: Store<T[]>, item: T) =>
     listUpdater(store).appendIfUnique(item),
+  findBy: <T>(store: Store<T[]>, matcherFunction: (value: T) => boolean) =>
+    listUpdater(store).findBy(matcherFunction),
+  replace: <T>(store: Store<T[]>, original: T, replacement: T) =>
+    listUpdater(store).replace(original, replacement),
 }

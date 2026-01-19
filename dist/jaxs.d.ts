@@ -460,6 +460,8 @@ export declare const ListStore: {
   reset: <T>(store: Store<T[]>) => void
   includes: <T>(store: Store<T[]>, value: T) => boolean
   appendIfUnique: <T>(store: Store<T[]>, item: T) => void
+  findBy: <T>(store: Store<T[]>, matcherFunction: (value: T) => boolean) => T
+  replace: <T>(store: Store<T[]>, original: T, replacement: T) => void
 }
 
 declare const locationChangeEvent = 'navigation:location-change'
@@ -741,6 +743,8 @@ declare class StoreUpdaterList<T> {
   removeBy(matcherFunction: (value: T) => boolean): void
   includes(value: T): boolean
   appendIfUnique(item: T): void
+  findBy(matcherFunction: (value: T) => boolean): T
+  replace(original: T, replacement: T): void
 }
 
 declare class StoreUpdaterObject<T extends object> {

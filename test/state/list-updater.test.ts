@@ -1,25 +1,8 @@
 import { expect, it, describe, vi } from 'vitest'
 import { State } from '@lib/state'
-import { ListStore, BooleanStore } from '@lib/jaxs'
+import { ListStore } from '@lib/jaxs'
 
 describe('adding typed stores with updaters', () => {
-  it('boolean stores come with `toggle`, `setFalse` and `setTrue`', () => {
-    const state = new State(vi.fn())
-    const store = state.create('loggedIn', false)
-
-    BooleanStore.toggle(store)
-    expect(store.value).toEqual(true)
-
-    BooleanStore.setFalse(store)
-    expect(store.value).toEqual(false)
-
-    BooleanStore.setTrue(store)
-    expect(store.value).toEqual(true)
-
-    BooleanStore.reset(store)
-    expect(store.value).toEqual(false)
-  })
-
   it('list stores come with `shift`, `unshift`, `push` and `pop`', () => {
     const state = new State(vi.fn())
     const store = state.create<string[]>('actions', [])
@@ -83,5 +66,27 @@ describe('adding typed stores with updaters', () => {
 
     ListStore.appendIfUnique(store, 'date')
     expect(store.value).toEqual(['apple', 'banana', 'cherry', 'date'])
+  })
+
+  it('list updaters can find an item via a matcher function', () => {
+    const state = new State(vi.fn())
+    const store = state.create<string[]>('fruit', [
+      'apple',
+      'banana',
+      'apricot',
+    ])
+
+    const found = ListStore.findBy(store, (item: string) =>
+      item.startsWith('a'),
+    )
+    expect(found).toEqual('apple')
+  })
+
+  it('list updaters can replace an item', () => {
+    const state = new State(vi.fn())
+    const store = state.create<string[]>('items', ['a', 'b', 'c'])
+
+    ListStore.replace(store, 'b', 'x')
+    expect(store.value).toEqual(['a', 'x', 'c'])
   })
 })
