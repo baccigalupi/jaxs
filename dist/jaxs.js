@@ -65,7 +65,7 @@ const f = (e) => new ct(e),
     isTrue: (e) => f(e).isTrue(),
     isFalse: (e) => f(e).isFalse(),
   }
-class ht {
+class lt {
   constructor(t) {
     this.store = t
   }
@@ -119,8 +119,16 @@ class ht {
     const s = this.value
     $(s, t), this.update(s)
   }
+  findBy(t) {
+    return this.value.find(t)
+  }
+  replace(t, s) {
+    const r = this.value,
+      n = r.indexOf(t)
+    n !== -1 && ((r[n] = s), this.update(r))
+  }
 }
-const m = (e) => new ht(e),
+const m = (e) => new lt(e),
   ze = {
     push: (e, t) => m(e).push(t),
     pop: (e) => m(e).pop(),
@@ -133,8 +141,10 @@ const m = (e) => new ht(e),
     reset: (e) => m(e).reset(),
     includes: (e, t) => m(e).includes(t),
     appendIfUnique: (e, t) => m(e).appendIfUnique(t),
+    findBy: (e, t) => m(e).findBy(t),
+    replace: (e, t, s) => m(e).replace(t, s),
   }
-class lt {
+class ht {
   constructor(t) {
     this.store = t
   }
@@ -173,7 +183,7 @@ class lt {
     return !!this.value[t]
   }
 }
-const b = (e) => new lt(e),
+const b = (e) => new ht(e),
   Ke = {
     reset: (e) => b(e).reset(),
     resetAttribute: (e, t) => b(e).resetAttribute(t),
@@ -183,13 +193,13 @@ const b = (e) => new lt(e),
   },
   dt = (e) => typeof e == 'boolean',
   pt = (e) => typeof e == 'number',
-  D = (e) => typeof e == 'string',
+  B = (e) => typeof e == 'string',
   v = (e) => Array.isArray(e),
   g = (e) => e !== null && !v(e) && typeof e == 'object',
   Re = {
     boolean: dt,
     number: pt,
-    string: D,
+    string: B,
     array: v,
     object: g,
   },
@@ -202,7 +212,7 @@ const b = (e) => new lt(e),
         const n = e
         n.value !== r && (n.value = r)
       } else
-        D(r) && r.trim() === '' ? e.removeAttribute(s) : e.setAttribute(s, r)
+        B(r) && r.trim() === '' ? e.removeAttribute(s) : e.setAttribute(s, r)
     }
   },
   bt = (e, t, s) => {
@@ -311,9 +321,9 @@ class wt {
 const Nt = (e) => typeof e == 'string' || typeof e == 'number',
   _t = (e) => new wt(e),
   St = (e) => (Nt(e) ? _t(e) : e),
-  P = (e) => Tt(e).map(St).flat(),
+  D = (e) => Tt(e).map(St).flat(),
   Tt = (e) => (Array.isArray(e) ? e.flat() : e ? [e] : []),
-  B = (e, t = {}) => P(e || t.children || []),
+  P = (e, t = {}) => D(e || t.children || []),
   jt = (e, t = '') => {
     const s = {},
       r = {}
@@ -335,7 +345,7 @@ const Nt = (e) => typeof e == 'string' || typeof e == 'number',
   Ot = (e, t, s = '') => (t == null ? s : t.toString()),
   Mt = (e, t) => {
     const s = e || {},
-      r = B(t, s)
+      r = P(t, s)
     return (s.children = s.children || r), s
   },
   F = (e, t, s, r = []) => e.reduce(kt(t, s), r).flat(),
@@ -347,7 +357,7 @@ const Nt = (e) => typeof e == 'string' || typeof e == 'number',
       : s
 class V {
   constructor(t) {
-    this.collection = P(t)
+    this.collection = D(t)
   }
   render(t, s) {
     this.parentElement = s
@@ -389,7 +399,7 @@ class $t {
     return `${this.type}${t}${s}${r}`
   }
 }
-class Dt {
+class Bt {
   constructor(t, s, r = []) {
     this.type = t
     const { events: n, attributes: i } = jt(s)
@@ -417,13 +427,13 @@ class Dt {
     return new $t(this.type, this.attributes).generate()
   }
 }
-const Pt = (e, t, ...s) =>
-  typeof e == 'string' ? new Dt(e, t, s) : e(Mt(t, s))
-Pt.fragment = (e, t) => {
-  const s = B(t, e)
+const Dt = (e, t, ...s) =>
+  typeof e == 'string' ? new Bt(e, t, s) : e(Mt(t, s))
+Dt.fragment = (e, t) => {
+  const s = P(t, e)
   return new V(s)
 }
-class Bt {
+class Pt {
   constructor(t, s, r) {
     ;(this.template = t),
       (this.selector = s),
@@ -449,7 +459,7 @@ class Bt {
   }
 }
 const Ft = (e, t, s) => {
-    const r = new Bt(e, t, s)
+    const r = new Pt(e, t, s)
     return r.renderAndAttach(s), r
   },
   L = 'go-to-href',
@@ -504,12 +514,12 @@ const Ft = (e, t, s) => {
       { host: n, pathname: i, search: a } = r.location,
       c = i,
       u = I(a),
-      l = {
+      h = {
         host: n,
         path: c,
         query: u,
       }
-    t.store('route').update(l), s(K, l)
+    t.store('route').update(h), s(K, h)
   },
   G = (e) => {
     const { subscribe: t } = e
@@ -1057,37 +1067,37 @@ const j = (e) => {
       i = n.length,
       a = t.attributes,
       c = a.length
-    let u, l, d
+    let u, h, d
     for (u = 0; u < i; u++) {
       d = null
-      const h = n.item(u)
-      if (h) {
-        for (l = 0; l < c; l++) {
-          const p = a.item(l)
-          if (p && h.name == p.name) {
+      const l = n.item(u)
+      if (l) {
+        for (h = 0; h < c; h++) {
+          const p = a.item(h)
+          if (p && l.name == p.name) {
             d = p
             break
           }
         }
         d
-          ? h.value !== d.value &&
+          ? l.value !== d.value &&
             r.push(
               Qt(e, t, {
-                name: h.name,
+                name: l.name,
                 value: d.value,
                 isSvg: s,
               }),
             )
-          : r.push(Ht(e, t, { name: h.name, isSvg: s }))
+          : r.push(Ht(e, t, { name: l.name, isSvg: s }))
       }
     }
     for (u = 0; u < c; u++) {
       d = null
-      const h = a.item(u)
-      if (h) {
-        for (l = 0; l < i; l++) {
-          const p = n.item(l)
-          if (p && p.name == h.name) {
+      const l = a.item(u)
+      if (l) {
+        for (h = 0; h < i; h++) {
+          const p = n.item(h)
+          if (p && p.name == l.name) {
             d = p
             break
           }
@@ -1095,8 +1105,8 @@ const j = (e) => {
         d ||
           r.push(
             Ct(e, t, {
-              name: h.name,
-              value: h.value,
+              name: l.name,
+              value: l.value,
               isSvg: s,
             }),
           )
@@ -1113,13 +1123,13 @@ const j = (e) => {
     return (
       i.forEach((c) => {
         const u = r[c],
-          l = n[c]
-        l
-          ? l.busEvent !== u.busEvent &&
+          h = n[c]
+        h
+          ? h.busEvent !== u.busEvent &&
             s.push(
               Yt(e, t, {
                 name: c,
-                targetValue: l.listener,
+                targetValue: h.listener,
                 sourceValue: u.listener,
               }),
             )
@@ -1132,12 +1142,12 @@ const j = (e) => {
       }),
       a.forEach((c) => {
         const u = r[c],
-          l = n[c]
+          h = n[c]
         u ||
           s.push(
             Xt(e, t, {
-              name: l.domEvent,
-              value: l.listener,
+              name: h.domEvent,
+              value: h.listener,
             }),
           )
       }),
@@ -1179,17 +1189,17 @@ const j = (e) => {
   },
   ot = (e, t, s) => {
     const r = [],
-      n = he(e, t),
+      n = le(e, t),
       i = j(e),
       a = j(t),
       c = []
     let u = 0
     for (; u < n; u++) {
       const d = e[u],
-        h = t[u]
-      if (h && a.check(h)) {
-        const p = i.pullMatch(h)
-        a.clear(h),
+        l = t[u]
+      if (l && a.check(l)) {
+        const p = i.pullMatch(l)
+        a.clear(l),
           p.element
             ? (p.index !== u &&
                 r.push(
@@ -1200,30 +1210,30 @@ const j = (e) => {
                 ),
               c.push({
                 source: p.element,
-                target: h,
+                target: l,
               }))
             : d
               ? a.check(d)
-                ? r.push(A(h, { parent: s, index: u }))
-                : (i.clear(d), r.push(Gt(d, h)))
-              : r.push(A(h, { parent: s, index: u }))
+                ? r.push(A(l, { parent: s, index: u }))
+                : (i.clear(d), r.push(Gt(d, l)))
+              : r.push(A(l, { parent: s, index: u }))
       } else d && i.pullMatch(d).element && r.push(S(d))
     }
     i.remaining().forEach(({ element: d }) => {
       r.push(S(d))
     })
-    const l = c.reduce(
-      (d, { source: h, target: p }) => d.concat(ce(h, p, ot)),
+    const h = c.reduce(
+      (d, { source: l, target: p }) => d.concat(ce(l, p, ot)),
       [],
     )
-    return r.concat(l).sort(te)
+    return r.concat(h).sort(te)
   },
-  he = (e, t) => {
+  le = (e, t) => {
     const s = e.length,
       r = t.length
     return s > r ? s : r
   },
-  le = (e, t, s) => {
+  he = (e, t, s) => {
     const r = ot(e, t, s)
     return (
       r.forEach((n) => {
@@ -1370,7 +1380,7 @@ class ke {
       this.parentElement = r
     }
     const t = this.generateDom(this.renderKit),
-      s = le(this.dom, t, this.parentElement)
+      s = he(this.dom, t, this.parentElement)
     this.dom = _e(s, this.dom, this.parentElement)
   }
   subscribeForRerender() {
@@ -1384,17 +1394,17 @@ class ke {
   }
 }
 const $e = (e) => e,
-  De = ({ Template: e, viewModel: t, subscriptions: s }) => (
+  Be = ({ Template: e, viewModel: t, subscriptions: s }) => (
     (s = s || []),
     (t = t || $e),
     (r) =>
       new ke({ Template: e, viewModel: t, subscriptions: s, attributes: r })
   ),
-  Pe =
+  De =
     (e) =>
     ({ path: t }) =>
       t === e,
-  Be = () => !0,
+  Pe = () => !0,
   at =
     (e) =>
     ({ route: t }) => {
@@ -1406,8 +1416,8 @@ const $e = (e) => e,
       {
         __proto__: null,
         buildRouter: at,
-        catchAll: Be,
-        exactPathMatch: Pe,
+        catchAll: Pe,
+        exactPathMatch: De,
       },
       Symbol.toStringTag,
       { value: 'Module' },
@@ -1418,7 +1428,7 @@ const $e = (e) => e,
   }),
   Qe = (e) => {
     const t = at(e)
-    return De({
+    return Be({
       Template: ({ route: r }) => (t({ route: r }) || Fe)(),
       subscriptions: ['route'],
     })
@@ -1449,9 +1459,9 @@ export {
   ze as ListStore,
   Ke as RecordStore,
   Ue as appBuilding,
-  De as bind,
+  Be as bind,
   Ge as createApp,
-  Pt as jsx,
+  Dt as jsx,
   qe as messageBus,
   We as navigation,
   Qe as routedView,

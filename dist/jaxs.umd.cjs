@@ -122,6 +122,14 @@
       const s = this.value
       M(s, t), this.update(s)
     }
+    findBy(t) {
+      return this.value.find(t)
+    }
+    replace(t, s) {
+      const r = this.value,
+        n = r.indexOf(t)
+      n !== -1 && ((r[n] = s), this.update(r))
+    }
   }
   const m = (e) => new mt(e),
     bt = {
@@ -136,6 +144,8 @@
       reset: (e) => m(e).reset(),
       includes: (e, t) => m(e).includes(t),
       appendIfUnique: (e, t) => m(e).appendIfUnique(t),
+      findBy: (e, t) => m(e).findBy(t),
+      replace: (e, t, s) => m(e).replace(t, s),
     }
   class vt {
     constructor(t) {
@@ -302,11 +312,11 @@
     }
   }
   const $t = (e) => typeof e == 'string' || typeof e == 'number',
-    Dt = (e) => new kt(e),
-    Pt = (e) => ($t(e) ? Dt(e) : e),
-    $ = (e) => Bt(e).map(Pt).flat(),
-    Bt = (e) => (Array.isArray(e) ? e.flat() : e ? [e] : []),
-    D = (e, t = {}) => $(e || t.children || []),
+    Bt = (e) => new kt(e),
+    Dt = (e) => ($t(e) ? Bt(e) : e),
+    $ = (e) => Pt(e).map(Dt).flat(),
+    Pt = (e) => (Array.isArray(e) ? e.flat() : e ? [e] : []),
+    B = (e, t = {}) => $(e || t.children || []),
     Ft = (e, t = '') => {
       const s = {},
         r = {}
@@ -325,17 +335,17 @@
     Vt = (e, t, s = '') => (t == null ? s : t.toString()),
     Lt = (e, t) => {
       const s = e || {},
-        r = D(t, s)
+        r = B(t, s)
       return (s.children = s.children || r), s
     },
-    P = (e, t, s, r = []) => e.reduce(zt(t, s), r).flat(),
+    D = (e, t, s, r = []) => e.reduce(zt(t, s), r).flat(),
     zt = (e, t) => (s, r) =>
       r
         ? Array.isArray(r)
-          ? P(r, e, t, s)
+          ? D(r, e, t, s)
           : (r.render(e, t).forEach((n) => s.push(n)), s)
         : s
-  class B {
+  class P {
     constructor(t) {
       this.collection = $(t)
     }
@@ -345,7 +355,7 @@
       return this.attachToParent(r), r
     }
     generateDom(t) {
-      return P(this.collection, t, this.parentElement)
+      return D(this.collection, t, this.parentElement)
     }
     attachToParent(t) {
       if (this.parentElement === void 0) return
@@ -388,7 +398,7 @@
       ;(this.events = n),
         (this.attributes = i),
         (this.isSvg = Tt(this.type, this.attributes.xmlns)),
-        (this.children = new B(r))
+        (this.children = new P(r))
     }
     render(t) {
       const s = this.generateDom(t)
@@ -412,8 +422,8 @@
   const F = (e, t, ...s) =>
     typeof e == 'string' ? new Rt(e, t, s) : e(Lt(t, s))
   F.fragment = (e, t) => {
-    const s = D(t, e)
-    return new B(s)
+    const s = B(t, e)
+    return new P(s)
   }
   class Ut {
     constructor(t, s, r) {
@@ -1131,19 +1141,19 @@
     $e = (e) => {
       ct(e)
     },
-    De = (e) => {
+    Be = (e) => {
       const t = e.data,
         s = e.source,
         { name: r, value: n } = t
       s.removeEventListener(r, n)
     },
-    Pe = (e) => {
+    De = (e) => {
       const t = e.data,
         s = e.source,
         { name: r, value: n } = t
       s.addEventListener(r, n)
     },
-    Be = (e) => {
+    Pe = (e) => {
       const t = e.data,
         s = e.source,
         { name: r, sourceValue: n, targetValue: i } = t
@@ -1163,9 +1173,9 @@
       [o.removeAttribute]: ke,
       [o.addAttribute]: ct,
       [o.updateAttribute]: $e,
-      [o.removeEvent]: De,
-      [o.addEvent]: Pe,
-      [o.updateEvent]: Be,
+      [o.removeEvent]: Be,
+      [o.addEvent]: De,
+      [o.updateEvent]: Pe,
       [o.changeValue]: Fe,
     },
     Le = (e, t, s) => {
