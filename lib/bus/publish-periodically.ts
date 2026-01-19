@@ -4,7 +4,10 @@ import type {
   GeneralPeriodicPublisherOptions,
   CustomPeriodicPublisherOptions,
   PeriodicTimerFunctionOptions,
+  PublishOnceWithTimeoutOptions,
+  Publish,
 } from '../types'
+import { eventName } from '@lib/state'
 
 const convertGeneralOptionsToCustom = <T>(
   options: GeneralPeriodicPublisherOptions<T>,
@@ -40,3 +43,21 @@ export const publishPeriodically = <T>(
   publisher.start()
   return publisher.stop
 }
+
+export const onceWithTimeout =
+  <T>(publish: Publish<T>) =>
+  (event: string, { timeout, payload }: PublishOnceWithTimeoutOptions<T>) => {
+    const timer = ({ callCount, stop }: PeriodicTimerFunctionOptions) => {
+      if (callCount > 1) stop()
+
+      return timeout
+    }
+    const publisher = new CustomPeriodicPublisher({
+      publish,
+      event,
+      payload,
+      timer,
+    })
+    publisher.start()
+    return publisher.stop
+  }
