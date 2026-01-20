@@ -1,9 +1,8 @@
 import { describe, it, vi, expect, beforeEach, afterEach } from 'vitest'
 import { PeriodicTimerFunctionOptions } from '@lib/types'
-import { publishPeriodically } from '@lib/bus/publish-periodically'
 import { createBus } from '@lib/bus'
 
-describe('publishPeriodically, when using the custom function instead', () => {
+describe('publish.periodicallyWithCustomTimer', () => {
   beforeEach(() => {
     vi.useFakeTimers()
   })
@@ -21,11 +20,7 @@ describe('publishPeriodically, when using the custom function instead', () => {
     subscribe('custom-periodic-event', () => (periodicEventCount += 1))
     const timer = () => 30 * 1000
 
-    publishPeriodically({
-      publish,
-      event: 'custom-periodic-event',
-      timer,
-    })
+    publish.periodicallyWithCustomTimer('custom-periodic-event', { timer })
 
     vi.advanceTimersByTime(29 * 1000)
     expect(periodicEventCount).toEqual(0)
@@ -43,9 +38,7 @@ describe('publishPeriodically, when using the custom function instead', () => {
     subscribe('custom-periodic-event', () => (periodicEventCount += 1))
     const timer = () => 30 * 1000
 
-    const stop = publishPeriodically({
-      publish,
-      event: 'custom-periodic-event',
+    const stop = publish.periodicallyWithCustomTimer('custom-periodic-event', {
       timer,
     })
 
@@ -73,7 +66,9 @@ describe('publishPeriodically, when using the custom function instead', () => {
       return 30 * 1000
     }
 
-    publishPeriodically({ publish, event, timer })
+    publish.periodicallyWithCustomTimer('custom-periodic-callcount-event', {
+      timer,
+    })
 
     vi.advanceTimersByTime(29 * 1000)
     expect(periodicEventCount).toEqual(0)
@@ -103,7 +98,9 @@ describe('publishPeriodically, when using the custom function instead', () => {
       return 30 * 1000
     }
 
-    publishPeriodically({ publish, event, timer })
+    publish.periodicallyWithCustomTimer('custom-periodic-callcount-event', {
+      timer,
+    })
 
     vi.advanceTimersByTime(29 * 1000)
     expect(periodicEventCount).toEqual(0)

@@ -11,17 +11,17 @@
       for (let s = e.length - 1; s >= 0; s--) e[s] === t && e.splice(s, 1)
       return e
     },
-    j = (e, t) => {
+    O = (e, t) => {
       for (let s = e.length - 1; s >= 0; s--) t(e[s]) && e.splice(s, 1)
       return e
     },
-    O = (e, t, s) => (e.splice(t, 0, s), e),
-    M = (e, t) => (e.includes(t) || e.push(t), e),
-    dt = {
+    M = (e, t, s) => (e.splice(t, 0, s), e),
+    k = (e, t) => (e.includes(t) || e.push(t), e),
+    pt = {
       remove: b,
-      removeBy: j,
-      insertAt: O,
-      appendIfUnique: M,
+      removeBy: O,
+      insertAt: M,
+      appendIfUnique: k,
       push: (e, t) => e.push(t),
       pop: (e) => e.pop(),
       unshift: (e, t) => e.unshift(t),
@@ -29,7 +29,7 @@
       sortBy: (e, t) => e.sort(t),
       includes: (e, t) => e.includes(t),
     }
-  class pt {
+  class ft {
     constructor(t) {
       this.store = t
     }
@@ -59,8 +59,8 @@
       return this.value === !1
     }
   }
-  const v = (e) => new pt(e),
-    ft = {
+  const v = (e) => new ft(e),
+    mt = {
       toggle: (e) => v(e).toggle(),
       setTrue: (e) => v(e).setTrue(),
       setFalse: (e) => v(e).setFalse(),
@@ -68,7 +68,7 @@
       isTrue: (e) => v(e).isTrue(),
       isFalse: (e) => v(e).isFalse(),
     }
-  class mt {
+  class bt {
     constructor(t) {
       this.store = t
     }
@@ -105,14 +105,14 @@
     }
     insertAt(t, s) {
       const r = this.value
-      O(r, t, s), this.update(r)
+      M(r, t, s), this.update(r)
     }
     remove(t) {
       const s = b(this.value, t)
       this.update(s)
     }
     removeBy(t) {
-      const s = j(this.value, t)
+      const s = O(this.value, t)
       this.update(s)
     }
     includes(t) {
@@ -120,7 +120,7 @@
     }
     appendIfUnique(t) {
       const s = this.value
-      M(s, t), this.update(s)
+      k(s, t), this.update(s)
     }
     findBy(t) {
       return this.value.find(t)
@@ -131,8 +131,8 @@
       n !== -1 && ((r[n] = s), this.update(r))
     }
   }
-  const m = (e) => new mt(e),
-    bt = {
+  const m = (e) => new bt(e),
+    vt = {
       push: (e, t) => m(e).push(t),
       pop: (e) => m(e).pop(),
       unshift: (e, t) => m(e).unshift(t),
@@ -147,7 +147,7 @@
       findBy: (e, t) => m(e).findBy(t),
       replace: (e, t, s) => m(e).replace(t, s),
     }
-  class vt {
+  class yt {
     constructor(t) {
       this.store = t
     }
@@ -186,22 +186,22 @@
       return !!this.value[t]
     }
   }
-  const y = (e) => new vt(e),
-    yt = {
+  const y = (e) => new yt(e),
+    gt = {
       reset: (e) => y(e).reset(),
       resetAttribute: (e, t) => y(e).resetAttribute(t),
       updateAttribute: (e, t, s) => y(e).updateAttribute(t, s),
       updateAttributes: (e, t) => y(e).updateAttributes(t),
       attributeTruthy: (e, t) => y(e).attributeTruthy(t),
     },
-    gt = (e) => typeof e == 'boolean',
-    Et = (e) => typeof e == 'number',
-    k = (e) => typeof e == 'string',
+    Et = (e) => typeof e == 'boolean',
+    At = (e) => typeof e == 'number',
+    $ = (e) => typeof e == 'string',
     g = (e) => Array.isArray(e),
     A = (e) => e !== null && !g(e) && typeof e == 'object',
-    At = { boolean: gt, number: Et, string: k, array: g, object: A },
-    wt = (e, t) => t.createElement(e),
-    Nt = (e, t) => {
+    wt = { boolean: Et, number: At, string: $, array: g, object: A },
+    Nt = (e, t) => t.createElement(e),
+    St = (e, t) => {
       for (const s in t) {
         if (s === '__self') continue
         const r = t[s].toString()
@@ -209,25 +209,25 @@
           const n = e
           n.value !== r && (n.value = r)
         } else
-          k(r) && r.trim() === '' ? e.removeAttribute(s) : e.setAttribute(s, r)
+          $(r) && r.trim() === '' ? e.removeAttribute(s) : e.setAttribute(s, r)
       }
     },
-    St = (e, t, s) => {
+    _t = (e, t, s) => {
       const r = {}
       for (const n in t) {
         const i = t[n],
-          a = (c) => s(i, c)
-        e.addEventListener(n, a),
-          (r[n] = { domEvent: n, busEvent: i, listener: a })
+          o = (c) => s(i, c)
+        e.addEventListener(n, o),
+          (r[n] = { domEvent: n, busEvent: i, listener: o })
       }
       e.eventMaps = r
     },
-    _t = (e, t, s, r) => {
-      const n = wt(e, r.document)
-      return Nt(n, t), St(n, s, r.publish), n
+    xt = (e, t, s, r) => {
+      const n = Nt(e, r.document)
+      return St(n, t), _t(n, s, r.publish), n
     },
     N = 'http://www.w3.org/2000/svg',
-    xt = {
+    Tt = {
       animate: !0,
       animateMotion: !0,
       animateTransform: !0,
@@ -291,8 +291,8 @@
       use: !0,
       view: !0,
     },
-    Tt = (e, t) => !!(xt[e] || (e === 'a' && t === N)),
-    jt = (e, t, s) => {
+    jt = (e, t) => !!(Tt[e] || (e === 'a' && t === N)),
+    Ot = (e, t, s) => {
       const r = s.createElementNS(N, e)
       for (const n in t)
         n === '__self' ||
@@ -300,54 +300,54 @@
           r.setAttributeNS(null, n, t[n].toString())
       return r
     },
-    Ot = (e) => e.namespaceURI === N,
-    Mt = (e, t) => t.createTextNode(e)
-  class kt {
+    Mt = (e) => e.namespaceURI === N,
+    kt = (e, t) => t.createTextNode(e)
+  class $t {
     constructor(t) {
       this.value = t.toString()
     }
     render(t) {
-      const s = Mt(this.value, t.document)
+      const s = kt(this.value, t.document)
       return (s.__jsx = 'TextNode'), [s]
     }
   }
-  const $t = (e) => typeof e == 'string' || typeof e == 'number',
-    Bt = (e) => new kt(e),
-    Dt = (e) => ($t(e) ? Bt(e) : e),
-    $ = (e) => Pt(e).map(Dt).flat(),
-    Pt = (e) => (Array.isArray(e) ? e.flat() : e ? [e] : []),
-    B = (e, t = {}) => $(e || t.children || []),
-    Ft = (e, t = '') => {
+  const Bt = (e) => typeof e == 'string' || typeof e == 'number',
+    Dt = (e) => new $t(e),
+    Pt = (e) => (Bt(e) ? Dt(e) : e),
+    B = (e) => Ft(e).map(Pt).flat(),
+    Ft = (e) => (Array.isArray(e) ? e.flat() : e ? [e] : []),
+    D = (e, t = {}) => B(e || t.children || []),
+    Vt = (e, t = '') => {
       const s = {},
         r = {}
       for (const n in e) {
         const i = e[n]
         if (n.match(/^on.+/i)) {
-          const a = n.slice(2).toLowerCase()
-          r[a] = i ? i.toString() : ''
+          const o = n.slice(2).toLowerCase()
+          r[o] = i ? i.toString() : ''
         } else {
           if (i === !1) continue
-          n === '__source' ? (s.__source = e.__source) : (s[n] = Vt(n, i, t))
+          n === '__source' ? (s.__source = e.__source) : (s[n] = Lt(n, i, t))
         }
       }
       return { attributes: s, events: r }
     },
-    Vt = (e, t, s = '') => (t == null ? s : t.toString()),
-    Lt = (e, t) => {
+    Lt = (e, t, s = '') => (t == null ? s : t.toString()),
+    zt = (e, t) => {
       const s = e || {},
-        r = B(t, s)
+        r = D(t, s)
       return (s.children = s.children || r), s
     },
-    D = (e, t, s, r = []) => e.reduce(zt(t, s), r).flat(),
-    zt = (e, t) => (s, r) =>
+    P = (e, t, s, r = []) => e.reduce(Kt(t, s), r).flat(),
+    Kt = (e, t) => (s, r) =>
       r
         ? Array.isArray(r)
-          ? D(r, e, t, s)
+          ? P(r, e, t, s)
           : (r.render(e, t).forEach((n) => s.push(n)), s)
         : s
-  class P {
+  class F {
     constructor(t) {
-      this.collection = $(t)
+      this.collection = B(t)
     }
     render(t, s) {
       this.parentElement = s
@@ -355,7 +355,7 @@
       return this.attachToParent(r), r
     }
     generateDom(t) {
-      return D(this.collection, t, this.parentElement)
+      return P(this.collection, t, this.parentElement)
     }
     attachToParent(t) {
       if (this.parentElement === void 0) return
@@ -363,7 +363,7 @@
       t.forEach((r) => s.appendChild(r))
     }
   }
-  class Kt {
+  class Rt {
     constructor(t, s) {
       ;(this.type = t), (this.attributes = s)
     }
@@ -391,14 +391,14 @@
       return `${this.type}${t}${s}${r}`
     }
   }
-  class Rt {
+  class Ut {
     constructor(t, s, r = []) {
       this.type = t
-      const { events: n, attributes: i } = Ft(s)
+      const { events: n, attributes: i } = Vt(s)
       ;(this.events = n),
         (this.attributes = i),
-        (this.isSvg = Tt(this.type, this.attributes.xmlns)),
-        (this.children = new P(r))
+        (this.isSvg = jt(this.type, this.attributes.xmlns)),
+        (this.children = new F(r))
     }
     render(t) {
       const s = this.generateDom(t)
@@ -408,24 +408,24 @@
       return this.isSvg ? this.generateSvgDom(t) : this.generateHtmlDom(t)
     }
     generateHtmlDom(t) {
-      const s = _t(this.type, this.attributes, this.events, t)
+      const s = xt(this.type, this.attributes, this.events, t)
       return (s.__jsx = this.jsxKey()), s
     }
     generateSvgDom(t) {
-      const s = jt(this.type, this.attributes, t.document)
+      const s = Ot(this.type, this.attributes, t.document)
       return (s.__jsx = this.jsxKey()), s
     }
     jsxKey() {
-      return new Kt(this.type, this.attributes).generate()
+      return new Rt(this.type, this.attributes).generate()
     }
   }
-  const F = (e, t, ...s) =>
-    typeof e == 'string' ? new Rt(e, t, s) : e(Lt(t, s))
-  F.fragment = (e, t) => {
-    const s = B(t, e)
-    return new P(s)
+  const V = (e, t, ...s) =>
+    typeof e == 'string' ? new Ut(e, t, s) : e(zt(t, s))
+  V.fragment = (e, t) => {
+    const s = D(t, e)
+    return new F(s)
   }
-  class Ut {
+  class qt {
     constructor(t, s, r) {
       ;(this.template = t),
         (this.selector = s),
@@ -450,45 +450,45 @@
       return this.renderKit.document.querySelector(this.selector)
     }
   }
-  const qt = (e, t, s) => {
-      const r = new Ut(e, t, s)
+  const It = (e, t, s) => {
+      const r = new qt(e, t, s)
       return r.renderAndAttach(s), r
     },
-    V = 'go-to-href',
-    L = 'go-to',
+    L = 'go-to-href',
+    z = 'go-to',
     E = 'navigation:location-change',
-    z = 'navigation:route-change',
-    It = Object.freeze(
+    K = 'navigation:route-change',
+    Jt = Object.freeze(
       Object.defineProperty(
         {
           __proto__: null,
-          linkNavigationEvent: V,
+          linkNavigationEvent: L,
           locationChangeEvent: E,
-          navigationEvent: L,
-          routeChangeEvent: z,
+          navigationEvent: z,
+          routeChangeEvent: K,
         },
         Symbol.toStringTag,
         { value: 'Module' },
       ),
     ),
-    K = (e) => {
+    R = (e) => {
       e.create('route', { host: '', path: '', query: {} })
     },
-    R = (e) => {
+    U = (e) => {
       const t = e.closest('[href]')
       return (t && t.getAttribute('href')) || ''
     },
     S = ({ payload: e, publish: t, window: s }) => {
       s.history.pushState(null, '', e), t(E, null)
     },
-    U = (e) => {
+    q = (e) => {
       const t = e.payload
       if (!t || !t.target) return
       t.preventDefault()
-      const s = R(t.target)
+      const s = U(t.target)
       S({ ...e, payload: s })
     },
-    q = (e) =>
+    I = (e) =>
       e
         .replace(/^\?/, '')
         .split('&')
@@ -497,39 +497,39 @@
           const r = s.split('=')
           return (t[r[0]] = r[1]), t
         }, {}),
-    I = (e) => {
-      const { state: t, publish: s, window: r } = e,
-        { host: n, pathname: i, search: a } = r.location,
-        c = i,
-        u = q(a),
-        d = { host: n, path: c, query: u }
-      t.store('route').update(d), s(z, d)
-    },
     J = (e) => {
+      const { state: t, publish: s, window: r } = e,
+        { host: n, pathname: i, search: o } = r.location,
+        c = i,
+        u = I(o),
+        d = { host: n, path: c, query: u }
+      t.store('route').update(d), s(K, d)
+    },
+    H = (e) => {
       const { subscribe: t } = e
-      t(V, U),
-        t(L, (s) => {
+      t(L, q),
+        t(z, (s) => {
           S(s)
         })
     },
     G = (e) => {
       const { publish: t, subscribe: s, state: r, window: n } = e
-      K(r), n.addEventListener('popstate', () => t(E, null)), s(E, I)
+      R(r), n.addEventListener('popstate', () => t(E, null)), s(E, J)
     },
-    H = (e) => {
+    W = (e) => {
       setTimeout(() => e.publish(E, null), 0)
     },
     C = (e) => {
-      G(e), J(e), H(e)
+      G(e), H(e), W(e)
     },
-    Jt = Object.freeze(
+    Ht = Object.freeze(
       Object.defineProperty(
         {
           __proto__: null,
-          publishLocation: H,
+          publishLocation: W,
           startNavigation: C,
           subscribeToHistoryChange: G,
-          subscribeToNavigation: J,
+          subscribeToNavigation: H,
         },
         Symbol.toStringTag,
         { value: 'Module' },
@@ -542,7 +542,7 @@
       publish: r,
       subscribe: n,
       bus: i,
-      state: a,
+      state: o,
       renderKit: c,
     }) {
       ;(this.window = t),
@@ -550,12 +550,12 @@
         (this.publish = r),
         (this.subscribe = n),
         (this.bus = i),
-        (this.state = a),
+        (this.state = o),
         (this.renderKit = c),
         (this.roots = [])
     }
     render(t, s) {
-      const r = qt(t, s, this.renderKit)
+      const r = It(t, s, this.renderKit)
       return this.roots.push(r), r
     }
     startNavigation() {
@@ -567,7 +567,7 @@
       value: 'Module',
     }),
   )
-  class W {
+  class X {
     constructor() {
       this.lookup = {}
     }
@@ -590,7 +590,7 @@
       this.lookup[t] || (this.lookup[t] = [])
     }
   }
-  class X {
+  class Y {
     constructor() {
       this.lookup = []
     }
@@ -605,7 +605,7 @@
       return this.lookup.filter((s) => s.matcher.test(t))
     }
   }
-  class Ht {
+  class _ {
     constructor({ publish: t, event: s, payload: r, timer: n }) {
       ;(this.setNewTimeout = () => {
         this.stopped ||
@@ -642,26 +642,28 @@
         ((this.callCount += 1), this.publish(this.event, this.payload))
     }
   }
-  const Ct = (e) => {
-      const { offset: t, period: s } = e,
-        r = ({ callCount: n }) => (t && n == 0 ? t : s)
-      return {
-        event: e.event,
-        publish: e.publish,
-        payload: e.payload,
-        timer: r,
-      }
+  const Wt = (e) => (t, s) => {
+      const { offset: r, period: n, payload: i } = s,
+        o = ({ callCount: u }) => (r && u == 0 ? r : n),
+        c = new _({ payload: i, event: t, publish: e, timer: o })
+      return c.start(), c.stop
     },
-    Qt = (e) => {
-      let t
-      'timer' in e ? (t = e) : (t = Ct(e))
-      const s = new Ht(t)
-      return s.start(), s.stop
+    Ct =
+      (e) =>
+      (t, { timeout: s, payload: r }) => {
+        const n = ({ callCount: o, stop: c }) => (o > 1 && c(), s),
+          i = new _({ publish: e, event: t, payload: r, timer: n })
+        return i.start(), i.stop
+      },
+    Qt = (e) => (t, s) => {
+      const r = { ...s, event: t, publish: e },
+        n = new _(r)
+      return n.start(), n.stop
     }
-  class Y {
+  class Z {
     constructor() {
-      ;(this.exactSubscriptions = new W()),
-        (this.fuzzySubscriptions = new X()),
+      ;(this.exactSubscriptions = new X()),
+        (this.fuzzySubscriptions = new Y()),
         (this.currentIndex = 0)
     }
     subscribe(t, s) {
@@ -696,48 +698,49 @@
       }
     }
   }
-  const Z = () => {
-      const e = new Y()
-      return {
-        bus: e,
-        publish: (r, n) => e.publish(r, n),
-        subscribe: (r, n) => e.subscribe(r, n),
-      }
+  const tt = () => {
+      const e = new Z(),
+        t = (r, n) => e.publish(r, n)
+      return (
+        (t.withTimeout = Ct(t)),
+        (t.periodically = Wt(t)),
+        (t.periodicallyWithCustomTimer = Qt(t)),
+        { bus: e, publish: t, subscribe: (r, n) => e.subscribe(r, n) }
+      )
     },
-    Wt = Object.freeze(
+    Xt = Object.freeze(
       Object.defineProperty(
         {
           __proto__: null,
-          ExactSubscriptions: W,
-          FuzzySubscriptions: X,
-          JaxsBus: Y,
-          createBus: Z,
-          publishPeriodically: Qt,
+          ExactSubscriptions: X,
+          FuzzySubscriptions: Y,
+          JaxsBus: Z,
+          createBus: tt,
         },
         Symbol.toStringTag,
         { value: 'Module' },
       ),
     ),
-    Xt = (e, t) => e === t,
-    Yt = (e, t) => Object.keys(e).length === Object.keys(t).length,
-    tt = (e, t) =>
-      !(A(e) && A(t)) || !Yt(e, t)
+    Yt = (e, t) => e === t,
+    Zt = (e, t) => Object.keys(e).length === Object.keys(t).length,
+    et = (e, t) =>
+      !(A(e) && A(t)) || !Zt(e, t)
         ? !1
         : Object.keys(e).every((s) => {
             const r = e[s],
               n = t[s]
             return w(r, n)
           }),
-    et = (e, t) =>
+    st = (e, t) =>
       !(g(e) && g(t)) || e.length !== t.length
         ? !1
         : e.every((s, r) => {
             const n = t[r]
             return w(s, n)
           }),
-    w = (e, t) => (A(e) ? tt(e, t) : g(e) ? et(e, t) : Xt(e, t)),
-    Zt = { objects: tt, arrays: et, equal: w }
-  class _ {
+    w = (e, t) => (A(e) ? et(e, t) : g(e) ? st(e, t) : Yt(e, t)),
+    te = { objects: et, arrays: st, equal: w }
+  class x {
     constructor(t) {
       ;(this.name = t.name),
         (this.parent = t.parent),
@@ -766,21 +769,21 @@
       return t(this.value)
     }
   }
-  const x = 'state'
-  class st {
+  const T = 'state'
+  class rt {
     constructor(t) {
       ;(this.publisher = t),
         (this.stores = {}),
-        (this.eventNamePrefix = x),
+        (this.eventNamePrefix = T),
         (this.notifications = new Set()),
         (this.inTransaction = !1)
     }
     create(t, s) {
-      const r = new _({ name: t, parent: this, value: s })
+      const r = new x({ name: t, parent: this, value: s })
       return (this.stores[t] = r), r
     }
     store(t) {
-      return this.stores[t] || new _({ name: t, parent: this, value: void 0 })
+      return this.stores[t] || new x({ name: t, parent: this, value: void 0 })
     }
     get(t) {
       return this.store(t).value
@@ -813,15 +816,15 @@
       return `${this.eventNamePrefix}:${t}`
     }
   }
-  const rt = (e) => new st(e),
-    te = Object.freeze(
+  const nt = (e) => new rt(e),
+    ee = Object.freeze(
       Object.defineProperty(
-        { __proto__: null, State: st, Store: _, createState: rt, eventName: x },
+        { __proto__: null, State: rt, Store: x, createState: nt, eventName: T },
         Symbol.toStringTag,
         { value: 'Module' },
       ),
     )
-  class ee {
+  class se {
     constructor(t) {
       this.setupDomEnvironment(t)
     }
@@ -851,11 +854,11 @@
           : ((this.window = window), (this.document = document))
     }
     setupBus() {
-      const { publish: t, subscribe: s, bus: r } = Z()
+      const { publish: t, subscribe: s, bus: r } = tt()
       ;(this.publish = t), (this.subscribe = s), (this.bus = r)
     }
     setupState() {
-      this.state = rt(this.publish)
+      this.state = nt(this.publish)
     }
     addBusOptions() {
       this.bus.addListenerOptions({
@@ -874,11 +877,11 @@
       }
     }
   }
-  const se = (e = {}) => {
-    const s = new ee(e).setup()
+  const re = (e = {}) => {
+    const s = new se(e).setup()
     return s.startNavigation(), s
   }
-  var o = ((e) => (
+  var a = ((e) => (
     (e[(e.removeNode = 0)] = 'removeNode'),
     (e[(e.insertNode = 1)] = 'insertNode'),
     (e[(e.replaceNode = 2)] = 'replaceNode'),
@@ -891,38 +894,38 @@
     (e[(e.changeValue = 9)] = 'changeValue'),
     (e[(e.changeText = 10)] = 'changeText'),
     e
-  ))(o || {})
-  const re = Object.freeze(
+  ))(a || {})
+  const ne = Object.freeze(
       Object.defineProperty(
-        { __proto__: null, ChangeInstructionTypes: o },
+        { __proto__: null, ChangeInstructionTypes: a },
         Symbol.toStringTag,
         { value: 'Module' },
       ),
     ),
-    ne = (e, t) => ({ source: e, target: t, type: o.changeText, data: {} }),
-    ie = (e, t) => ({ source: e, target: t, type: o.replaceNode, data: {} }),
-    oe = (e, t, s) => ({
+    ie = (e, t) => ({ source: e, target: t, type: a.changeText, data: {} }),
+    oe = (e, t) => ({ source: e, target: t, type: a.replaceNode, data: {} }),
+    ue = (e, t, s) => ({
       source: e,
       target: t,
       data: s,
-      type: o.removeAttribute,
+      type: a.removeAttribute,
     }),
-    ue = (e, t, s) => ({ source: e, target: t, data: s, type: o.addAttribute }),
-    ae = (e, t, s) => ({
+    ae = (e, t, s) => ({ source: e, target: t, data: s, type: a.addAttribute }),
+    ce = (e, t, s) => ({
       source: e,
       target: t,
       data: s,
-      type: o.updateAttribute,
+      type: a.updateAttribute,
     }),
-    ce = (e, t, s) => ({ source: e, target: t, data: s, type: o.removeEvent }),
-    le = (e, t, s) => ({ source: e, target: t, data: s, type: o.addEvent }),
-    he = (e, t, s) => ({ source: e, target: t, data: s, type: o.updateEvent }),
-    nt = (e) => ({ source: e, target: e, type: o.removeNode, data: {} }),
-    T = (e, t) => ({ target: e, source: e, type: o.insertNode, data: t }),
-    de = (e, t, s) => ({ source: e, target: t, type: o.changeValue, data: s }),
-    pe = (e, t) => (e.type > t.type ? 1 : e.type < t.type ? -1 : 0),
-    it = { index: -1 }
-  class fe {
+    le = (e, t, s) => ({ source: e, target: t, data: s, type: a.removeEvent }),
+    he = (e, t, s) => ({ source: e, target: t, data: s, type: a.addEvent }),
+    de = (e, t, s) => ({ source: e, target: t, data: s, type: a.updateEvent }),
+    it = (e) => ({ source: e, target: e, type: a.removeNode, data: {} }),
+    j = (e, t) => ({ target: e, source: e, type: a.insertNode, data: t }),
+    pe = (e, t, s) => ({ source: e, target: t, type: a.changeValue, data: s }),
+    fe = (e, t) => (e.type > t.type ? 1 : e.type < t.type ? -1 : 0),
+    ot = { index: -1 }
+  class me {
     constructor() {
       this.map = {}
     }
@@ -937,7 +940,7 @@
     pullMatch(t) {
       const s = t && t.__jsx
       return !s || !(this.map[s] && this.map[s].length)
-        ? it
+        ? ot
         : this.map[s].shift()
     }
     clear(t) {
@@ -954,23 +957,23 @@
       return Object.values(this.map).flat()
     }
   }
-  const ot = (e) => {
-      const t = new fe()
+  const ut = (e) => {
+      const t = new me()
       return t.populate(e), t
     },
-    ut = (e, t, s = !1) => {
+    at = (e, t, s = !1) => {
       const r = [],
         n = e.attributes,
         i = n.length,
-        a = t.attributes,
-        c = a.length
+        o = t.attributes,
+        c = o.length
       let u, d, p
       for (u = 0; u < i; u++) {
         p = null
         const h = n.item(u)
         if (h) {
           for (d = 0; d < c; d++) {
-            const f = a.item(d)
+            const f = o.item(d)
             if (f && h.name == f.name) {
               p = f
               break
@@ -978,13 +981,13 @@
           }
           p
             ? h.value !== p.value &&
-              r.push(ae(e, t, { name: h.name, value: p.value, isSvg: s }))
-            : r.push(oe(e, t, { name: h.name, isSvg: s }))
+              r.push(ce(e, t, { name: h.name, value: p.value, isSvg: s }))
+            : r.push(ue(e, t, { name: h.name, isSvg: s }))
         }
       }
       for (u = 0; u < c; u++) {
         p = null
-        const h = a.item(u)
+        const h = o.item(u)
         if (h) {
           for (d = 0; d < i; d++) {
             const f = n.item(d)
@@ -993,17 +996,17 @@
               break
             }
           }
-          p || r.push(ue(e, t, { name: h.name, value: h.value, isSvg: s }))
+          p || r.push(ae(e, t, { name: h.name, value: h.value, isSvg: s }))
         }
       }
       return r
     },
-    me = (e, t) => {
+    be = (e, t) => {
       const s = [],
         r = e.eventMaps,
         n = t.eventMaps,
         i = Object.keys(r),
-        a = Object.keys(n)
+        o = Object.keys(n)
       return (
         i.forEach((c) => {
           const u = r[c],
@@ -1011,204 +1014,204 @@
           d
             ? d.busEvent !== u.busEvent &&
               s.push(
-                he(e, t, {
+                de(e, t, {
                   name: c,
                   targetValue: d.listener,
                   sourceValue: u.listener,
                 }),
               )
-            : s.push(ce(e, t, { name: u.domEvent, value: u.listener }))
+            : s.push(le(e, t, { name: u.domEvent, value: u.listener }))
         }),
-        a.forEach((c) => {
+        o.forEach((c) => {
           const u = r[c],
             d = n[c]
-          u || s.push(le(e, t, { name: d.domEvent, value: d.listener }))
+          u || s.push(he(e, t, { name: d.domEvent, value: d.listener }))
         }),
         s
       )
     },
-    be = (e) => e.tagName !== 'INPUT',
-    ve = (e, t) => e.value === t.value,
-    ye = (e, t) => {
-      if (be(e) || ve(e, t)) return []
+    ve = (e) => e.tagName !== 'INPUT',
+    ye = (e, t) => e.value === t.value,
+    ge = (e, t) => {
+      if (ve(e) || ye(e, t)) return []
       const s = e,
         r = t
-      return [de(s, r, { name: 'value', value: r.value })]
+      return [pe(s, r, { name: 'value', value: r.value })]
     },
-    ge = (e, t) => {
-      const s = ut(e, t),
-        r = me(e, t),
-        n = ye(e, t)
+    Ee = (e, t) => {
+      const s = at(e, t),
+        r = be(e, t),
+        n = ge(e, t)
       return s.concat(r).concat(n)
     },
-    Ee = (e, t) => ut(e, t, !0),
-    Ae = (e, t) => (e.textContent !== t.textContent ? [ne(e, t)] : []),
-    we = (e, t, s) => {
+    Ae = (e, t) => at(e, t, !0),
+    we = (e, t) => (e.textContent !== t.textContent ? [ie(e, t)] : []),
+    Ne = (e, t, s) => {
       let r = []
-      if (e.nodeType === 1 && Ot(e)) {
+      if (e.nodeType === 1 && Mt(e)) {
         const n = e,
           i = t,
-          a = Ee(n, i),
+          o = Ae(n, i),
           c = s(n.childNodes, i.childNodes, n)
-        r = a.concat(c)
+        r = o.concat(c)
       } else if (e.nodeType === 1) {
         const n = e,
           i = t,
-          a = ge(n, i),
+          o = Ee(n, i),
           c = s(n.childNodes, i.childNodes, n)
-        r = a.concat(c)
-      } else e.nodeType === 3 && (r = Ae(e, t))
+        r = o.concat(c)
+      } else e.nodeType === 3 && (r = we(e, t))
       return r
     },
-    at = (e, t, s) => {
+    ct = (e, t, s) => {
       const r = [],
-        n = Ne(e, t),
-        i = ot(e),
-        a = ot(t),
+        n = Se(e, t),
+        i = ut(e),
+        o = ut(t),
         c = []
       let u = 0
       for (; u < n; u++) {
         const p = e[u],
           h = t[u]
-        if (h && a.check(h)) {
+        if (h && o.check(h)) {
           const f = i.pullMatch(h)
-          a.clear(h),
+          o.clear(h),
             f.element
-              ? (f.index !== u && r.push(T(f.element, { parent: s, index: u })),
+              ? (f.index !== u && r.push(j(f.element, { parent: s, index: u })),
                 c.push({ source: f.element, target: h }))
               : p
-                ? a.check(p)
-                  ? r.push(T(h, { parent: s, index: u }))
-                  : (i.clear(p), r.push(ie(p, h)))
-                : r.push(T(h, { parent: s, index: u }))
-        } else p && i.pullMatch(p).element && r.push(nt(p))
+                ? o.check(p)
+                  ? r.push(j(h, { parent: s, index: u }))
+                  : (i.clear(p), r.push(oe(p, h)))
+                : r.push(j(h, { parent: s, index: u }))
+        } else p && i.pullMatch(p).element && r.push(it(p))
       }
       i.remaining().forEach(({ element: p }) => {
-        r.push(nt(p))
+        r.push(it(p))
       })
       const d = c.reduce(
-        (p, { source: h, target: f }) => p.concat(we(h, f, at)),
+        (p, { source: h, target: f }) => p.concat(Ne(h, f, ct)),
         [],
       )
-      return r.concat(d).sort(pe)
+      return r.concat(d).sort(fe)
     },
-    Ne = (e, t) => {
+    Se = (e, t) => {
       const s = e.length,
         r = t.length
       return s > r ? s : r
     },
-    Se = (e, t, s) => {
-      const r = at(e, t, s)
+    _e = (e, t, s) => {
+      const r = ct(e, t, s)
       return (
         r.forEach((n) => {
-          _e(n)
+          xe(n)
         }),
         r
       )
     },
-    _e = (e) => {
-      ;(Ve[e.type] || xe)(e)
+    xe = (e) => {
+      ;(Le[e.type] || Te)(e)
     },
-    xe = (e) => {},
-    Te = (e) => {
+    Te = (e) => {},
+    je = (e) => {
       const { source: t, target: s } = e
       t.nodeValue = s.textContent
     },
-    je = (e) => {
+    Oe = (e) => {
       const { source: t } = e
       t.remove()
     },
-    Oe = (e) => {
+    Me = (e) => {
       const { target: t, data: s } = e,
         { parent: r, index: n } = s,
         i = r.childNodes[n]
       i ? i && i !== t && r.insertBefore(t, i) : r.appendChild(t)
     },
-    Me = (e) => {
+    ke = (e) => {
       const { source: t, target: s } = e
       t.replaceWith(s)
     },
-    ke = (e) => {
+    $e = (e) => {
       const { source: t, data: s } = e,
         { name: r, isSvg: n } = s
       n ? t.removeAttributeNS(null, r) : t.removeAttribute(r)
     },
-    ct = (e) => {
+    lt = (e) => {
       const { source: t, data: s } = e,
         { name: r, value: n, isSvg: i } = s
       i ? t.setAttributeNS(null, r, n) : t.setAttribute(r, n)
     },
-    $e = (e) => {
-      ct(e)
-    },
     Be = (e) => {
-      const t = e.data,
-        s = e.source,
-        { name: r, value: n } = t
-      s.removeEventListener(r, n)
+      lt(e)
     },
     De = (e) => {
       const t = e.data,
         s = e.source,
         { name: r, value: n } = t
-      s.addEventListener(r, n)
+      s.removeEventListener(r, n)
     },
     Pe = (e) => {
+      const t = e.data,
+        s = e.source,
+        { name: r, value: n } = t
+      s.addEventListener(r, n)
+    },
+    Fe = (e) => {
       const t = e.data,
         s = e.source,
         { name: r, sourceValue: n, targetValue: i } = t
       s.removeEventListener(r, n), s.addEventListener(r, i)
     },
-    Fe = (e) => {
+    Ve = (e) => {
       const t = e.data,
         s = e.source,
         { value: r } = t
       s.value = r
     },
-    Ve = {
-      [o.changeText]: Te,
-      [o.removeNode]: je,
-      [o.insertNode]: Oe,
-      [o.replaceNode]: Me,
-      [o.removeAttribute]: ke,
-      [o.addAttribute]: ct,
-      [o.updateAttribute]: $e,
-      [o.removeEvent]: Be,
-      [o.addEvent]: De,
-      [o.updateEvent]: Pe,
-      [o.changeValue]: Fe,
+    Le = {
+      [a.changeText]: je,
+      [a.removeNode]: Oe,
+      [a.insertNode]: Me,
+      [a.replaceNode]: ke,
+      [a.removeAttribute]: $e,
+      [a.addAttribute]: lt,
+      [a.updateAttribute]: Be,
+      [a.removeEvent]: De,
+      [a.addEvent]: Pe,
+      [a.updateEvent]: Fe,
+      [a.changeValue]: Ve,
     },
-    Le = (e, t, s) => {
+    ze = (e, t, s) => {
       const r = [...t]
       return (
         e.forEach((n) => {
-          ze(n, r, s)
+          Ke(n, r, s)
         }),
         r
       )
     },
-    ze = (e, t, s) => {
-      const r = qe[e.type]
+    Ke = (e, t, s) => {
+      const r = Ie[e.type]
       r && r(e, t, s)
     },
-    Ke = (e, t) => {
+    Re = (e, t) => {
       const { source: s } = e,
         r = t.indexOf(s)
       r >= 0 && t.splice(r, 1)
     },
-    Re = (e, t, s) => {
+    Ue = (e, t, s) => {
       const { target: r } = e,
         n = e.data,
-        { index: i, parent: a } = n
-      s === a && t.splice(i, 0, r)
+        { index: i, parent: o } = n
+      s === o && t.splice(i, 0, r)
     },
-    Ue = (e, t) => {
+    qe = (e, t) => {
       const { target: s, source: r } = e,
         n = t.indexOf(r)
       n >= 0 && (t[n] = s)
     },
-    qe = { [o.removeNode]: Ke, [o.insertNode]: Re, [o.replaceNode]: Ue }
-  class Ie {
+    Ie = { [a.removeNode]: Re, [a.insertNode]: Ue, [a.replaceNode]: qe }
+  class Je {
     constructor({
       Template: t,
       subscriptions: s,
@@ -1245,8 +1248,8 @@
         this.parentElement = r
       }
       const t = this.generateDom(this.renderKit),
-        s = Se(this.dom, t, this.parentElement)
-      this.dom = Le(s, this.dom, this.parentElement)
+        s = _e(this.dom, t, this.parentElement)
+      this.dom = ze(s, this.dom, this.parentElement)
     }
     subscribeForRerender() {
       const { subscribe: t } = this.renderKit
@@ -1255,22 +1258,22 @@
       })
     }
     eventName(t) {
-      return `${x}:${t}`
+      return `${T}:${t}`
     }
   }
-  const Je = (e) => e,
-    lt = ({ Template: e, viewModel: t, subscriptions: s }) => (
+  const He = (e) => e,
+    ht = ({ Template: e, viewModel: t, subscriptions: s }) => (
       (s = s || []),
-      (t = t || Je),
+      (t = t || He),
       (r) =>
-        new Ie({ Template: e, viewModel: t, subscriptions: s, attributes: r })
+        new Je({ Template: e, viewModel: t, subscriptions: s, attributes: r })
     ),
     Ge =
       (e) =>
       ({ path: t }) =>
         t === e,
-    He = () => !0,
-    ht =
+    We = () => !0,
+    dt =
       (e) =>
       ({ route: t }) => {
         const s = e.find((r) => r.match(t))
@@ -1278,51 +1281,51 @@
       },
     Ce = Object.freeze(
       Object.defineProperty(
-        { __proto__: null, buildRouter: ht, catchAll: He, exactPathMatch: Ge },
+        { __proto__: null, buildRouter: dt, catchAll: We, exactPathMatch: Ge },
         Symbol.toStringTag,
         { value: 'Module' },
       ),
     ),
     Qe = () => ({ render: (e, t) => [] }),
-    We = (e) => {
-      const t = ht(e)
-      return lt({
+    Xe = (e) => {
+      const t = dt(e)
+      return ht({
         Template: ({ route: r }) => (t({ route: r }) || Qe)(),
         subscriptions: ['route'],
       })
     },
-    Xe = Object.freeze(
+    Ye = Object.freeze(
       Object.defineProperty(
         {
           __proto__: null,
-          createRouteState: K,
-          events: It,
-          extractQueryParams: q,
-          findHref: R,
+          createRouteState: R,
+          events: Jt,
+          extractQueryParams: I,
+          findHref: U,
           navigate: S,
-          onLinkClick: U,
-          onLocationChange: I,
-          start: Jt,
+          onLinkClick: q,
+          onLocationChange: J,
+          start: Ht,
         },
         Symbol.toStringTag,
         { value: 'Module' },
       ),
     )
-  ;(l.ArrayModifiers = dt),
-    (l.BooleanStore = ft),
-    (l.Equality = Zt),
-    (l.Is = At),
-    (l.JaxsTypes = re),
-    (l.ListStore = bt),
-    (l.RecordStore = yt),
+  ;(l.ArrayModifiers = pt),
+    (l.BooleanStore = mt),
+    (l.Equality = te),
+    (l.Is = wt),
+    (l.JaxsTypes = ne),
+    (l.ListStore = vt),
+    (l.RecordStore = gt),
     (l.appBuilding = Gt),
-    (l.bind = lt),
-    (l.createApp = se),
-    (l.jsx = F),
-    (l.messageBus = Wt),
-    (l.navigation = Xe),
-    (l.routedView = We),
+    (l.bind = ht),
+    (l.createApp = re),
+    (l.jsx = V),
+    (l.messageBus = Xt),
+    (l.navigation = Ye),
+    (l.routedView = Xe),
     (l.routing = Ce),
-    (l.state = te),
+    (l.state = ee),
     Object.defineProperty(l, Symbol.toStringTag, { value: 'Module' })
 })

@@ -3,11 +3,16 @@ import {
   BusListener,
   Unsubscribe,
   AppAdditionListenerOptions,
+  PublishExtended,
 } from '../types'
 
 import { ExactSubscriptions } from './exact-subscriptions'
 import { FuzzySubscriptions } from './fuzzy-subscriptions'
-import { publishPeriodically } from './publish-periodically'
+import {
+  onceWithTimeout,
+  periodically,
+  periodicallyWithCustomTimer,
+} from './publish-periodically'
 
 class JaxsBus {
   options?: AppAdditionListenerOptions
@@ -69,21 +74,18 @@ const createBus = () => {
   const bus = new JaxsBus()
 
   const publish = (event: string, payload: any) => bus.publish(event, payload)
+  publish.withTimeout = onceWithTimeout(publish)
+  publish.periodically = periodically(publish)
+  publish.periodicallyWithCustomTimer = periodicallyWithCustomTimer(publish)
 
   const subscribe = (matcher: BusEventMatcher, listener: BusListener<any>) =>
     bus.subscribe(matcher, listener)
 
   return {
     bus,
-    publish,
+    publish: publish as PublishExtended<any>,
     subscribe,
   }
 }
 
-export {
-  createBus,
-  JaxsBus,
-  ExactSubscriptions,
-  FuzzySubscriptions,
-  publishPeriodically,
-}
+export { createBus, JaxsBus, ExactSubscriptions, FuzzySubscriptions }
