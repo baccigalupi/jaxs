@@ -44,6 +44,17 @@ export const publishPeriodically = <T>(
   return publisher.stop
 }
 
+export const periodically = <T>(publish: Publish<T>) => {
+  return (event: string, options: PublishPeriodicallyOptions<T>) => {
+    const normalizedOptions = {
+      ...options,
+      event,
+      publish,
+    }
+    return publishPeriodically(normalizedOptions)
+  }
+}
+
 export const onceWithTimeout =
   <T>(publish: Publish<T>) =>
   (event: string, { timeout, payload }: PublishOnceWithTimeoutOptions<T>) => {

@@ -22,12 +22,6 @@ export type ListenerKit<T> = {
 export interface Publish<T> {
   (event: string, payload: T): void
 }
-export interface PublishExtended<T> extends Publish<T> {
-  withTimeout: <T>(
-    event: string,
-    options: PublishOnceWithTimeoutOptions<T>,
-  ) => Unsubscribe
-}
 
 export type BusListener<T> = (listenerKit: ListenerKit<T>) => void
 export type BusEventMatcher = string | RegExp
@@ -101,4 +95,20 @@ export type PeriodicTimerFunction = (
 export type PublishOnceWithTimeoutOptions<T> = {
   timeout: number
   payload?: T
+}
+
+export type PeriodicallyOptions<T> = {
+  period: number
+  payload?: T
+  offset?: number
+}
+export interface PublishExtended<T> extends Publish<T> {
+  withTimeout: <T>(
+    event: string,
+    options: PublishOnceWithTimeoutOptions<T>,
+  ) => Unsubscribe
+  periodically: <T>(
+    event: string,
+    options: PeriodicallyOptions<T>,
+  ) => Unsubscribe
 }

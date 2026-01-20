@@ -8,7 +8,11 @@ import {
 
 import { ExactSubscriptions } from './exact-subscriptions'
 import { FuzzySubscriptions } from './fuzzy-subscriptions'
-import { onceWithTimeout, publishPeriodically } from './publish-periodically'
+import {
+  onceWithTimeout,
+  periodically,
+  publishPeriodically,
+} from './publish-periodically'
 
 class JaxsBus {
   options?: AppAdditionListenerOptions
@@ -71,6 +75,7 @@ const createBus = () => {
 
   const publish = (event: string, payload: any) => bus.publish(event, payload)
   publish.withTimeout = onceWithTimeout(publish)
+  publish.periodically = periodically(publish)
 
   const subscribe = (matcher: BusEventMatcher, listener: BusListener<any>) =>
     bus.subscribe(matcher, listener)

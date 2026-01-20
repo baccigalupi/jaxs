@@ -1,5 +1,4 @@
 import { describe, it, vi, expect, beforeEach, afterEach } from 'vitest'
-import { publishPeriodically } from '@lib/bus/publish-periodically'
 import { createBus } from '@lib/bus'
 import { ListenerKit } from '@lib/types'
 
@@ -20,11 +19,7 @@ describe('publishPeriodically, when using the general form', () => {
     let periodicEventCount = 0
     subscribe('periodic-event', () => (periodicEventCount += 1))
 
-    publishPeriodically({
-      publish,
-      period: 30 * 1000,
-      event: 'periodic-event',
-    })
+    publish.periodically('periodic-event', { period: 30 * 1000 })
 
     vi.advanceTimersByTime(29 * 1000)
     expect(periodicEventCount).toEqual(0)
@@ -49,10 +44,8 @@ describe('publishPeriodically, when using the general form', () => {
       payloads.push(payload),
     )
 
-    publishPeriodically({
-      publish,
+    publish.periodically('periodic-event', {
       period: 30 * 1000,
-      event: 'periodic-event',
       payload: 'yo payload!',
     })
 
@@ -69,10 +62,8 @@ describe('publishPeriodically, when using the general form', () => {
     let periodicEventCount = 0
     subscribe('periodic-event', () => (periodicEventCount += 1))
 
-    const stopPublishing = publishPeriodically({
-      publish,
+    const stopPublishing = publish.periodically('periodic-event', {
       period: 30 * 1000,
-      event: 'periodic-event',
     })
 
     vi.advanceTimersByTime(60.1 * 1000)
@@ -92,10 +83,8 @@ describe('publishPeriodically, when using the general form', () => {
     let periodicEventCount = 0
     subscribe('periodic-event', () => (periodicEventCount += 1))
 
-    publishPeriodically({
-      publish,
+    publish.periodically('periodic-event', {
       period: 30 * 1000,
-      event: 'periodic-event',
       offset: 10 * 1000,
     })
 
@@ -121,10 +110,8 @@ describe('publishPeriodically, when using the general form', () => {
     let periodicEventCount = 0
     subscribe('periodic-event', () => (periodicEventCount += 1))
 
-    publishPeriodically({
-      publish,
+    publish.periodically('periodic-event', {
       period: 30 * 1000,
-      event: 'periodic-event',
       offset: 60 * 1000,
     })
 
@@ -150,10 +137,8 @@ describe('publishPeriodically, when using the general form', () => {
     let periodicEventCount = 0
     subscribe('periodic-event', () => (periodicEventCount += 1))
 
-    const stopPublishing = publishPeriodically({
-      publish,
+    const stopPublishing = publish.periodically('periodic-event', {
       period: 30 * 1000,
-      event: 'periodic-event',
       offset: 60 * 1000,
     })
 
