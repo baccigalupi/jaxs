@@ -175,7 +175,7 @@ declare type CreateAppBuilderArguments = {
 
 declare const createBus: () => {
   bus: JaxsBus
-  publish: (event: string, payload: any) => void
+  publish: PublishExtended<any>
   subscribe: (
     matcher: BusEventMatcher,
     listener: BusListener<any>,
@@ -262,14 +262,6 @@ declare class FuzzySubscriptions {
   remove<T>(subscription: FuzzySubscriptionData<T>): void
   matches(event: string): FuzzySubscriptionData<any>[]
 }
-
-declare type GeneralPeriodicOptions = {
-  period: number
-  offset?: number
-}
-
-declare type GeneralPeriodicPublisherOptions<T> =
-  RequiredPeriodicPublisherOptions<T> & GeneralPeriodicOptions
 
 declare type InsertNodeData = {
   parent: JaxsElement
@@ -396,13 +388,14 @@ export declare namespace JaxsTypes {
     StoreListSorterFunction,
     PeriodicPublisher,
     RequiredPeriodicPublisherOptions,
-    GeneralPeriodicOptions,
     CustomPeriodicOptions,
-    GeneralPeriodicPublisherOptions,
     CustomPeriodicPublisherOptions,
-    PublishPeriodicallyOptions,
     PeriodicTimerFunctionOptions,
     PeriodicTimerFunction,
+    WithTimeoutOptions,
+    PeriodicallyOptions,
+    PeriodicallyWithCustomTimerOptions,
+    PublishExtended,
     RouteState,
     RouteMatcher,
     RenderedRoute,
@@ -467,13 +460,7 @@ export declare const ListStore: {
 declare const locationChangeEvent = 'navigation:location-change'
 
 export declare namespace messageBus {
-  export {
-    createBus,
-    JaxsBus,
-    ExactSubscriptions,
-    FuzzySubscriptions,
-    publishPeriodically,
-  }
+  export { createBus, JaxsBus, ExactSubscriptions, FuzzySubscriptions }
 }
 
 declare const navigate: ({
@@ -507,6 +494,17 @@ declare const onLinkClick: (listenerKit: ListenerKit<MouseEvent>) => void
 
 declare const onLocationChange: (listenerKit: ListenerKit<null>) => void
 
+declare type PeriodicallyOptions<T> = {
+  period: number
+  payload?: T
+  offset?: number
+}
+
+declare type PeriodicallyWithCustomTimerOptions<T> = {
+  timer: PeriodicTimerFunction
+  payload?: T
+}
+
 declare interface PeriodicPublisher<T> {
   event: string
   publish: Publish<T>
@@ -538,19 +536,25 @@ declare type PropValue =
   | ReactSourceObject
   | RenderableCollection
 
-export declare type Publish<T> = (event: string, payload: T) => void
+export declare interface Publish<T> {
+  (event: string, payload: T): void
+}
+
+declare interface PublishExtended<T> extends Publish<T> {
+  withTimeout: <T>(event: string, options: WithTimeoutOptions<T>) => Unsubscribe
+  periodically: <T>(
+    event: string,
+    options: PeriodicallyOptions<T>,
+  ) => Unsubscribe
+  periodicallyWithCustomTimer: <T>(
+    event: string,
+    options: PeriodicallyWithCustomTimerOptions<T>,
+  ) => Unsubscribe
+}
 
 declare type PublishFromDom_2 = Publish<Event>
 
 declare const publishLocation: (app: App) => void
-
-declare const publishPeriodically: <T>(
-  options: PublishPeriodicallyOptions<T>,
-) => () => void
-
-declare type PublishPeriodicallyOptions<T> =
-  | GeneralPeriodicPublisherOptions<T>
-  | CustomPeriodicPublisherOptions<T>
 
 declare type ReactSourceObject = {
   fileName: string
@@ -804,5 +808,10 @@ declare type UpdaterValue<T> = boolean | T | T[]
 declare type ViewModel<ATTRIBUTES, STORE_MAP> = (
   storeMap: STORE_MAP,
 ) => Partial<ATTRIBUTES>
+
+declare type WithTimeoutOptions<T> = {
+  timeout: number
+  payload?: T
+}
 
 export {}
