@@ -68,21 +68,11 @@ export type RequiredPeriodicPublisherOptions<T> = {
   publish: Publish<T>
   payload?: T
 }
-export type GeneralPeriodicOptions = {
-  period: number
-  offset?: number
-}
 export type CustomPeriodicOptions = {
   timer: PeriodicTimerFunction
 }
-export type GeneralPeriodicPublisherOptions<T> =
-  RequiredPeriodicPublisherOptions<T> & GeneralPeriodicOptions
 export type CustomPeriodicPublisherOptions<T> =
   RequiredPeriodicPublisherOptions<T> & CustomPeriodicOptions
-
-export type PublishPeriodicallyOptions<T> =
-  | GeneralPeriodicPublisherOptions<T>
-  | CustomPeriodicPublisherOptions<T>
 
 export type PeriodicTimerFunctionOptions = {
   timeDiff: number
@@ -92,23 +82,30 @@ export type PeriodicTimerFunctionOptions = {
 export type PeriodicTimerFunction = (
   options: PeriodicTimerFunctionOptions,
 ) => number
-export type PublishOnceWithTimeoutOptions<T> = {
+
+export type WithTimeoutOptions<T> = {
   timeout: number
   payload?: T
 }
-
 export type PeriodicallyOptions<T> = {
   period: number
   payload?: T
   offset?: number
 }
+export type PeriodicallyWithCustomTimerOptions<T> = {
+  timer: PeriodicTimerFunction
+  payload?: T
+}
 export interface PublishExtended<T> extends Publish<T> {
-  withTimeout: <T>(
-    event: string,
-    options: PublishOnceWithTimeoutOptions<T>,
-  ) => Unsubscribe
+  withTimeout: <T>(event: string, options: WithTimeoutOptions<T>) => Unsubscribe
+
   periodically: <T>(
     event: string,
     options: PeriodicallyOptions<T>,
+  ) => Unsubscribe
+
+  periodicallyWithCustomTimer: <T>(
+    event: string,
+    options: PeriodicallyWithCustomTimerOptions<T>,
   ) => Unsubscribe
 }

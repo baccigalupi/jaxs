@@ -2,7 +2,7 @@ import { describe, it, vi, expect, beforeEach, afterEach } from 'vitest'
 import { createBus } from '@lib/bus'
 import { ListenerKit } from '@lib/types'
 
-describe('publishPeriodically, when using the general form', () => {
+describe('publish.periodically, when using the general form', () => {
   beforeEach(() => {
     vi.useFakeTimers()
   })

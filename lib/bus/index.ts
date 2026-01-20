@@ -11,7 +11,7 @@ import { FuzzySubscriptions } from './fuzzy-subscriptions'
 import {
   onceWithTimeout,
   periodically,
-  publishPeriodically,
+  periodicallyWithCustomTimer,
 } from './publish-periodically'
 
 class JaxsBus {
@@ -76,6 +76,7 @@ const createBus = () => {
   const publish = (event: string, payload: any) => bus.publish(event, payload)
   publish.withTimeout = onceWithTimeout(publish)
   publish.periodically = periodically(publish)
+  publish.periodicallyWithCustomTimer = periodicallyWithCustomTimer(publish)
 
   const subscribe = (matcher: BusEventMatcher, listener: BusListener<any>) =>
     bus.subscribe(matcher, listener)
@@ -87,10 +88,4 @@ const createBus = () => {
   }
 }
 
-export {
-  createBus,
-  JaxsBus,
-  ExactSubscriptions,
-  FuzzySubscriptions,
-  publishPeriodically,
-}
+export { createBus, JaxsBus, ExactSubscriptions, FuzzySubscriptions }

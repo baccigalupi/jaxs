@@ -1,63 +1,36 @@
 import { CustomPeriodicPublisher } from './custom-periodic-publisher'
 import type {
-  PublishPeriodicallyOptions,
-  GeneralPeriodicPublisherOptions,
   CustomPeriodicPublisherOptions,
   PeriodicTimerFunctionOptions,
-  PublishOnceWithTimeoutOptions,
+  WithTimeoutOptions,
+  PeriodicallyOptions,
+  PeriodicallyWithCustomTimerOptions,
   Publish,
 } from '../types'
-import { eventName } from '@lib/state'
-
-const convertGeneralOptionsToCustom = <T>(
-  options: GeneralPeriodicPublisherOptions<T>,
-): CustomPeriodicPublisherOptions<T> => {
-  const { offset, period } = options
-  const timer = ({ callCount }: PeriodicTimerFunctionOptions) => {
-    if (offset && callCount == 0) return offset
-
-    return period
-  }
-  return {
-    event: options.event,
-    publish: options.publish,
-    payload: options.payload,
-    timer,
-  }
-}
-
-export const publishPeriodically = <T>(
-  options: PublishPeriodicallyOptions<T>,
-) => {
-  let normalizedOptions: CustomPeriodicPublisherOptions<T>
-
-  if ('timer' in options) {
-    normalizedOptions = options as CustomPeriodicPublisherOptions<T>
-  } else {
-    normalizedOptions = convertGeneralOptionsToCustom(
-      options as GeneralPeriodicPublisherOptions<T>,
-    )
-  }
-
-  const publisher = new CustomPeriodicPublisher(normalizedOptions)
-  publisher.start()
-  return publisher.stop
-}
 
 export const periodically = <T>(publish: Publish<T>) => {
-  return (event: string, options: PublishPeriodicallyOptions<T>) => {
-    const normalizedOptions = {
-      ...options,
+  return (event: string, options: PeriodicallyOptions<T>) => {
+    const { offset, period, payload } = options
+
+    const timer = ({ callCount }: PeriodicTimerFunctionOptions) => {
+      if (offset && callCount == 0) return offset
+
+      return period
+    }
+
+    const publisher = new CustomPeriodicPublisher({
+      payload,
       event,
       publish,
-    }
-    return publishPeriodically(normalizedOptions)
+      timer,
+    })
+    publisher.start()
+    return publisher.stop
   }
 }
 
-export const onceWithTimeout =
-  <T>(publish: Publish<T>) =>
-  (event: string, { timeout, payload }: PublishOnceWithTimeoutOptions<T>) => {
+export const onceWithTimeout = <T>(publish: Publish<T>) => {
+  return (event: string, { timeout, payload }: WithTimeoutOptions<T>) => {
     const timer = ({ callCount, stop }: PeriodicTimerFunctionOptions) => {
       if (callCount > 1) stop()
 
@@ -72,3 +45,17 @@ export const onceWithTimeout =
     publisher.start()
     return publisher.stop
   }
+}
+
+export const periodicallyWithCustomTimer = <T>(publish: Publish<T>) => {
+  return (event: string, options: PeriodicallyWithCustomTimerOptions<T>) => {
+    const normalizedOptions: CustomPeriodicPublisherOptions<T> = {
+      ...options,
+      event,
+      publish,
+    }
+    const publisher = new CustomPeriodicPublisher(normalizedOptions)
+    publisher.start()
+    return publisher.stop
+  }
+}
