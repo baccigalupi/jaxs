@@ -2,10 +2,11 @@ import { expect, it, describe, vi } from 'vitest'
 import { State } from '@lib/state'
 import { BooleanStore } from '@lib/jaxs'
 import { PublishExtended } from '@lib/types'
+import { mockPublish } from '@support/render-kit'
 
 describe('adding typed stores with updaters', () => {
   it('boolean stores come with `toggle`, `setFalse` and `setTrue`', () => {
-    const publish = vi.fn() as unknown as PublishExtended<any>
+    const publish = mockPublish()
     const state = new State(publish)
     const store = state.create('loggedIn', false)
 

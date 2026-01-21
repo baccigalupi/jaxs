@@ -299,7 +299,7 @@ declare class JaxsBus {
     event: string,
     payload: T,
   ): {
-    publish: any
+    publish: PublishExtended<any>
     payload: T
     state: State
     document: Document
