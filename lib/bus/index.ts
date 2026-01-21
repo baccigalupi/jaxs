@@ -4,6 +4,7 @@ import {
   Unsubscribe,
   AppAdditionListenerOptions,
   PublishExtended,
+  Publish,
 } from '../types'
 
 import { ExactSubscriptions } from './exact-subscriptions'
@@ -64,26 +65,31 @@ class JaxsBus {
     return {
       eventName: event,
       ...this.options,
-      publish: this.publish.bind(this),
+      publish: decoratePublish(this.publish.bind(this)),
       payload,
     }
   }
+}
+
+const decoratePublish = <T>(publish: Publish<any>) => {
+  const publishExtended = publish as PublishExtended<T>
+  publishExtended.withTimeout = onceWithTimeout(publish)
+  publishExtended.periodically = periodically(publish)
+  publishExtended.periodicallyWithCustomTimer =
+    periodicallyWithCustomTimer(publish)
+  return publishExtended
 }
 
 const createBus = () => {
   const bus = new JaxsBus()
 
   const publish = (event: string, payload: any) => bus.publish(event, payload)
-  publish.withTimeout = onceWithTimeout(publish)
-  publish.periodically = periodically(publish)
-  publish.periodicallyWithCustomTimer = periodicallyWithCustomTimer(publish)
-
   const subscribe = (matcher: BusEventMatcher, listener: BusListener<any>) =>
     bus.subscribe(matcher, listener)
 
   return {
     bus,
-    publish: publish as PublishExtended<any>,
+    publish: decoratePublish(publish),
     subscribe,
   }
 }
