@@ -71,8 +71,8 @@ class JaxsBus {
   }
 }
 
-const decoratePublish = <T>(publish: Publish<any>) => {
-  const publishExtended = publish as PublishExtended<T>
+const decoratePublish = (publish: Publish<any>) => {
+  const publishExtended = publish as PublishExtended<any>
   publishExtended.withTimeout = onceWithTimeout(publish)
   publishExtended.periodically = periodically(publish)
   publishExtended.periodicallyWithCustomTimer =

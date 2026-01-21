@@ -175,7 +175,7 @@ declare type CreateAppBuilderArguments = {
 
 declare const createBus: () => {
   bus: JaxsBus
-  publish: PublishExtended<unknown>
+  publish: PublishExtended<any>
   subscribe: (
     matcher: BusEventMatcher,
     listener: BusListener<any>,
@@ -299,7 +299,7 @@ declare class JaxsBus {
     event: string,
     payload: T,
   ): {
-    publish: PublishExtended<unknown>
+    publish: PublishExtended<any>
     payload: T
     state: State
     document: Document
