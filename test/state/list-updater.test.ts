@@ -1,10 +1,11 @@
 import { expect, it, describe, vi } from 'vitest'
 import { State } from '@lib/state'
 import { ListStore } from '@lib/jaxs'
+import { mockPublish } from '@support/render-kit'
 
 describe('adding typed stores with updaters', () => {
   it('list stores come with `shift`, `unshift`, `push` and `pop`', () => {
-    const state = new State(vi.fn())
+    const state = new State(mockPublish())
     const store = state.create<string[]>('actions', [])
 
     ListStore.push(store, 'pushed first')
@@ -37,7 +38,7 @@ describe('adding typed stores with updaters', () => {
   })
 
   it('list updaters can remove an item', () => {
-    const state = new State(vi.fn())
+    const state = new State(mockPublish())
     const store = state.create<string[]>('actions', ['foo', 'bar'])
 
     ListStore.remove(store, 'bar')
@@ -46,7 +47,7 @@ describe('adding typed stores with updaters', () => {
   })
 
   it('list updaters can remove an item via a function matcher', () => {
-    const state = new State(vi.fn())
+    const state = new State(mockPublish())
     const store = state.create<string[]>('actions', ['foo', 'bar', 'good'])
 
     ListStore.removeBy(store, (item: string) => item.includes('oo'))
@@ -55,7 +56,7 @@ describe('adding typed stores with updaters', () => {
   })
 
   it('list updaters can append if unique', () => {
-    const state = new State(vi.fn())
+    const state = new State(mockPublish())
     const store = state.create<string[]>('items', ['apple', 'banana'])
 
     ListStore.appendIfUnique(store, 'cherry')
@@ -69,7 +70,7 @@ describe('adding typed stores with updaters', () => {
   })
 
   it('list updaters can find an item via a matcher function', () => {
-    const state = new State(vi.fn())
+    const state = new State(mockPublish())
     const store = state.create<string[]>('fruit', [
       'apple',
       'banana',
@@ -83,7 +84,7 @@ describe('adding typed stores with updaters', () => {
   })
 
   it('list updaters can replace an item', () => {
-    const state = new State(vi.fn())
+    const state = new State(mockPublish())
     const store = state.create<string[]>('items', ['a', 'b', 'c'])
 
     ListStore.replace(store, 'b', 'x')

@@ -1,10 +1,11 @@
 import { expect, it, describe, vi } from 'vitest'
 import { State } from '@lib/state'
 import { RecordStore } from '@lib/jaxs'
+import { mockPublish } from '@support/render-kit'
 
 describe('RecordStore', () => {
   it('`updateAttribute` method updates typed attributes', () => {
-    const state = new State(vi.fn())
+    const state = new State(mockPublish())
     const store = state.create('currentUser', {
       name: 'Guest',
       loggedIn: false,
@@ -16,7 +17,7 @@ describe('RecordStore', () => {
   })
 
   it('`updateAttributes` updates all the key/values pairs', () => {
-    const state = new State(vi.fn())
+    const state = new State(mockPublish())
     const store = state.create('currentUser', {
       name: 'Guest',
       loggedIn: false,
@@ -30,7 +31,7 @@ describe('RecordStore', () => {
   })
 
   it('`resetAttribute` method resets only that attribute', () => {
-    const state = new State(vi.fn())
+    const state = new State(mockPublish())
     const store = state.create('currentUser', {
       name: 'Guest',
       loggedIn: false,
@@ -45,7 +46,7 @@ describe('RecordStore', () => {
   })
 
   it('attributeTruthy returns a boolean', () => {
-    const state = new State(vi.fn())
+    const state = new State(mockPublish())
     const store = state.create('currentUser', {
       name: 'Guest',
       loggedIn: false,

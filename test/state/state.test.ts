@@ -1,13 +1,12 @@
-import { expect, it, describe, vi } from 'vitest'
+import { expect, it, describe, vi, Mock } from 'vitest'
 import { Store } from '@lib/state/store'
 import { State } from '@lib/state'
-import { StoreUpdaterBoolean } from '@lib/state/updaters/boolean'
-import { StoreUpdaterObject } from '@lib/state/updaters/object'
-import { StoreUpdaterList } from '@lib/state/updaters/list'
+import { mockPublish } from '@support/render-kit'
+import { PublishExtended } from '@lib/types'
 
 describe('State', () => {
   it('allows the creation and reading of stores', () => {
-    const publish = vi.fn()
+    const publish = mockPublish()
     const state = new State(publish)
 
     state.create('loggedIn', false)
@@ -25,7 +24,7 @@ describe('State', () => {
   })
 
   it('makes available via `get` the underlying object state of each store', () => {
-    const publish = vi.fn()
+    const publish = mockPublish()
     const state = new State(publish)
 
     state.create('loggedIn', true)
@@ -49,7 +48,7 @@ describe('State', () => {
   })
 
   it("getting a store that doesn't yet exist returns an empty store", () => {
-    const publish = vi.fn()
+    const publish = mockPublish()
     const state = new State(publish)
 
     expect(state.store('foo')).toBeInstanceOf(Store)
@@ -57,7 +56,7 @@ describe('State', () => {
   })
 
   it("updating with a storename and value, will change it's value", () => {
-    const publish = vi.fn()
+    const publish = mockPublish()
     const state = new State(publish)
 
     state.create('loggedIn', true)
@@ -67,7 +66,7 @@ describe('State', () => {
   })
 
   it('updating with a store name and function will change the store', () => {
-    const publish = vi.fn()
+    const publish = mockPublish()
     const state = new State(publish)
 
     type User = { id: number; name: string; loggedIn: boolean }
@@ -92,7 +91,7 @@ describe('State', () => {
   })
 
   it('when updating a store, it publishes the right event', () => {
-    const publish = vi.fn()
+    const publish = mockPublish()
     const state = new State(publish)
 
     state.create('loggedIn', false)
@@ -106,7 +105,7 @@ describe('State', () => {
   })
 
   it('when changing multiple stores or attributes, you can delay publishing with a transaction', () => {
-    const publish = vi.fn()
+    const publish = mockPublish()
     const state = new State(publish)
 
     state.create('currentUser', { username: 'Ahmed', password: 'secret' })
