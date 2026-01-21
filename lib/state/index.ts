@@ -1,6 +1,6 @@
 import { Store } from './store'
 import type {
-  Publish,
+  PublishExtended,
   StateTransactionUpdater,
   StoresCollection,
 } from '../types'
@@ -8,13 +8,13 @@ import type {
 export const eventName = 'state'
 
 export class State {
-  publisher: Publish<any>
+  publisher: PublishExtended<any>
   stores: StoresCollection
   eventNamePrefix: string
   notifications: Set<string>
   inTransaction: boolean
 
-  constructor(publisher: Publish<any>) {
+  constructor(publisher: PublishExtended<any>) {
     this.publisher = publisher
     this.stores = {}
     this.eventNamePrefix = eventName
@@ -94,7 +94,7 @@ export class State {
   }
 }
 
-export const createState = (publisher: Publish<any>) => {
+export const createState = (publisher: PublishExtended<any>) => {
   return new State(publisher)
 }
 

@@ -1,4 +1,9 @@
-import type { Renderable, RenderKit, Subscribe, Publish } from '../types'
+import type {
+  Renderable,
+  RenderKit,
+  Subscribe,
+  PublishExtended,
+} from '../types'
 import type { State } from '../state'
 import type { JaxsBus } from '../bus'
 import { render, Root } from '../rendering/templates/root'
@@ -7,7 +12,7 @@ import { startNavigation } from '../navigation/start'
 export class App {
   window: Window
   document: Document
-  publish: Publish<any>
+  publish: PublishExtended<any>
   subscribe: Subscribe
   bus: JaxsBus
   state: State

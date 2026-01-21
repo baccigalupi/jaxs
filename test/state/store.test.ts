@@ -1,10 +1,11 @@
 import { expect, it, describe, vi } from 'vitest'
 import { State } from '@lib/state'
 import { Store } from '@lib/state/store'
+import { mockPublish } from '@support/render-kit'
 
 describe('Store', () => {
   it("'value' attribute will return it's underlying value", () => {
-    const parent = new State(vi.fn())
+    const parent = new State(mockPublish())
     const store = new Store({
       name: 'myToggle',
       parent,
@@ -15,7 +16,7 @@ describe('Store', () => {
   })
 
   it("can be updated via the 'update' method", () => {
-    const parent = new State(vi.fn())
+    const parent = new State(mockPublish())
     const store = new Store({
       name: 'myToggle',
       parent,
@@ -27,7 +28,7 @@ describe('Store', () => {
   })
 
   it('notifies the parent about a change if the value actually changes', () => {
-    const parent = new State(vi.fn())
+    const parent = new State(mockPublish())
     vi.spyOn(parent, 'notify')
     const store = new Store({
       name: 'myToggle',
@@ -40,7 +41,7 @@ describe('Store', () => {
   })
 
   it("direct attempts to change the value don't work", () => {
-    const parent = new State(vi.fn())
+    const parent = new State(mockPublish())
     const store = new Store({
       name: 'myToggle',
       parent,
@@ -52,7 +53,7 @@ describe('Store', () => {
   })
 
   it('all stores have a `reset` method to set to original state', () => {
-    const parent = new State(vi.fn())
+    const parent = new State(mockPublish())
     const store = new Store({
       name: 'currentUser',
       parent,
@@ -69,7 +70,7 @@ describe('Store', () => {
   })
 
   it('does not allow modification of the initial value', () => {
-    const parent = new State(vi.fn())
+    const parent = new State(mockPublish())
     const value = {
       name: 'Guest',
       loggedIn: false,
@@ -91,7 +92,7 @@ describe('Store', () => {
   })
 
   it('does not allow modification of the current value, when get is used', () => {
-    const parent = new State(vi.fn())
+    const parent = new State(mockPublish())
     const store = new Store({
       name: 'currentUser',
       parent,

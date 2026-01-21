@@ -147,7 +147,7 @@ describe('rendering change', () => {
 
     const renderKit = createRenderKit()
     const document = createTestDom()
-    const publish = renderKit.publish as Mock<PublishFromDom>
+    const publish = renderKit.publish as unknown as Mock<PublishFromDom>
     renderKit.document = document
 
     const parent = renderKit.document.getElementById(
@@ -172,7 +172,7 @@ describe('rendering change', () => {
     const renderKit = createRenderKit()
     const document = createTestDom()
     renderKit.document = document
-    const publish = renderKit.publish as Mock<PublishFromDom>
+    const publish = renderKit.publish as unknown as Mock<PublishFromDom>
 
     const parent = renderKit.document.getElementById(
       'app',

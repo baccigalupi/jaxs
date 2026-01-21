@@ -1,6 +1,6 @@
 import type { State, Store } from '@lib/types'
 
-export type PublishFromDom = Publish<Event>
+export type PublishFromDom = PublishExtended<Event>
 export type Subscribe = (
   matcher: BusEventMatcher,
   listener: BusListener<any>,
@@ -15,7 +15,7 @@ export type ListenerKit<T> = {
   state: State
   document: Document
   window: Window
-  publish: Publish<any>
+  publish: PublishExtended<any>
   eventName: string
   payload: T
 }

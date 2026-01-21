@@ -56,7 +56,7 @@ describe('Rendering static jsx', () => {
     const template = <button onClick="saveSomething">Save</button>
 
     const renderKit = createRenderKit()
-    const publish = renderKit.publish as Mock<PublishFromDom>
+    const publish = renderKit.publish as unknown as Mock<PublishFromDom>
     const [node] = template.render(renderKit)
 
     const clickEvent = new renderKit.window.MouseEvent('click')
@@ -77,7 +77,7 @@ describe('Rendering static jsx', () => {
     const template = <Link href="/foo/bar">Go get your foo!</Link>
 
     const renderKit = createRenderKit()
-    const publish = renderKit.publish as Mock<PublishFromDom>
+    const publish = renderKit.publish as unknown as Mock<PublishFromDom>
     const [node] = template.render(renderKit)
 
     expect(domToString(node)).toEqual('<a href="/foo/bar">Go get your foo!</a>')

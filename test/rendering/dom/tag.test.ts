@@ -6,8 +6,8 @@ import {
   createNode,
   createDecoratedNode,
 } from '@lib/rendering/dom/tag'
-import { createRenderKit } from '@support/render-kit'
-import { type TagAttributes } from '@lib/types'
+import { createRenderKit, mockPublish } from '@support/render-kit'
+import { PublishExtended, type TagAttributes } from '@lib/types'
 
 describe('element dom management', () => {
   describe('setAttributesOnElement', () => {
@@ -62,7 +62,7 @@ describe('element dom management', () => {
       }
       const document = createTestDom()
       const element = document.createElement('BUTTON')
-      const publish = vi.fn()
+      const publish = mockPublish()
 
       setEventsOnElement(element, events, publish)
 
@@ -78,7 +78,7 @@ describe('element dom management', () => {
       }
       const document = createTestDom()
       const element = document.createElement('BUTTON')
-      const publish = vi.fn()
+      const publish = mockPublish()
 
       setEventsOnElement(element, events, publish)
 
