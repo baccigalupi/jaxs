@@ -6,7 +6,7 @@ import { Subscribe as Subscribe_2 } from '.'
 export declare class App {
   window: Window
   document: Document
-  publish: Publish<any>
+  publish: PublishExtended<any>
   subscribe: Subscribe
   bus: JaxsBus
   state: State
@@ -184,7 +184,7 @@ declare const createBus: () => {
 
 declare const createRouteState: (state: State) => void
 
-declare const createState: (publisher: Publish<any>) => State
+declare const createState: (publisher: PublishExtended<any>) => State
 
 declare type CustomPeriodicOptions = {
   timer: PeriodicTimerFunction
@@ -433,7 +433,7 @@ declare type ListenerKit<T> = {
   state: State_2
   document: Document
   window: Window
-  publish: Publish<any>
+  publish: PublishExtended<any>
   eventName: string
   payload: T
 }
@@ -552,7 +552,7 @@ declare interface PublishExtended<T> extends Publish<T> {
   ) => Unsubscribe
 }
 
-declare type PublishFromDom_2 = Publish<Event>
+declare type PublishFromDom_2 = PublishExtended<Event>
 
 declare const publishLocation: (app: App) => void
 
@@ -656,12 +656,12 @@ declare namespace start {
 declare const startNavigation: (app: App) => void
 
 export declare class State {
-  publisher: Publish<any>
+  publisher: PublishExtended<any>
   stores: StoresCollection
   eventNamePrefix: string
   notifications: Set<string>
   inTransaction: boolean
-  constructor(publisher: Publish<any>)
+  constructor(publisher: PublishExtended<any>)
   create<T>(name: string, initialState: T): Store<T>
   store<T>(name: string): Store<T>
   get<T>(name: string): T
