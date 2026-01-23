@@ -651,7 +651,7 @@
     Qt =
       (e) =>
       (t, { timeout: s, payload: r }) => {
-        const n = ({ callCount: o, stop: c }) => (o > 1 && c(), s),
+        const n = ({ callCount: o, stop: c }) => (o >= 1 && c(), s),
           i = new _({ publish: e, event: t, payload: r, timer: n })
         return i.start(), i.stop
       },

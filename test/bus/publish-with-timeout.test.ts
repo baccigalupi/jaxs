@@ -25,7 +25,7 @@ describe('publish.withTimeout', () => {
     vi.advanceTimersByTime(1.1 * 1000)
     expect(periodicEventCount).toEqual(1)
 
-    vi.advanceTimersByTime(1.1 * 1000)
+    vi.advanceTimersByTime(30 * 1000)
     expect(periodicEventCount).toEqual(1)
   })
 })

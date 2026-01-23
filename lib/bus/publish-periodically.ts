@@ -32,7 +32,7 @@ export const periodically = <T>(publish: Publish<T>) => {
 export const onceWithTimeout = <T>(publish: Publish<T>) => {
   return (event: string, { timeout, payload }: WithTimeoutOptions<T>) => {
     const timer = ({ callCount, stop }: PeriodicTimerFunctionOptions) => {
-      if (callCount > 1) stop()
+      if (callCount >= 1) stop()
 
       return timeout
     }

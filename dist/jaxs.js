@@ -685,7 +685,7 @@ const Rt = (e) => (t, s) => {
   Ut =
     (e) =>
     (t, { timeout: s, payload: r }) => {
-      const n = ({ callCount: o, stop: a }) => (o > 1 && a(), s),
+      const n = ({ callCount: o, stop: a }) => (o >= 1 && a(), s),
         i = new _({
           publish: e,
           event: t,
