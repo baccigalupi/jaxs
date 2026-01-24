@@ -1,4 +1,4 @@
-const M = (e, t) => {
+const O = (e, t) => {
     for (let s = e.length - 1; s >= 0; s--) e[s] === t && e.splice(s, 1)
     return e
   },
@@ -9,7 +9,7 @@ const M = (e, t) => {
   $ = (e, t, s) => (e.splice(t, 0, s), e),
   D = (e, t) => (e.includes(t) || e.push(t), e),
   ze = {
-    remove: M,
+    remove: O,
     removeBy: k,
     insertAt: $,
     appendIfUnique: D,
@@ -140,7 +140,7 @@ class bt {
     $(r, t, s), this.update(r)
   }
   remove(t) {
-    const s = M(this.value, t)
+    const s = O(this.value, t)
     this.update(s)
   }
   removeBy(t) {
@@ -342,9 +342,9 @@ class Tt {
   }
 }
 const jt = (e) => typeof e == 'string' || typeof e == 'number',
-  Ot = (e) => new Tt(e),
-  Mt = (e) => (jt(e) ? Ot(e) : e),
-  V = (e) => kt(e).map(Mt).flat(),
+  Mt = (e) => new Tt(e),
+  Ot = (e) => (jt(e) ? Mt(e) : e),
+  V = (e) => kt(e).map(Ot).flat(),
   kt = (e) => (Array.isArray(e) ? e.flat() : e ? [e] : []),
   L = (e, t = {}) => V(e || t.children || []),
   $t = (e, t = '') => {
@@ -1083,7 +1083,7 @@ class re {
     return Object.values(this.map).flat()
   }
 }
-const O = (e) => {
+const M = (e) => {
     const t = new re()
     return t.populate(e), t
   },
@@ -1216,8 +1216,8 @@ const O = (e) => {
   at = (e, t, s) => {
     const r = [],
       n = de(e, t),
-      i = O(e),
-      o = O(t),
+      i = M(e),
+      o = M(t),
       a = []
     let u = 0
     for (; u < n; u++) {
@@ -1353,12 +1353,12 @@ const O = (e) => {
     const r = $e[e.type]
     r && r(e, t, s)
   },
-  Oe = (e, t) => {
+  Me = (e, t) => {
     const { source: s } = e,
       r = t.indexOf(s)
     r >= 0 && t.splice(r, 1)
   },
-  Me = (e, t, s) => {
+  Oe = (e, t, s) => {
     const { target: r } = e,
       n = e.data,
       { index: i, parent: o } = n
@@ -1370,8 +1370,8 @@ const O = (e) => {
     n >= 0 && (t[n] = s)
   },
   $e = {
-    [c.removeNode]: Oe,
-    [c.insertNode]: Me,
+    [c.removeNode]: Me,
+    [c.insertNode]: Oe,
     [c.replaceNode]: ke,
   }
 class De {
@@ -1393,12 +1393,16 @@ class De {
     )
   }
   generateDom(t) {
-    const s = {
+    const s = this.viewModel(
+        t.state.getAll(this.subscriptions),
+        this.attributes,
+      ),
+      r = {
         ...this.attributes,
-        ...this.viewModel(t.state.getAll(this.subscriptions)),
+        ...s,
       },
-      r = this.Template(s)
-    return r ? r.render(t) : []
+      n = this.Template(r)
+    return n ? n.render(t) : []
   }
   rerender() {
     if (!this.parentElement && this.dom[0]) {
@@ -1419,12 +1423,15 @@ class De {
     return `${S}:${t}`
   }
 }
-const Pe = (e) => e,
-  Be = ({ Template: e, viewModel: t, subscriptions: s }) => (
-    (s = s || []),
-    (t = t || Pe),
+const Pe = (e, t) => ({
+    ...e,
+    ...t,
+  }),
+  Be = ({ Template: e, subscriptions: t, viewModel: s }) => (
+    t || (t = []),
+    s || (s = Pe),
     (r) =>
-      new De({ Template: e, viewModel: t, subscriptions: s, attributes: r })
+      new De({ Template: e, viewModel: s, subscriptions: t, attributes: r })
   ),
   Fe =
     (e) =>

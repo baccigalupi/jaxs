@@ -17,12 +17,19 @@ describe('root templates', () => {
 
     state.create('currentUser', { name: 'Fred', age: 83 })
 
-    const Template = ({ greeting, userName }) => (
+    type TemplateProps = {
+      greeting: string
+      userName: string
+    }
+    const Template = ({ greeting, userName }: TemplateProps) => (
       <h1>
         {greeting} {userName}!
       </h1>
     )
-    const viewModel = ({ currentUser }) => ({ userName: currentUser.name })
+    type StateMap = { currentUser: { name: string; age: number } }
+    const viewModel = ({ currentUser }: StateMap) => ({
+      userName: currentUser.name,
+    })
     const BoundTemplate = bind({
       Template,
       viewModel,
@@ -43,12 +50,19 @@ describe('root templates', () => {
 
     state.create('currentUser', { name: 'Fred', age: 83 })
 
-    const Template = ({ greeting, userName }) => (
+    type TemplateProps = {
+      greeting: string
+      userName: string
+    }
+    const Template = ({ greeting, userName }: TemplateProps) => (
       <h1>
         {greeting} {userName}!
       </h1>
     )
-    const viewModel = (state) => ({ userName: state.currentUser.name })
+    type StateMap = { currentUser: { name: string; age: number } }
+    const viewModel = (state: StateMap) => ({
+      userName: state.currentUser.name,
+    })
     const BoundTemplate = bind({
       Template,
       viewModel,
@@ -78,7 +92,8 @@ describe('root templates', () => {
 
     state.create('visible', true)
 
-    const Template = ({ visible }) => {
+    type TemplateProps = { visible: boolean }
+    const Template = ({ visible }: TemplateProps) => {
       if (!visible) return
       return <h1>Hi! I'm visible.</h1>
     }
@@ -105,7 +120,8 @@ describe('root templates', () => {
 
     state.create('visible', false)
 
-    const Template = ({ visible }) => {
+    type TemplateProps = { visible: boolean }
+    const Template = ({ visible }: TemplateProps) => {
       if (!visible) return
       return <h1>Hi! I'm visible.</h1>
     }
@@ -141,7 +157,8 @@ describe('root templates', () => {
     const GuestArea = () => (
       <p class="guest-content">Oh nothing to see! Move along ...</p>
     )
-    const ContentTemplate = ({ membersOnly }) => {
+    type ContentTemplateProps = { membersOnly: boolean }
+    const ContentTemplate = ({ membersOnly }: ContentTemplateProps) => {
       if (membersOnly) return <MembersArea />
       return <GuestArea />
     }

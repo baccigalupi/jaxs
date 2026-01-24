@@ -8,12 +8,17 @@ import { createTestDom, domToString } from '@support/test-dom'
 import { createRenderKitWithBus } from '@support/render-kit'
 
 import { bind } from '@lib/rendering/templates/bound'
-import { RouteState, Template } from '@lib/types'
+import { Props, RouteState, Template } from '@lib/types'
 
 describe('Bound templates', () => {
   it('renders correctly the first time', () => {
     const renderKit = createRenderKitWithBus()
     const { state } = renderKit
+    type CurrentUser = {
+      name: string
+      email: string
+      loggedIn: boolean
+    }
     state.create('currentUser', {
       name: 'Janet',
       email: 'dammit-janet@example.com',
@@ -37,7 +42,7 @@ describe('Bound templates', () => {
 
     const subscriptions = ['currentUser']
     const viewModel = ({ currentUser }) => ({ name: currentUser.name })
-    const BoundTemplate = bind({
+    const BoundTemplate = bind<GreetingProps, { currentUser: CurrentUser }>({
       subscriptions,
       Template: Greetings,
       viewModel,
@@ -63,7 +68,8 @@ describe('Bound templates', () => {
       path: '/behind-the-wall',
     })
 
-    const Renderable = ({ greeting, name }) => (
+    type TemplateType = Props<{ greeting: string; name: string }>
+    const Template = ({ greeting, name }: Props<TemplateType>) => (
       <h1>
         {greeting} {name}
       </h1>
@@ -77,9 +83,9 @@ describe('Bound templates', () => {
     const viewModel = (stateValues: { currentUser: CurrentUser }) => {
       return { name: stateValues.currentUser.name }
     }
-    const BoundTemplate = bind({
+    const BoundTemplate = bind<TemplateType, { currentUser: CurrentUser }>({
       subscriptions: ['currentUser'],
-      Template: Renderable,
+      Template,
       viewModel,
     })
     const template = <BoundTemplate greeting="Hello" />
@@ -109,7 +115,12 @@ describe('Bound templates', () => {
       path: '/behind-the-wall',
     })
 
-    const Renderable = ({ greeting, name, headingClass }) => (
+    type TemplateType = { greeting: string; name: string; headingClass: string }
+    const Template = ({
+      greeting,
+      name,
+      headingClass,
+    }: Props<TemplateType>) => (
       <h1 class={headingClass}>
         {greeting} {name}
       </h1>
@@ -128,7 +139,7 @@ describe('Bound templates', () => {
     }
     const BoundTemplate = bind({
       subscriptions: ['currentUser'],
-      Template: Renderable,
+      Template,
       viewModel,
     })
     const template = <BoundTemplate greeting="Hello" />
@@ -151,13 +162,13 @@ describe('Bound templates', () => {
 
     state.create('visible', false)
 
-    const Renderable = ({ visible }) => {
+    const Template = ({ visible }: Props<{ visible: boolean }>) => {
       if (!visible) return
       return <h1>Hi, I'm visible!</h1>
     }
 
     const BoundTemplate = bind({
-      Template: Renderable,
+      Template,
       subscriptions: ['visible'],
     })
     const template = <BoundTemplate />
@@ -220,7 +231,10 @@ describe('Bound templates', () => {
         </div>
       )
     }
-    const Alerts = bind({ Template: AlertsTemplate, subscriptions: ['alerts'] })
+    const Alerts = bind({
+      Template: AlertsTemplate,
+      subscriptions: ['alerts'],
+    })
 
     const Page = () => {
       return (
@@ -246,5 +260,62 @@ describe('Bound templates', () => {
     expect(domToString(dom)).toEqual(
       '<div class="page"><div class="alerts"></div><p>Page content</p></div>',
     )
+  })
+
+  it('viewModel has access to the Template props', () => {
+    const renderKit = createRenderKitWithBus()
+    const { state } = renderKit
+    state.create('accordions', ['default-accordion'] as string[])
+
+    type TemplateProps = Props<{ show: boolean }>
+    const Template = ({ show, children }: TemplateProps) => {
+      if (!show) return
+
+      return <div class="accordion">{children}</div>
+    }
+
+    const viewModel = (
+      { accordions }: { accordions: string[] },
+      props: { id: string },
+    ) => {
+      return {
+        show: accordions.includes(props.id),
+      }
+    }
+
+    const BoundTemplate = bind({
+      subscriptions: ['accordions'],
+      Template,
+      viewModel,
+    })
+
+    const template = <BoundTemplate id="default-accordion">Hello</BoundTemplate>
+    const [node] = template.render(renderKit)
+
+    expect(domToString(node)).toEqual('<div class="accordion">Hello</div>')
+  })
+
+  it('allows omitting the viewModel to move all the logic incorrectly into the view layer', () => {
+    const renderKit = createRenderKitWithBus()
+    const { state } = renderKit
+    state.create('accordions', ['default-accordion'] as string[])
+
+    type TemplateProps = Props<{ accordions: string[]; id: string }>
+    const Template = ({ children, accordions, id }: TemplateProps) => {
+      const show = accordions.includes(id)
+      if (!show) return
+
+      return <div class="accordion">{children}</div>
+    }
+
+    const BoundTemplate = bind({
+      subscriptions: ['accordions'],
+      Template,
+    })
+
+    const template = <BoundTemplate id="default-accordion">Hello</BoundTemplate>
+    const [node] = template.render(renderKit)
+
+    expect(domToString(node)).toEqual('<div class="accordion">Hello</div>')
   })
 })

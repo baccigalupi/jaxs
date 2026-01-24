@@ -11,16 +11,16 @@
       for (let s = e.length - 1; s >= 0; s--) e[s] === t && e.splice(s, 1)
       return e
     },
-    O = (e, t) => {
+    M = (e, t) => {
       for (let s = e.length - 1; s >= 0; s--) t(e[s]) && e.splice(s, 1)
       return e
     },
-    M = (e, t, s) => (e.splice(t, 0, s), e),
+    O = (e, t, s) => (e.splice(t, 0, s), e),
     k = (e, t) => (e.includes(t) || e.push(t), e),
     ft = {
       remove: b,
-      removeBy: O,
-      insertAt: M,
+      removeBy: M,
+      insertAt: O,
       appendIfUnique: k,
       push: (e, t) => e.push(t),
       pop: (e) => e.pop(),
@@ -76,7 +76,7 @@
     gt = { boolean: vt, number: yt, string: $, array: y, object: w },
     Et = (e, t) => e === t,
     At = (e, t) => Object.keys(e).length === Object.keys(t).length,
-    D = (e, t) =>
+    P = (e, t) =>
       !(w(e) && w(t)) || !At(e, t)
         ? !1
         : Object.keys(e).every((s) => {
@@ -84,15 +84,15 @@
               n = t[s]
             return g(r, n)
           }),
-    P = (e, t) =>
+    D = (e, t) =>
       !(y(e) && y(t)) || e.length !== t.length
         ? !1
         : e.every((s, r) => {
             const n = t[r]
             return g(s, n)
           }),
-    g = (e, t) => (w(e) ? D(e, t) : y(e) ? P(e, t) : Et(e, t)),
-    wt = { objects: D, arrays: P, equal: g }
+    g = (e, t) => (w(e) ? P(e, t) : y(e) ? D(e, t) : Et(e, t)),
+    wt = { objects: P, arrays: D, equal: g }
   class Nt {
     constructor(t) {
       this.store = t
@@ -130,14 +130,14 @@
     }
     insertAt(t, s) {
       const r = this.value
-      M(r, t, s), this.update(r)
+      O(r, t, s), this.update(r)
     }
     remove(t) {
       const s = b(this.value, t)
       this.update(s)
     }
     removeBy(t) {
-      const s = O(this.value, t)
+      const s = M(this.value, t)
       this.update(s)
     }
     includes(t) {
@@ -231,7 +231,7 @@
           $(r) && r.trim() === '' ? e.removeAttribute(s) : e.setAttribute(s, r)
       }
     },
-    Ot = (e, t, s) => {
+    Mt = (e, t, s) => {
       const r = {}
       for (const n in t) {
         const i = t[n],
@@ -241,9 +241,9 @@
       }
       e.eventMaps = r
     },
-    Mt = (e, t, s, r) => {
+    Ot = (e, t, s, r) => {
       const n = Tt(e, r.document)
-      return jt(n, t), Ot(n, s, r.publish), n
+      return jt(n, t), Mt(n, s, r.publish), n
     },
     N = 'http://www.w3.org/2000/svg',
     kt = {
@@ -311,7 +311,7 @@
       view: !0,
     },
     $t = (e, t) => !!(kt[e] || (e === 'a' && t === N)),
-    Dt = (e, t, s) => {
+    Pt = (e, t, s) => {
       const r = s.createElementNS(N, e)
       for (const n in t)
         n === '__self' ||
@@ -319,7 +319,7 @@
           r.setAttributeNS(null, n, t[n].toString())
       return r
     },
-    Pt = (e) => e.namespaceURI === N,
+    Dt = (e) => e.namespaceURI === N,
     Bt = (e, t) => t.createTextNode(e)
   class Ft {
     constructor(t) {
@@ -427,11 +427,11 @@
       return this.isSvg ? this.generateSvgDom(t) : this.generateHtmlDom(t)
     }
     generateHtmlDom(t) {
-      const s = Mt(this.type, this.attributes, this.events, t)
+      const s = Ot(this.type, this.attributes, this.events, t)
       return (s.__jsx = this.jsxKey()), s
     }
     generateSvgDom(t) {
-      const s = Dt(this.type, this.attributes, t.document)
+      const s = Pt(this.type, this.attributes, t.document)
       return (s.__jsx = this.jsxKey()), s
     }
     jsxKey() {
@@ -1053,7 +1053,7 @@
     Ne = (e, t) => (e.textContent !== t.textContent ? [oe(e, t)] : []),
     Se = (e, t, s) => {
       let r = []
-      if (e.nodeType === 1 && Pt(e)) {
+      if (e.nodeType === 1 && Dt(e)) {
         const n = e,
           i = t,
           o = we(n, i),
@@ -1118,11 +1118,11 @@
       ;(ze[e.type] || je)(e)
     },
     je = (e) => {},
-    Oe = (e) => {
+    Me = (e) => {
       const { source: t, target: s } = e
       t.nodeValue = s.textContent
     },
-    Me = (e) => {
+    Oe = (e) => {
       const { source: t } = e
       t.remove()
     },
@@ -1136,7 +1136,7 @@
       const { source: t, target: s } = e
       t.replaceWith(s)
     },
-    De = (e) => {
+    Pe = (e) => {
       const { source: t, data: s } = e,
         { name: r, isSvg: n } = s
       n ? t.removeAttributeNS(null, r) : t.removeAttribute(r)
@@ -1146,7 +1146,7 @@
         { name: r, value: n, isSvg: i } = s
       i ? t.setAttributeNS(null, r, n) : t.setAttribute(r, n)
     },
-    Pe = (e) => {
+    De = (e) => {
       ht(e)
     },
     Be = (e) => {
@@ -1174,13 +1174,13 @@
       s.value = r
     },
     ze = {
-      [a.changeText]: Oe,
-      [a.removeNode]: Me,
+      [a.changeText]: Me,
+      [a.removeNode]: Oe,
       [a.insertNode]: ke,
       [a.replaceNode]: $e,
-      [a.removeAttribute]: De,
+      [a.removeAttribute]: Pe,
       [a.addAttribute]: ht,
-      [a.updateAttribute]: Pe,
+      [a.updateAttribute]: De,
       [a.removeEvent]: Be,
       [a.addEvent]: Fe,
       [a.updateEvent]: Ve,
@@ -1240,12 +1240,13 @@
       )
     }
     generateDom(t) {
-      const s = {
-          ...this.attributes,
-          ...this.viewModel(t.state.getAll(this.subscriptions)),
-        },
-        r = this.Template(s)
-      return r ? r.render(t) : []
+      const s = this.viewModel(
+          t.state.getAll(this.subscriptions),
+          this.attributes,
+        ),
+        r = { ...this.attributes, ...s },
+        n = this.Template(r)
+      return n ? n.render(t) : []
     }
     rerender() {
       if (!this.parentElement && this.dom[0]) {
@@ -1266,12 +1267,12 @@
       return `${T}:${t}`
     }
   }
-  const Ge = (e) => e,
-    dt = ({ Template: e, viewModel: t, subscriptions: s }) => (
-      (s = s || []),
-      (t = t || Ge),
+  const Ge = (e, t) => ({ ...e, ...t }),
+    dt = ({ Template: e, subscriptions: t, viewModel: s }) => (
+      t || (t = []),
+      s || (s = Ge),
       (r) =>
-        new He({ Template: e, viewModel: t, subscriptions: s, attributes: r })
+        new He({ Template: e, viewModel: s, subscriptions: t, attributes: r })
     ),
     We =
       (e) =>

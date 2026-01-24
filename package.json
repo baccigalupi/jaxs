@@ -2,7 +2,7 @@
   "name": "jaxs",
   "description": "Modular J/TSX application framework",
   "private": false,
-  "version": "0.9.8",
+  "version": "0.10.0",
   "type": "module",
   "scripts": {
     "build": "vite build; npm run lint",

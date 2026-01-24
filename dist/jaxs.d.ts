@@ -65,21 +65,27 @@ declare type AttributeInstructionData = {
   isSvg?: boolean
 }
 
-export declare const bind: <ATTRIBUTES, STATE_MAP>({
+export declare const bind: <
+  TemplateProps extends ComponentProps,
+  StateMap extends ComponentProps,
+  BoundProps extends ComponentProps = Partial<TemplateProps>,
+>({
   Template,
-  viewModel,
   subscriptions,
-}: BindParams<ATTRIBUTES, STATE_MAP>) => (
-  attributes: Partial<Props<ATTRIBUTES>>,
-) => Bound<unknown, unknown>
+  viewModel,
+}: BindArguments<TemplateProps, StateMap, BoundProps>) => (
+  attributes: Props<BoundProps>,
+) => Bound<ComponentProps, ComponentProps, Partial<ComponentProps>>
 
-declare type BindParams<T, U> = {
-  Template: Template<T>
-  viewModel?: ViewModel<T, U>
-  subscriptions?: BindSubscriptionList
+declare type BindArguments<
+  TemplateProps extends ComponentProps,
+  StateMap extends ComponentProps,
+  BoundProps extends ComponentProps = Partial<TemplateProps>,
+> = {
+  Template: Template<TemplateProps>
+  viewModel?: ViewModel<TemplateProps, BoundProps, StateMap>
+  subscriptions?: string[]
 }
-
-declare type BindSubscriptionList = string[]
 
 export declare const BooleanStore: {
   toggle: (store: Store<boolean>) => void
@@ -90,11 +96,15 @@ export declare const BooleanStore: {
   isFalse: (store: Store<boolean>) => boolean
 }
 
-declare class Bound<ATTRIBUTES, STATE_MAP> {
-  Template: Template<ATTRIBUTES>
-  viewModel: ViewModel<ATTRIBUTES, STATE_MAP>
-  attributes: Partial<Props<ATTRIBUTES>>
-  subscriptions: BindSubscriptionList
+declare class Bound<
+  TemplateProps extends ComponentProps,
+  StateMap extends ComponentProps,
+  BoundProps extends ComponentProps = Partial<TemplateProps>,
+> {
+  Template: Template<TemplateProps & BoundProps>
+  viewModel: ViewModel<TemplateProps, BoundProps, StateMap>
+  attributes: Props<BoundProps>
+  subscriptions: string[]
   dom: JaxsNode[]
   parentElement: JaxsElement | null
   renderKit?: RenderKit
@@ -115,6 +125,11 @@ declare class Bound<ATTRIBUTES, STATE_MAP> {
   subscribeForRerender(): void
   eventName(storeName: string): string
 }
+
+declare type BoundViewModel<TemplateProps, BoundProps, StateMap> = (
+  StateMap: StateMap,
+  props?: Props<BoundProps>,
+) => Partial<TemplateProps>
 
 declare const buildRouter: (
   pages: RenderedRoute[],
@@ -164,6 +179,8 @@ declare type CompileChildren = (
   parent: JaxsElement,
 ) => ChangeInstructions
 
+declare type ComponentProps = Record<string, unknown>
+
 export declare const createApp: (
   domEnvironment?: CreateAppBuilderArguments,
 ) => App
@@ -192,6 +209,11 @@ declare type CustomPeriodicOptions = {
 
 declare type CustomPeriodicPublisherOptions<T> =
   RequiredPeriodicPublisherOptions<T> & CustomPeriodicOptions
+
+declare type DefaultViewModel<BoundProps, StateMap> = (
+  StateMap: StateMap,
+  props: Props<BoundProps>,
+) => StateMap & Props<BoundProps>
 
 declare type DiffPair = {
   source: JaxsNode
@@ -353,10 +375,11 @@ export declare namespace JaxsTypes {
     TypedTemplate,
     Template,
     RenderableCollection,
-    StoreMap,
+    BoundViewModel,
     ViewModel,
-    BindSubscriptionList,
-    BindParams,
+    ViewModelResult,
+    ComponentProps,
+    BindArguments,
     ChangeInstructionTypes,
     RemoveInstructionData,
     AttributeInstructionData,
@@ -621,12 +644,12 @@ declare class Root {
 declare const routeChangeEvent = 'navigation:route-change'
 
 export declare const routedView: (routes: RenderedRoute[]) => (
-  attributes: Partial<
-    Props<{
+  attributes: Props<
+    Partial<{
       route: RouteState
     }>
   >,
-) => Bound<unknown, unknown>
+) => Bound<ComponentProps, ComponentProps, Partial<ComponentProps>>
 
 export declare type RouteMatcher = (routeState: RouteState) => boolean
 
@@ -706,10 +729,6 @@ declare type StoreInitializationOptions<T> = {
 }
 
 declare type StoreListSorterFunction<T> = (left: T, right: T) => number
-
-declare type StoreMap = {
-  [key: string]: any
-}
 
 declare type StoresCollection = Record<string, Store_2<any>>
 
@@ -805,9 +824,13 @@ declare type UpdateEventInstructionData = {
 
 declare type UpdaterValue<T> = boolean | T | T[]
 
-declare type ViewModel<ATTRIBUTES, STORE_MAP> = (
-  storeMap: STORE_MAP,
-) => Partial<ATTRIBUTES>
+declare type ViewModel<TemplateProps, BoundProps, StateMap> =
+  | BoundViewModel<TemplateProps, BoundProps, StateMap>
+  | DefaultViewModel<BoundProps, StateMap>
+
+declare type ViewModelResult<TemplateProps, BoundProps, StateMap> =
+  | Partial<TemplateProps>
+  | (StateMap & Props<BoundProps>)
 
 declare type WithTimeoutOptions<T> = {
   timeout: number
