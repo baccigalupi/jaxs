@@ -1,6 +1,6 @@
 /** @jsx jsx */
 /** @jsxFrag jsx.fragment */
-import { jsx, State } from '@lib/jaxs'
+import { jsx } from '@lib/jaxs'
 
 import { describe, expect, it } from 'vitest'
 import { addAppContainerToDocument, domToString } from '@support/test-dom'
