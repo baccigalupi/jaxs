@@ -5,19 +5,22 @@ import {
   Props,
   Template,
   RenderKit,
-  ViewModel,
-  BindParams,
-  BindSubscriptionList,
-  StoreMap,
   JaxsNode,
+  ViewModel,
+  ComponentProps,
+  BindArguments,
 } from '../../types'
 import { modifyDomCache } from './bound/modify-dom-cache'
 
-export class Bound<ATTRIBUTES, STATE_MAP> {
-  Template: Template<ATTRIBUTES>
-  viewModel: ViewModel<ATTRIBUTES, STATE_MAP>
-  attributes: Partial<Props<ATTRIBUTES>>
-  subscriptions: BindSubscriptionList
+export class Bound<
+  TemplateProps extends ComponentProps,
+  StateMap extends ComponentProps,
+  BoundProps extends ComponentProps = Partial<TemplateProps>,
+> {
+  Template: Template<TemplateProps & BoundProps>
+  viewModel: ViewModel<TemplateProps, BoundProps, StateMap>
+  attributes: Props<BoundProps>
+  subscriptions: string[]
   dom: JaxsNode[]
   parentElement: JaxsElement | null
   renderKit?: RenderKit
@@ -40,14 +43,17 @@ export class Bound<ATTRIBUTES, STATE_MAP> {
   }
 
   generateDom(renderKit: RenderKit) {
+    const viewModelProps = this.viewModel(
+      renderKit.state.getAll(this.subscriptions) as StateMap,
+      this.attributes,
+    ) as Props<TemplateProps>
+
     const props = {
       ...this.attributes,
-      ...this.viewModel(
-        renderKit.state.getAll(this.subscriptions) as STATE_MAP,
-      ),
+      ...viewModelProps,
     }
 
-    const template = this.Template(props as Props<ATTRIBUTES>)
+    const template = this.Template(props)
 
     const dom = !template ? [] : template.render(renderKit)
     return dom
@@ -86,20 +92,28 @@ export class Bound<ATTRIBUTES, STATE_MAP> {
   }
 }
 
-const passthroughViewModel: ViewModel<StoreMap, StoreMap> = (
-  storeMap: StoreMap,
-) => storeMap
+const defaultViewModel = <BoundProps, StateMap>(
+  StateMap: StateMap,
+  props: Props<BoundProps>,
+) => {
+  return {
+    ...StateMap,
+    ...props,
+  }
+}
 
-export const bind = <ATTRIBUTES, STATE_MAP>({
+export const bind = <
+  TemplateProps extends ComponentProps,
+  StateMap extends ComponentProps,
+  BoundProps extends ComponentProps = Partial<TemplateProps>,
+>({
   Template,
-  viewModel,
   subscriptions,
-}: BindParams<ATTRIBUTES, STATE_MAP>) => {
-  subscriptions = (subscriptions || []) as BindSubscriptionList
-  viewModel = (viewModel || passthroughViewModel) as ViewModel<
-    ATTRIBUTES,
-    STATE_MAP
-  >
-  return (attributes: Partial<Props<ATTRIBUTES>>) =>
-    new Bound({ Template, viewModel, subscriptions, attributes })
+  viewModel,
+}: BindArguments<TemplateProps, StateMap, BoundProps>) => {
+  subscriptions ||= [] as string[]
+  viewModel ||= defaultViewModel
+  return (attributes: Props<BoundProps>) => {
+    return new Bound({ Template, viewModel, subscriptions, attributes })
+  }
 }
