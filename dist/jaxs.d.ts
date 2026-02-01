@@ -83,8 +83,8 @@ declare type BindArguments<
   BoundProps extends ComponentProps = Partial<TemplateProps>,
 > = {
   Template: Template<TemplateProps>
-  viewModel?: ViewModel<TemplateProps, BoundProps, StateMap>
-  subscriptions?: string[]
+  viewModel: ViewModel<TemplateProps, BoundProps, StateMap>
+  subscriptions: string[]
 }
 
 export declare const BooleanStore: {
@@ -125,11 +125,6 @@ declare class Bound<
   subscribeForRerender(): void
   eventName(storeName: string): string
 }
-
-declare type BoundViewModel<TemplateProps, BoundProps, StateMap> = (
-  StateMap: StateMap,
-  props?: Props<BoundProps>,
-) => Partial<TemplateProps>
 
 declare const buildRouter: (
   pages: RenderedRoute[],
@@ -209,11 +204,6 @@ declare type CustomPeriodicOptions = {
 
 declare type CustomPeriodicPublisherOptions<T> =
   RequiredPeriodicPublisherOptions<T> & CustomPeriodicOptions
-
-declare type DefaultViewModel<BoundProps, StateMap> = (
-  StateMap: StateMap,
-  props: Props<BoundProps>,
-) => StateMap & Props<BoundProps>
 
 declare type DiffPair = {
   source: JaxsNode
@@ -375,11 +365,12 @@ export declare namespace JaxsTypes {
     TypedTemplate,
     Template,
     RenderableCollection,
-    BoundViewModel,
     ViewModel,
     ViewModelResult,
     ComponentProps,
     BindArguments,
+    SimpleViewModel,
+    WithViewModelArguments,
     ChangeInstructionTypes,
     RemoveInstructionData,
     AttributeInstructionData,
@@ -663,6 +654,10 @@ export declare namespace routing {
   export { exactPathMatch, catchAll, buildRouter }
 }
 
+declare type SimpleViewModel<ViewModelProps, TemplateProps> = (
+  props: ViewModelProps,
+) => Partial<TemplateProps>
+
 declare interface SourceMap {
   __source?: ReactSourceObject
 }
@@ -824,9 +819,10 @@ declare type UpdateEventInstructionData = {
 
 declare type UpdaterValue<T> = boolean | T | T[]
 
-declare type ViewModel<TemplateProps, BoundProps, StateMap> =
-  | BoundViewModel<TemplateProps, BoundProps, StateMap>
-  | DefaultViewModel<BoundProps, StateMap>
+declare type ViewModel<TemplateProps, BoundProps, StateMap> = (
+  StateMap: StateMap,
+  props?: Props<BoundProps>,
+) => Partial<TemplateProps>
 
 declare type ViewModelResult<TemplateProps, BoundProps, StateMap> =
   | Partial<TemplateProps>
@@ -835,6 +831,24 @@ declare type ViewModelResult<TemplateProps, BoundProps, StateMap> =
 declare type WithTimeoutOptions<T> = {
   timeout: number
   payload?: T
+}
+
+export declare const withViewModel: <
+  TemplateProps extends ComponentProps,
+  ViewModelProps extends ComponentProps,
+>({
+  Template,
+  viewModel,
+}: WithViewModelArguments<TemplateProps, ViewModelProps>) => (
+  viewModelProps: ViewModelProps & Partial<TemplateProps>,
+) => Renderable
+
+declare type WithViewModelArguments<
+  TemplateProps extends ComponentProps,
+  ViewModelProps extends ComponentProps,
+> = {
+  Template: Template<TemplateProps>
+  viewModel: SimpleViewModel<ViewModelProps, TemplateProps>
 }
 
 export {}
