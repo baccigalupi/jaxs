@@ -36,3 +36,15 @@ export type BindArguments<
   viewModel: ViewModel<TemplateProps, BoundProps, StateMap>
   subscriptions: string[]
 }
+
+export type SimpleViewModel<ViewModelProps, TemplateProps> = (
+  props: ViewModelProps,
+) => Partial<TemplateProps>
+
+export type WithViewModelArguments<
+  TemplateProps extends ComponentProps,
+  ViewModelProps extends ComponentProps,
+> = {
+  Template: Template<TemplateProps>
+  viewModel: SimpleViewModel<ViewModelProps, TemplateProps>
+}

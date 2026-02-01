@@ -1,16 +1,4 @@
-import type { ComponentProps, Template } from '@lib/types'
-
-type SimpleViewModel<ViewModelProps, TemplateProps> = (
-  props: ViewModelProps,
-) => Partial<TemplateProps>
-
-export type WithViewModelArguments<
-  TemplateProps extends ComponentProps,
-  ViewModelProps extends ComponentProps,
-> = {
-  Template: Template<TemplateProps>
-  viewModel: SimpleViewModel<ViewModelProps, TemplateProps>
-}
+import type { ComponentProps, WithViewModelArguments } from '@lib/types'
 
 export const withViewModel = <
   TemplateProps extends ComponentProps,
