@@ -76,7 +76,7 @@
     gt = { boolean: vt, number: yt, string: $, array: y, object: w },
     Et = (e, t) => e === t,
     At = (e, t) => Object.keys(e).length === Object.keys(t).length,
-    P = (e, t) =>
+    D = (e, t) =>
       !(w(e) && w(t)) || !At(e, t)
         ? !1
         : Object.keys(e).every((s) => {
@@ -84,15 +84,15 @@
               n = t[s]
             return g(r, n)
           }),
-    D = (e, t) =>
+    P = (e, t) =>
       !(y(e) && y(t)) || e.length !== t.length
         ? !1
         : e.every((s, r) => {
             const n = t[r]
             return g(s, n)
           }),
-    g = (e, t) => (w(e) ? P(e, t) : y(e) ? D(e, t) : Et(e, t)),
-    wt = { objects: P, arrays: D, equal: g }
+    g = (e, t) => (w(e) ? D(e, t) : y(e) ? P(e, t) : Et(e, t)),
+    wt = { objects: D, arrays: P, equal: g }
   class Nt {
     constructor(t) {
       this.store = t
@@ -311,7 +311,7 @@
       view: !0,
     },
     $t = (e, t) => !!(kt[e] || (e === 'a' && t === N)),
-    Pt = (e, t, s) => {
+    Dt = (e, t, s) => {
       const r = s.createElementNS(N, e)
       for (const n in t)
         n === '__self' ||
@@ -319,7 +319,7 @@
           r.setAttributeNS(null, n, t[n].toString())
       return r
     },
-    Dt = (e) => e.namespaceURI === N,
+    Pt = (e) => e.namespaceURI === N,
     Bt = (e, t) => t.createTextNode(e)
   class Ft {
     constructor(t) {
@@ -431,7 +431,7 @@
       return (s.__jsx = this.jsxKey()), s
     }
     generateSvgDom(t) {
-      const s = Pt(this.type, this.attributes, t.document)
+      const s = Dt(this.type, this.attributes, t.document)
       return (s.__jsx = this.jsxKey()), s
     }
     jsxKey() {
@@ -1053,7 +1053,7 @@
     Ne = (e, t) => (e.textContent !== t.textContent ? [oe(e, t)] : []),
     Se = (e, t, s) => {
       let r = []
-      if (e.nodeType === 1 && Dt(e)) {
+      if (e.nodeType === 1 && Pt(e)) {
         const n = e,
           i = t,
           o = we(n, i),
@@ -1136,7 +1136,7 @@
       const { source: t, target: s } = e
       t.replaceWith(s)
     },
-    Pe = (e) => {
+    De = (e) => {
       const { source: t, data: s } = e,
         { name: r, isSvg: n } = s
       n ? t.removeAttributeNS(null, r) : t.removeAttribute(r)
@@ -1146,7 +1146,7 @@
         { name: r, value: n, isSvg: i } = s
       i ? t.setAttributeNS(null, r, n) : t.setAttribute(r, n)
     },
-    De = (e) => {
+    Pe = (e) => {
       ht(e)
     },
     Be = (e) => {
@@ -1178,9 +1178,9 @@
       [a.removeNode]: Oe,
       [a.insertNode]: ke,
       [a.replaceNode]: $e,
-      [a.removeAttribute]: Pe,
+      [a.removeAttribute]: De,
       [a.addAttribute]: ht,
-      [a.updateAttribute]: De,
+      [a.updateAttribute]: Pe,
       [a.removeEvent]: Be,
       [a.addEvent]: Fe,
       [a.updateEvent]: Ve,
@@ -1267,13 +1267,16 @@
       return `${T}:${t}`
     }
   }
-  const Ge = (e, t) => ({ ...e, ...t }),
-    dt = ({ Template: e, subscriptions: t, viewModel: s }) => (
-      t || (t = []),
-      s || (s = Ge),
+  const dt =
+      ({ Template: e, subscriptions: t, viewModel: s }) =>
       (r) =>
-        new He({ Template: e, viewModel: s, subscriptions: t, attributes: r })
-    ),
+        new He({ Template: e, viewModel: s, subscriptions: t, attributes: r }),
+    Ge =
+      ({ Template: e, viewModel: t }) =>
+      (s) => {
+        const r = { ...s, ...t(s) }
+        return e(r)
+      },
     We =
       (e) =>
       ({ path: t }) =>
@@ -1297,6 +1300,7 @@
       const t = pt(e)
       return dt({
         Template: ({ route: r }) => (t({ route: r }) || Xe)(),
+        viewModel: ({ route: r }) => ({ route: r }),
         subscriptions: ['route'],
       })
     },
@@ -1333,5 +1337,6 @@
     (l.routedView = Ye),
     (l.routing = Qe),
     (l.state = se),
+    (l.withViewModel = Ge),
     Object.defineProperty(l, Symbol.toStringTag, { value: 'Module' })
 })

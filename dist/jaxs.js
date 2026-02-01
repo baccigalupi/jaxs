@@ -8,7 +8,7 @@ const O = (e, t) => {
   },
   $ = (e, t, s) => (e.splice(t, 0, s), e),
   D = (e, t) => (e.includes(t) || e.push(t), e),
-  ze = {
+  Le = {
     remove: O,
     removeBy: k,
     insertAt: $,
@@ -57,7 +57,7 @@ class ht {
   }
 }
 const f = (e) => new ht(e),
-  Ke = {
+  ze = {
     toggle: (e) => f(e).toggle(),
     setTrue: (e) => f(e).setTrue(),
     setFalse: (e) => f(e).setFalse(),
@@ -70,7 +70,7 @@ const f = (e) => new ht(e),
   P = (e) => typeof e == 'string',
   v = (e) => Array.isArray(e),
   E = (e) => e !== null && !v(e) && typeof e == 'object',
-  Re = {
+  Ke = {
     boolean: dt,
     number: pt,
     string: P,
@@ -95,7 +95,7 @@ const f = (e) => new ht(e),
           return g(s, n)
         }),
   g = (e, t) => (E(e) ? B(e, t) : v(e) ? F(e, t) : mt(e, t)),
-  Ue = {
+  Re = {
     objects: B,
     arrays: F,
     equal: g,
@@ -164,7 +164,7 @@ class bt {
   }
 }
 const m = (e) => new bt(e),
-  Ie = {
+  Ue = {
     push: (e, t) => m(e).push(t),
     pop: (e) => m(e).pop(),
     unshift: (e, t) => m(e).unshift(t),
@@ -219,7 +219,7 @@ class vt {
   }
 }
 const b = (e) => new vt(e),
-  qe = {
+  Ie = {
     reset: (e) => b(e).reset(),
     resetAttribute: (e, t) => b(e).resetAttribute(t),
     updateAttribute: (e, t, s) => b(e).updateAttribute(t, s),
@@ -601,7 +601,7 @@ class Z {
     Y(this)
   }
 }
-const Je = /* @__PURE__ */ Object.freeze(
+const qe = /* @__PURE__ */ Object.freeze(
   /* @__PURE__ */ Object.defineProperty(
     {
       __proto__: null,
@@ -783,7 +783,7 @@ const rt = (e) => {
       subscribe: s,
     }
   },
-  He = /* @__PURE__ */ Object.freeze(
+  Je = /* @__PURE__ */ Object.freeze(
     /* @__PURE__ */ Object.defineProperty(
       {
         __proto__: null,
@@ -887,7 +887,7 @@ class it {
   }
 }
 const ot = (e) => new it(e),
-  Ge = /* @__PURE__ */ Object.freeze(
+  He = /* @__PURE__ */ Object.freeze(
     /* @__PURE__ */ Object.defineProperty(
       {
         __proto__: null,
@@ -952,7 +952,7 @@ class Ht {
     }
   }
 }
-const We = (e = {}) => {
+const Ge = (e = {}) => {
   const s = new Ht(e).setup()
   return s.startNavigation(), s
 }
@@ -970,7 +970,7 @@ var c = /* @__PURE__ */ ((e) => (
   (e[(e.changeText = 10)] = 'changeText'),
   e
 ))(c || {})
-const Ce = /* @__PURE__ */ Object.freeze(
+const We = /* @__PURE__ */ Object.freeze(
     /* @__PURE__ */ Object.defineProperty(
       {
         __proto__: null,
@@ -1423,21 +1423,24 @@ class De {
     return `${S}:${t}`
   }
 }
-const Pe = (e, t) => ({
-    ...e,
-    ...t,
-  }),
-  Be = ({ Template: e, subscriptions: t, viewModel: s }) => (
-    t || (t = []),
-    s || (s = Pe),
+const Pe =
+    ({ Template: e, subscriptions: t, viewModel: s }) =>
     (r) =>
-      new De({ Template: e, viewModel: s, subscriptions: t, attributes: r })
-  ),
-  Fe =
+      new De({ Template: e, viewModel: s, subscriptions: t, attributes: r }),
+  Ce =
+    ({ Template: e, viewModel: t }) =>
+    (s) => {
+      const r = {
+        ...s,
+        ...t(s),
+      }
+      return e(r)
+    },
+  Be =
     (e) =>
     ({ path: t }) =>
       t === e,
-  Ve = () => !0,
+  Fe = () => !0,
   lt =
     (e) =>
     ({ route: t }) => {
@@ -1449,20 +1452,21 @@ const Pe = (e, t) => ({
       {
         __proto__: null,
         buildRouter: lt,
-        catchAll: Ve,
-        exactPathMatch: Fe,
+        catchAll: Fe,
+        exactPathMatch: Be,
       },
       Symbol.toStringTag,
       { value: 'Module' },
     ),
   ),
-  Le = () => ({
+  Ve = () => ({
     render: (e, t) => [],
   }),
   Xe = (e) => {
     const t = lt(e)
-    return Be({
-      Template: ({ route: r }) => (t({ route: r }) || Le)(),
+    return Pe({
+      Template: ({ route: r }) => (t({ route: r }) || Ve)(),
+      viewModel: ({ route: r }) => ({ route: r }),
       subscriptions: ['route'],
     })
   },
@@ -1484,20 +1488,21 @@ const Pe = (e, t) => ({
     ),
   )
 export {
-  ze as ArrayModifiers,
-  Ke as BooleanStore,
-  Ue as Equality,
-  Re as Is,
-  Ce as JaxsTypes,
-  Ie as ListStore,
-  qe as RecordStore,
-  Je as appBuilding,
-  Be as bind,
-  We as createApp,
+  Le as ArrayModifiers,
+  ze as BooleanStore,
+  Re as Equality,
+  Ke as Is,
+  We as JaxsTypes,
+  Ue as ListStore,
+  Ie as RecordStore,
+  qe as appBuilding,
+  Pe as bind,
+  Ge as createApp,
   Lt as jsx,
-  He as messageBus,
+  Je as messageBus,
   Ye as navigation,
   Xe as routedView,
   Qe as routing,
-  Ge as state,
+  He as state,
+  Ce as withViewModel,
 }

@@ -92,16 +92,6 @@ export class Bound<
   }
 }
 
-const defaultViewModel = <BoundProps, StateMap>(
-  StateMap: StateMap,
-  props: Props<BoundProps>,
-) => {
-  return {
-    ...StateMap,
-    ...props,
-  }
-}
-
 export const bind = <
   TemplateProps extends ComponentProps,
   StateMap extends ComponentProps,
@@ -111,8 +101,6 @@ export const bind = <
   subscriptions,
   viewModel,
 }: BindArguments<TemplateProps, StateMap, BoundProps>) => {
-  subscriptions ||= [] as string[]
-  viewModel ||= defaultViewModel
   return (attributes: Props<BoundProps>) => {
     return new Bound({ Template, viewModel, subscriptions, attributes })
   }

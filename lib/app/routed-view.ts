@@ -11,5 +11,9 @@ export const routedView = (routes: RenderedRoute[]) => {
     return Page()
   }
 
-  return bind({ Template, subscriptions: ['route'] })
+  return bind({
+    Template,
+    viewModel: ({ route }: { route: RouteState }) => ({ route }),
+    subscriptions: ['route'],
+  })
 }
