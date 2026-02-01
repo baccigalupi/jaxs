@@ -169,6 +169,7 @@ describe('Bound templates', () => {
 
     const BoundTemplate = bind({
       Template,
+      viewModel: ({ visible }: { visible: boolean }) => ({ visible }),
       subscriptions: ['visible'],
     })
     const template = <BoundTemplate />
@@ -195,6 +196,7 @@ describe('Bound templates', () => {
     }
     const BoundTemplate = bind({
       subscriptions: ['texts'],
+      viewModel: ({ texts }: { texts: string[] }) => ({ texts }),
       Template,
     })
 
@@ -233,6 +235,7 @@ describe('Bound templates', () => {
     }
     const Alerts = bind({
       Template: AlertsTemplate,
+      viewModel: ({ alerts }: { alerts: string[] }) => ({ alerts }),
       subscriptions: ['alerts'],
     })
 
@@ -287,30 +290,6 @@ describe('Bound templates', () => {
       subscriptions: ['accordions'],
       Template,
       viewModel,
-    })
-
-    const template = <BoundTemplate id="default-accordion">Hello</BoundTemplate>
-    const [node] = template.render(renderKit)
-
-    expect(domToString(node)).toEqual('<div class="accordion">Hello</div>')
-  })
-
-  it('allows omitting the viewModel to move all the logic incorrectly into the view layer', () => {
-    const renderKit = createRenderKitWithBus()
-    const { state } = renderKit
-    state.create('accordions', ['default-accordion'] as string[])
-
-    type TemplateProps = Props<{ accordions: string[]; id: string }>
-    const Template = ({ children, accordions, id }: TemplateProps) => {
-      const show = accordions.includes(id)
-      if (!show) return
-
-      return <div class="accordion">{children}</div>
-    }
-
-    const BoundTemplate = bind({
-      subscriptions: ['accordions'],
-      Template,
     })
 
     const template = <BoundTemplate id="default-accordion">Hello</BoundTemplate>

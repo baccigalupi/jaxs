@@ -17,19 +17,10 @@ export type TypedTemplate<T> = (props: Props<T>) => Renderable
 export type Template<T> = StaticTemplate | TypedTemplate<T>
 export type RenderableCollection = Renderable[]
 
-export type BoundViewModel<TemplateProps, BoundProps, StateMap> = (
+export type ViewModel<TemplateProps, BoundProps, StateMap> = (
   StateMap: StateMap,
   props?: Props<BoundProps>,
 ) => Partial<TemplateProps>
-
-type DefaultViewModel<BoundProps, StateMap> = (
-  StateMap: StateMap,
-  props: Props<BoundProps>,
-) => StateMap & Props<BoundProps>
-
-export type ViewModel<TemplateProps, BoundProps, StateMap> =
-  | BoundViewModel<TemplateProps, BoundProps, StateMap>
-  | DefaultViewModel<BoundProps, StateMap>
 
 export type ViewModelResult<TemplateProps, BoundProps, StateMap> =
   | Partial<TemplateProps>
@@ -42,6 +33,6 @@ export type BindArguments<
   BoundProps extends ComponentProps = Partial<TemplateProps>,
 > = {
   Template: Template<TemplateProps>
-  viewModel?: ViewModel<TemplateProps, BoundProps, StateMap>
-  subscriptions?: string[]
+  viewModel: ViewModel<TemplateProps, BoundProps, StateMap>
+  subscriptions: string[]
 }

@@ -99,6 +99,7 @@ describe('root templates', () => {
     }
     const BoundTemplate = bind({
       Template,
+      viewModel: ({ visible }: { visible: boolean }) => ({ visible }),
       subscriptions: ['visible'],
     })
 
@@ -127,6 +128,7 @@ describe('root templates', () => {
     }
     const BoundTemplate = bind({
       Template,
+      viewModel: ({ visible }: { visible: boolean }) => ({ visible }),
       subscriptions: ['visible'],
     })
 
@@ -164,6 +166,9 @@ describe('root templates', () => {
     }
     const Content = bind({
       Template: ContentTemplate,
+      viewModel: ({ membersOnly }: { membersOnly: boolean }) => ({
+        membersOnly,
+      }),
       subscriptions: ['membersOnly'],
     })
 
