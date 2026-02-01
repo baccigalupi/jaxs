@@ -698,7 +698,7 @@ export declare namespace state {
 
 declare type StateTransactionUpdater = (collection: StoresCollection) => void
 
-export declare type StaticTemplate = () => Renderable
+export declare type StaticTemplate = () => Renderable | undefined
 
 export declare class Store<T> {
   parent: State
@@ -807,7 +807,9 @@ export declare type Template<T> = StaticTemplate | TypedTemplate<T>
 
 declare type TextValue = string | number
 
-export declare type TypedTemplate<T> = (props: Props<T>) => Renderable
+export declare type TypedTemplate<T> = (
+  props: Props<T>,
+) => Renderable | undefined
 
 declare type Unsubscribe = () => void
 

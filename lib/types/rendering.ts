@@ -12,8 +12,8 @@ export type RenderKit = {
 export interface Renderable {
   render: (renderKit: RenderKit, parentElement?: JaxsElement) => JaxsNode[]
 }
-export type StaticTemplate = () => Renderable
-export type TypedTemplate<T> = (props: Props<T>) => Renderable
+export type StaticTemplate = () => Renderable | undefined
+export type TypedTemplate<T> = (props: Props<T>) => Renderable | undefined
 export type Template<T> = StaticTemplate | TypedTemplate<T>
 export type RenderableCollection = Renderable[]
 
