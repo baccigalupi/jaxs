@@ -6,6 +6,7 @@ export { RecordStore } from './state/updaters/object'
 export { jsx } from './rendering/jsx'
 export { createApp } from './app/builder'
 export { bind } from './rendering/templates/bound'
+export { withViewModel } from './rendering/templates/with-view-model'
 export { routedView } from './app/routed-view'
 
 // Commonly used types exported directly
