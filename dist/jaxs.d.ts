@@ -821,7 +821,7 @@ declare type UpdaterValue<T> = boolean | T | T[]
 
 declare type ViewModel<TemplateProps, BoundProps, StateMap> = (
   StateMap: StateMap,
-  props?: Props<BoundProps>,
+  props: Props<BoundProps>,
 ) => Partial<TemplateProps>
 
 declare type ViewModelResult<TemplateProps, BoundProps, StateMap> =

@@ -19,7 +19,7 @@ export type RenderableCollection = Renderable[]
 
 export type ViewModel<TemplateProps, BoundProps, StateMap> = (
   StateMap: StateMap,
-  props?: Props<BoundProps>,
+  props: Props<BoundProps>,
 ) => Partial<TemplateProps>
 
 export type ViewModelResult<TemplateProps, BoundProps, StateMap> =
