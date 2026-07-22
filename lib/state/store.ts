@@ -45,7 +45,7 @@ export class Store<T> {
   private updateValue(newValue: T) {
     if (areEqual(this._value, newValue)) return
 
-    this._value = newValue
+    this._value = structuredClone(newValue)
     this.parent.notify(this.name)
   }
 

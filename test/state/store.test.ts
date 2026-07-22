@@ -108,4 +108,21 @@ describe('Store', () => {
 
     expect(store.value).toEqual({ name: 'Guest', loggedIn: false })
   })
+
+  it('update notifies when nested structures are pass by references identical', () => {
+    const parent = new State(mockPublish())
+    vi.spyOn(parent, 'notify')
+    const store = new Store({
+      name: 'shape',
+      parent,
+      value: { points: [] },
+    })
+
+    const points = [{ x: 0, y: 0 }]
+    store.update({ points })
+    points[0].x = 12
+    store.update({ points })
+
+    expect(parent.notify).toHaveBeenCalledTimes(2)
+  })
 })
