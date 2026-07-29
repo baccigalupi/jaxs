@@ -69,6 +69,42 @@ describe('Store', () => {
     expect(store.value).toEqual({ name: 'Guest', loggedIn: false })
   })
 
+  it('reset notifies the parent when restoring from a changed value', () => {
+    const parent = new State(mockPublish())
+    vi.spyOn(parent, 'notify')
+    const store = new Store({
+      name: 'currentUser',
+      parent,
+      value: {
+        name: 'Guest',
+        loggedIn: false,
+      },
+    })
+
+    store.update({ name: 'Fred', loggedIn: true })
+    store.reset()
+
+    expect(parent.notify).toHaveBeenCalledWith('currentUser')
+    expect(parent.notify).toHaveBeenCalledTimes(2)
+  })
+
+  it('reset does not notify when already at the initial value', () => {
+    const parent = new State(mockPublish())
+    vi.spyOn(parent, 'notify')
+    const store = new Store({
+      name: 'currentUser',
+      parent,
+      value: {
+        name: 'Guest',
+        loggedIn: false,
+      },
+    })
+
+    store.reset()
+
+    expect(parent.notify).not.toHaveBeenCalled()
+  })
+
   it('does not allow modification of the initial value', () => {
     const parent = new State(mockPublish())
     const value = {

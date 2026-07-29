@@ -444,7 +444,7 @@
     const s = F(t, e)
     return new L(s)
   }
-  class Ct {
+  class Gt {
     constructor(t, s, r) {
       ;(this.template = t),
         (this.selector = s),
@@ -469,15 +469,15 @@
       return this.renderKit.document.querySelector(this.selector)
     }
   }
-  const Gt = (e, t, s) => {
-      const r = new Ct(e, t, s)
+  const Wt = (e, t, s) => {
+      const r = new Gt(e, t, s)
       return r.renderAndAttach(s), r
     },
     K = 'go-to-href',
     R = 'go-to',
     A = 'navigation:location-change',
     I = 'navigation:route-change',
-    Wt = Object.freeze(
+    Ct = Object.freeze(
       Object.defineProperty(
         {
           __proto__: null,
@@ -516,7 +516,7 @@
           const r = s.split('=')
           return (t[r[0]] = r[1]), t
         }, {}),
-    C = (e) => {
+    G = (e) => {
       const { state: t, publish: s, window: r } = e,
         { host: n, pathname: i, search: o } = r.location,
         c = i,
@@ -524,22 +524,22 @@
         d = { host: n, path: c, query: u }
       t.store('route').update(d), s(I, d)
     },
-    G = (e) => {
+    W = (e) => {
       const { subscribe: t } = e
       t(K, J),
         t(R, (s) => {
           S(s)
         })
     },
-    W = (e) => {
+    C = (e) => {
       const { publish: t, subscribe: s, state: r, window: n } = e
-      U(r), n.addEventListener('popstate', () => t(A, null)), s(A, C)
+      U(r), n.addEventListener('popstate', () => t(A, null)), s(A, G)
     },
     Q = (e) => {
       setTimeout(() => e.publish(A, null), 0)
     },
     X = (e) => {
-      W(e), G(e), Q(e)
+      C(e), W(e), Q(e)
     },
     Qt = Object.freeze(
       Object.defineProperty(
@@ -547,8 +547,8 @@
           __proto__: null,
           publishLocation: Q,
           startNavigation: X,
-          subscribeToHistoryChange: W,
-          subscribeToNavigation: G,
+          subscribeToHistoryChange: C,
+          subscribeToNavigation: W,
         },
         Symbol.toStringTag,
         { value: 'Module' },
@@ -574,7 +574,7 @@
         (this.roots = [])
     }
     render(t, s) {
-      const r = Gt(t, s, this.renderKit)
+      const r = Wt(t, s, this.renderKit)
       return this.roots.push(r), r
     }
     startNavigation() {
@@ -759,7 +759,7 @@
       throw new Error('Cannot set value directly. Use an updater!')
     }
     reset() {
-      this._value = structuredClone(this.initialValue)
+      this.update(this.initialValue)
     }
     update(t) {
       if (typeof t == 'function') {
@@ -1272,17 +1272,17 @@
       ({ Template: e, subscriptions: t, viewModel: s }) =>
       (r) =>
         new He({ Template: e, viewModel: s, subscriptions: t, attributes: r }),
-    Ce =
+    Ge =
       ({ Template: e, viewModel: t }) =>
       (s) => {
         const r = { ...s, ...t(s) }
         return e(r)
       },
-    Ge =
+    We =
       (e) =>
       ({ path: t }) =>
         t === e,
-    We = () => !0,
+    Ce = () => !0,
     pt =
       (e) =>
       ({ route: t }) => {
@@ -1291,7 +1291,7 @@
       },
     Qe = Object.freeze(
       Object.defineProperty(
-        { __proto__: null, buildRouter: pt, catchAll: We, exactPathMatch: Ge },
+        { __proto__: null, buildRouter: pt, catchAll: Ce, exactPathMatch: We },
         Symbol.toStringTag,
         { value: 'Module' },
       ),
@@ -1310,12 +1310,12 @@
         {
           __proto__: null,
           createRouteState: U,
-          events: Wt,
+          events: Ct,
           extractQueryParams: H,
           findHref: q,
           navigate: S,
           onLinkClick: J,
-          onLocationChange: C,
+          onLocationChange: G,
           start: Qt,
         },
         Symbol.toStringTag,
@@ -1338,6 +1338,6 @@
     (l.routedView = Ye),
     (l.routing = Qe),
     (l.state = se),
-    (l.withViewModel = Ce),
+    (l.withViewModel = Ge),
     Object.defineProperty(l, Symbol.toStringTag, { value: 'Module' })
 })
