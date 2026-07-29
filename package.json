@@ -41,13 +41,13 @@
   "author": "Kane Baccigalupi",
   "license": "MIT",
   "devDependencies": {
-    "@types/jsdom": "^21.1.7",
-    "cypress": "^13.14.2",
-    "jsdom": "^24.1.1",
-    "prettier": "^3.3.3",
-    "typescript": "^5.5.4",
-    "vite": "^6.3.5",
-    "vite-plugin-dts": "^4.5.4",
-    "vitest": "^3.1.4"
+    "@types/jsdom": "^28.0.3",
+    "cypress": "^13.17.0",
+    "jsdom": "^29.1.1",
+    "prettier": "^3.9.6",
+    "typescript": "^5.9.3",
+    "vite": "^6.4.3",
+    "vite-plugin-dts": "^5.0.3",
+    "vitest": "^3.2.7"
   }
 }
