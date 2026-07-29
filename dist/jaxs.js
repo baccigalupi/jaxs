@@ -523,7 +523,7 @@ const Kt = (e, t, s) => {
     const s = J(t.target)
     N({ ...e, payload: s })
   },
-  C = (e) =>
+  G = (e) =>
     e
       .replace(/^\?/, '')
       .split('&')
@@ -532,11 +532,11 @@ const Kt = (e, t, s) => {
         const r = s.split('=')
         return (t[r[0]] = r[1]), t
       }, {}),
-  G = (e) => {
+  W = (e) => {
     const { state: t, publish: s, window: r } = e,
       { host: n, pathname: i, search: o } = r.location,
       a = i,
-      u = C(o),
+      u = G(o),
       h = {
         host: n,
         path: a,
@@ -544,7 +544,7 @@ const Kt = (e, t, s) => {
       }
     t.store('route').update(h), s(I, h)
   },
-  W = (e) => {
+  C = (e) => {
     const { subscribe: t } = e
     t(R, H),
       t(U, (s) => {
@@ -553,13 +553,13 @@ const Kt = (e, t, s) => {
   },
   Q = (e) => {
     const { publish: t, subscribe: s, state: r, window: n } = e
-    q(r), n.addEventListener('popstate', () => t(y, null)), s(y, G)
+    q(r), n.addEventListener('popstate', () => t(y, null)), s(y, W)
   },
   X = (e) => {
     setTimeout(() => e.publish(y, null), 0)
   },
   Y = (e) => {
-    Q(e), W(e), X(e)
+    Q(e), C(e), X(e)
   },
   Ut = /* @__PURE__ */ Object.freeze(
     /* @__PURE__ */ Object.defineProperty(
@@ -568,7 +568,7 @@ const Kt = (e, t, s) => {
         publishLocation: X,
         startNavigation: Y,
         subscribeToHistoryChange: Q,
-        subscribeToNavigation: W,
+        subscribeToNavigation: C,
       },
       Symbol.toStringTag,
       { value: 'Module' },
@@ -810,7 +810,7 @@ class x {
     throw new Error('Cannot set value directly. Use an updater!')
   }
   reset() {
-    this._value = structuredClone(this.initialValue)
+    this.update(this.initialValue)
   }
   update(t) {
     if (typeof t == 'function') {
@@ -953,7 +953,7 @@ class Ht {
     }
   }
 }
-const Ce = (e = {}) => {
+const Ge = (e = {}) => {
   const s = new Ht(e).setup()
   return s.startNavigation(), s
 }
@@ -971,7 +971,7 @@ var c = /* @__PURE__ */ ((e) => (
   (e[(e.changeText = 10)] = 'changeText'),
   e
 ))(c || {})
-const Ge = /* @__PURE__ */ Object.freeze(
+const We = /* @__PURE__ */ Object.freeze(
     /* @__PURE__ */ Object.defineProperty(
       {
         __proto__: null,
@@ -981,19 +981,19 @@ const Ge = /* @__PURE__ */ Object.freeze(
       { value: 'Module' },
     ),
   ),
-  Ct = (e, t) => ({
+  Gt = (e, t) => ({
     source: e,
     target: t,
     type: c.changeText,
     data: {},
   }),
-  Gt = (e, t) => ({
+  Wt = (e, t) => ({
     source: e,
     target: t,
     type: c.replaceNode,
     data: {},
   }),
-  Wt = (e, t, s) => ({
+  Ct = (e, t, s) => ({
     source: e,
     target: t,
     data: s,
@@ -1115,7 +1115,7 @@ const M = (e) => {
                 isSvg: s,
               }),
             )
-          : r.push(Wt(e, t, { name: l.name, isSvg: s }))
+          : r.push(Ct(e, t, { name: l.name, isSvg: s }))
       }
     }
     for (u = 0; u < a; u++) {
@@ -1196,7 +1196,7 @@ const M = (e) => {
     return s.concat(r).concat(n)
   },
   ce = (e, t) => ut(e, t, !0),
-  le = (e, t) => (e.textContent !== t.textContent ? [Ct(e, t)] : []),
+  le = (e, t) => (e.textContent !== t.textContent ? [Gt(e, t)] : []),
   he = (e, t, s) => {
     let r = []
     if (e.nodeType === 1 && _t(e)) {
@@ -1242,7 +1242,7 @@ const M = (e) => {
             : d
               ? o.check(d)
                 ? r.push(A(l, { parent: s, index: u }))
-                : (i.clear(d), r.push(Gt(d, l)))
+                : (i.clear(d), r.push(Wt(d, l)))
               : r.push(A(l, { parent: s, index: u }))
       } else d && i.pullMatch(d).element && r.push(T(d))
     }
@@ -1428,7 +1428,7 @@ const Pe =
     ({ Template: e, subscriptions: t, viewModel: s }) =>
     (r) =>
       new De({ Template: e, viewModel: s, subscriptions: t, attributes: r }),
-  We =
+  Ce =
     ({ Template: e, viewModel: t }) =>
     (s) => {
       const r = {
@@ -1477,11 +1477,11 @@ const Pe =
         __proto__: null,
         createRouteState: q,
         events: Rt,
-        extractQueryParams: C,
+        extractQueryParams: G,
         findHref: J,
         navigate: N,
         onLinkClick: H,
-        onLocationChange: G,
+        onLocationChange: W,
         start: Ut,
       },
       Symbol.toStringTag,
@@ -1493,17 +1493,17 @@ export {
   ze as BooleanStore,
   Re as Equality,
   Ke as Is,
-  Ge as JaxsTypes,
+  We as JaxsTypes,
   Ue as ListStore,
   Ie as RecordStore,
   qe as appBuilding,
   Pe as bind,
-  Ce as createApp,
+  Ge as createApp,
   Lt as jsx,
   Je as messageBus,
   Ye as navigation,
   Xe as routedView,
   Qe as routing,
   He as state,
-  We as withViewModel,
+  Ce as withViewModel,
 }

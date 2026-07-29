@@ -30,7 +30,7 @@ export class Store<T> {
   }
 
   reset() {
-    this._value = structuredClone(this.initialValue)
+    this.update(this.initialValue)
   }
 
   update(updater: StoreUpdaterOrValue<T>) {
